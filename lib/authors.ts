@@ -1,32 +1,27 @@
 // ============================================================================
-// lib/authors.ts — the GTD authors table.
+// lib/authors.ts: the GTD authors table.
 //
-// STATUS (Aug 2026): four bylines are PLANNED, one is ACTIVE.
-// Only "GTD team" is active, so that is what every article is bylined to today.
-// The other three are defined so the wiring, hub assignment and archive links
-// are already built; each switches on by setting status to "active" once its
-// bio is confirmed and (for real people) they have agreed to be named.
+// Bylines confirmed by Ryan, 18 Nov 2026:
+//   - Elliott Gorfain on technical content (cultivation, equipment, lighting,
+//     climate, irrigation, media and nutrients, harvest, extraction,
+//     processing, buying guides, comparisons).
+//   - James Ruhle on business content (licensing, compliance overviews,
+//     facility costs and ROI, financing, starting or scaling a business).
 //
 // WHY THIS IS A TABLE AND NOT A PROMPT
 // Bios and roles are fixed data, never generated per article. A bio written
-// fresh each time drifts into invented credentials ("12 years of experience",
-// "certified specialist") within a few dozen articles. Everything here must be
-// verifiable: real people, real roles, real scope of work. The matching
-// enforcement lives in UNSUPPORTED_CLAIMS in lib/brandRules.ts.
+// fresh each time drifts into invented credentials within a few dozen
+// articles. Everything here must be verifiable. Elliott's bio uses only what
+// GTD's consulting page states. The matching enforcement for article bodies
+// lives in UNSUPPORTED_CLAIMS in lib/brandRules.ts.
 //
-// Nothing in a bio may assert a certification, licence, qualification, or a
-// years-of-experience figure. GTD's authority is that it sells, ships and
-// installs this equipment as an authorized dealer. That is the claim to make.
+// Writing under a named byline never licenses invented first-person
+// experience, anecdotes, client stories or quotes. Credentials go in the bio.
 //
 // TO SWITCH ONE ON
 //   1. Replace the TODO bio and role with confirmed wording.
 //   2. Create the author archive page, then set hasArchive: true.
 //   3. Set status: "active".
-//   4. New articles pick it up automatically. Articles already published under
-//      template_version = 2 keep the old byline until patched; they are
-//      findable because the byline, role and bio sit in data-gtdb-slot
-//      ="author.*" nodes, so a bulk pass rewrites exactly those. Version 1
-//      articles are never touched.
 // ============================================================================
 
 export type AuthorStatus = "active" | "planned";
@@ -34,7 +29,7 @@ export type AuthorStatus = "active" | "planned";
 export type Author = {
   slug: string;
   name: string;
-  /** Real role at GTD. Never a credential. Empty renders no role line. */
+  /** Real role at GTD. Empty renders no role line. */
   role: string;
   /** 25 to 40 words. Verifiable scope of work only. */
   bio: string;
@@ -46,7 +41,7 @@ export type Author = {
   /**
    * Finer-grained ownership, matched against the article's topic or collection
    * tag and checked BEFORE hubs. This is how "weight lifting" is assigned
-   * without giving away the whole Fitness hub.
+   * without giving away a whole hub.
    */
   topics?: string[];
   /**
@@ -68,57 +63,30 @@ export type Author = {
 
 export const AUTHORS: Author[] = [
   {
+    slug: "elliott-gorfain",
+    name: "Elliott Gorfain",
+    role: "CEA Specialist at Green Thumb Depot",
+    // Facts as stated on GTD's consulting page. Do not add to them.
+    bio:
+      "Elliott is Green Thumb Depot's CEA specialist, with 27 years of CEA growing experience and 10 years of commercial CEA consulting. He holds a B.S. in Molecular Biology and has worked at Hydrofarm, Greencoast, Hanna Instruments and Impello.",
+    initials: "EG",
+    // Catch-all: every article that is not claimed by a business topic below.
+    hubs: [],
+    hasArchive: false,
+    status: "active",
+  },
+  {
     slug: "james-ruhle",
     name: "James Ruhle",
-    role: "", // TODO confirm with James. A real role only, never a credential.
-    bio: "", // TODO 25 to 40 words. What he actually works on: product selection,
-             // the brands GTD is an authorized dealer for, how the catalogue is set up.
+    role: "", // TODO confirm with James. A real role only.
+    bio: "", // TODO 25 to 40 words, confirmed by James.
     initials: "JR",
-    hubs: ["saunas", "recovery", "fitness"],
-    // Fitness is owned at hub level, so cardio and strength both land here.
-    // The topic list is kept as a safety net for articles tagged weight-lifting
-    // that sit outside the Fitness hub or carry no hub at all.
-    topics: ["weight-lifting", "strength", "strength-training", "free-weights", "racks", "benches"],
-    hasArchive: false,
-    status: "planned",
-  },
-  {
-    slug: "ryan-oconnor",
-    name: "Ryan O'Connor",
-    // Confirmed by Ryan, Aug 2026. A real role, never a credential. Ultimate
-    // guides are bylined to him through guideAuthor() in lib/guide-v2.ts; the
-    // blog keeps the GTD team byline until status flips to active.
-    role: "Co-Founder at GTD",
-    bio:
-      "Ryan co-founded Green Thumb Depot and works on the catalogue, the brands GTD is an authorized dealer for, and the guides that explain the equipment GTD sells, ships and supports.",
-    initials: "RO",
-    // Ownership is by FORMAT, not subject: the shopping-guide side of the
-    // library, across every hub. Measured against the bulk-creation CSVs this
-    // is roughly 22% of articles today (buyers-guide 14%, listicle 8%) and it
-    // grows as gift and best-of guides ramp up.
-    // NOTE: "gift-guide" is NOT yet a valid articleType in the pipeline. It has
-    // to be added alongside buyers-guide/comparison/how-to/listicle before it
-    // will ever match.
-    articleTypes: ["buyers-guide", "listicle", "gift-guide"],
     hubs: [],
-    topics: [],
+    // Business content. Matched against the article's topic or collection tag.
+    topics: ["business", "licensing", "compliance", "financing", "roi", "facility-costs", "starting-a-grow"],
     hasArchive: false,
-    status: "planned",
-  },
-  {
-    slug: "ops",
-    name: "", // TODO the operations team member's name, once they agree to be named.
-    role: "", // TODO e.g. their real operations or customer support role.
-    bio: "", // TODO 25 to 40 words. The genuine angle here is daily contact with
-             // buyers: what customers ask before and after purchase. Strongest
-             // signal available on clinical, and entirely verifiable.
-    initials: "",
-    hubs: ["wellness", "clinical"],
-    // Clinical stays with ops even for a buyer's guide. A clinical shopping
-    // guide is more credible from the person who fields clinic buyers' calls
-    // than from whoever owns the format. Delete this line to let format win.
-    alwaysHubs: ["clinical"],
-    hasArchive: false,
+    // Stays planned until the role and bio above are confirmed; until then
+    // business articles fall through to the catch-all byline.
     status: "planned",
   },
   {
@@ -126,11 +94,11 @@ export const AUTHORS: Author[] = [
     name: "Green Thumb Depot",
     role: "",
     bio:
-      "Green Thumb Depot is an authorized dealer for the brands on this page. We sell, ship and support this equipment, so the guides are written from what we handle day to day.",
+      "Green Thumb Depot is an authorized dealer for the brands listed on its Brands page. Specifications in these guides are taken from manufacturer documentation.",
     initials: "GTD",
-    hubs: [], // catch-all
+    hubs: [], // fallback only, see FALLBACK below
     hasArchive: false,
-    status: "active",
+    status: "planned",
   },
 ];
 

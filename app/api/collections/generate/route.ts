@@ -487,7 +487,7 @@ ${JSON.stringify({ fields })}`;
     // When there is no real tag: use the AI-written one (pk-first, concrete
     // differentiator, NO store-name suffix per Ryan Aug 3), else title-case pk.
     const hasRealTag = !!seoTitle && seoTitle.trim() !== "" && seoTitle.trim().toLowerCase() !== (collection.title || "").trim().toLowerCase();
-    const aiTitle = stripEmDashes(String(g.seoTitle || "")).replace(/\s*[|\-–]\s*peak primal wellness\s*$/i, "").trim();
+    const aiTitle = stripEmDashes(String(g.seoTitle || "")).replace(/\s*[|\-–]\s*green thumb depot\s*$/i, "").trim();
     // Rule (25 Oct 2026): a generated title always leads with the primary keyword and never carries a price.
     const newSeoTitle = hasRealTag
       ? seoTitle

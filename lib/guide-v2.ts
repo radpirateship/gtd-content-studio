@@ -229,15 +229,14 @@ export function normalisePlan(raw: unknown): GuidePlanItem[] {
 // ── Author ──────────────────────────────────────────────────────────────────
 
 /**
- * Guides are bylined to Ryan by his own decision (Aug 2026), with his real
- * role. The blog keeps the GTD team byline until the other authors are
- * confirmed; that is why this reads the table by slug rather than through
- * authorForArticle(), which only returns active authors.
+ * Guides are technical content, so they carry Elliott Gorfain's byline. Read
+ * by slug so a guide never picks up a topic-matched business byline, with the
+ * GTD team entry as the fallback if his record is ever incomplete.
  */
 export function guideAuthor(): Author {
-  const ryan = authorBySlug("ryan-oconnor");
+  const elliott = authorBySlug("elliott-gorfain");
   const gtd = authorBySlug("gtd")!;
-  if (ryan && ryan.name && ryan.bio) return ryan;
+  if (elliott && elliott.name && elliott.bio) return elliott;
   return gtd;
 }
 

@@ -1,13 +1,11 @@
 // ============================================================================
-// GTD BRAND RULES — Single source of truth for writing voice across ALL
+// GTD BRAND RULES. Single source of truth for writing voice across ALL
 // generation routes (articles, bulk, workshop regenerate, ultimate guides,
 // section editor, Content Brain chat).
 //
-// HISTORY: These rules originally lived inline in app/api/generate/route.ts
-// (commit eb7a008) and were silently dropped in a route rebuild (commit
-// 8f14ee2, Feb 18 2026). Restored here as a shared module so a future route
-// rewrite can never disconnect them again. Any "view the rules" UI should
-// import from this file — never duplicate the text.
+// Source: the Green Thumb Depot brand voice doc (18 Nov 2026), built from the
+// live site's policy pages and confirmed by Ryan. Any "view the rules" UI
+// should import from this file, never duplicate the text.
 //
 // DO NOT edit generation-route prompts to add voice rules inline.
 // Add them here instead.
@@ -18,70 +16,93 @@
  * content-generating route via getWritingRulesBlock().
  */
 export const WRITING_RULES = `WRITING STYLE - CRITICAL:
-Write like a knowledgeable specialist at an equipment store explaining products to a customer who is about to spend real money: clear, specific, direct, and willing to recommend.
+Write like an experienced grow-store specialist talking to a cultivator who is about to spend real money on equipment: a commercial facility manager, a craft grower scaling up, or a serious home grower. Clear, specific, direct, grower-literate, and willing to recommend.
 
 SAY THE THING
 - Name things before you refer to them, then keep the same name. Do not rotate synonyms ("the unit", "the machine", "the system", "your investment") for variety.
 - Finish every comparison. "Better", "faster", "quieter", "cheaper" need a "than what". If you cannot finish it, cut it.
 - State the point. Never announce it: no "Here's the thing", "Let me explain", "The honest answer is", "What most people don't realize".
-- Follow one concrete example all the way through: the situation, what the buyer does, what happens. One worked example beats a list of capabilities.
+- Follow one concrete example all the way through: the grow (size, room count, harvest weight or stage), what the grower does, what happens. One worked example beats a list of capabilities.
 - Every paragraph must be specific to THIS article. If a paragraph could be pasted unchanged into an article about a different product category, cut it or make it specific.
 
 SELL WITH FACTS
-- Make recommendations. Say which product or type fits which buyer and why, using the spec that decides it. A clear verdict helps the reader; hedging every recommendation into "it depends" does not.
-- Every selling sentence carries a fact. Replace praise ("built to last", "a smart choice", "earns its place") with the detail that makes it true.
+- Make recommendations by scale. Say which product or type fits which grow (home tent, craft room, commercial facility) and why, using the spec that decides it: throughput, capacity, coverage, force, power draw, footprint, labor.
+- Every selling sentence carries a fact. Replace praise ("commercial-grade", "built to last", "a serious upgrade") with the number or detail that makes it true.
+- When labor or payback is the argument, show the working with stated assumptions (hours per pound, wage, harvest size) and label them as assumptions.
 - Never invent urgency, scarcity, guarantees, testimonials, customer stories, return or financing terms, or results.
-- Never invent experience: no "customers often tell us", "we see this all the time", "this surprises most people", "nobody thinks about". State the fact and why it matters.
+- Never invent experience: no "customers often tell us", "we see this all the time", "in our grow room", "we tested", "this surprises most growers". State the fact and why it matters.
+
+GROWER LANGUAGE
+- Use the trade's precise terms and use them correctly: wet trim vs dry trim, bucking, drying vs curing, PPFD and DLI, VPD, EC and pH, run-to-waste vs recirculating, solventless vs solvent extraction, rosin vs resin, live rosin vs live resin, bubble hash (ice water hash) vs dry sift vs kief.
+- Do not explain basics to a commercial reader unless the article is a beginner guide. Define a term once, the first time, only when the article's reader may not know it.
+- Give specs in the units growers buy on: watts, PPFD (µmol/m²/s) and coverage in feet for lights; pints per day for dehumidifiers; pounds per hour (wet or dry stated) for trimmers and buckers; tons of force and plate size for rosin presses; gallons per hour and PSI for pumps; horsepower or BTU for chillers; gallons or microns for wash bags and hash washers.
+- Freeze drying is preservation. Do not blur it with drying and curing harvested flower unless the article is specifically about freeze drying cannabis.
 
 CONNECT THE SENTENCES
-- No staged reversals: "This isn't about X. It's about Y", "It's not just X", "X is not a compromise, it is Y", "The best X are not..., they are...". Just state Y.
-- No uncounted majority claims. Do not open with "Most people", "Most buyers", "Most owners" unless the supplied material contains the number.
-- No runs of dramatic fragments ("Faster pulls. Better crema. Less mess."). Join ideas that belong together with and, but, because, so.
+- No staged reversals: "This isn't about X. It's about Y", "It's not just X", "X is not a compromise, it is Y". Just state Y.
+- No uncounted majority claims. Do not open with "Most growers", "Most cultivators", "Most facilities" unless the supplied material contains the number.
+- No runs of dramatic fragments ("Faster trims. Better bag appeal. Less labor."). Join ideas that belong together with and, but, because, so.
 - Do not force lists, examples or adjectives into groups of three. Use the number the information has.
 - Vary sentence length. Contractions are fine.
 - End a section, and the article, on its most specific recommendation or fact. No symmetrical flourish, no restatement.
 
 PLAIN WORDS
-- Prefer plain verbs: is, has, uses, holds, fits, costs.
+- Prefer plain verbs: is, has, uses, holds, fits, costs, runs, pulls, presses.
 - Never use: delve, unlock, unleash, elevate, empower, foster, showcase, underscore, testament, tapestry, pivotal, crucial, groundbreaking, revolutionary, world-class, game-changing, cutting-edge, myriad, plethora, "serves as", "stands as", "plays a key role", "in today's landscape", genuinely, honestly, truly.
 - Do not swap a banned word for an equally vague synonym. Say what the thing does.
-- Never end a sentence with commentary on itself (", highlighting its importance", ", which is the point", ", a detail that matters more than it sounds"). If the clause carries new information, make it its own sentence.
-- Keep precise technical terms. A literal word (the seams of a cushion) is not decoration.
-- Keep accurate qualifiers (roughly, typically, tends to). Do not inflate certainty or importance.
+- Never end a sentence with commentary on itself. If the clause carries new information, make it its own sentence.
+- Keep precise technical terms. Keep accurate qualifiers (roughly, typically, depending on strain and moisture). Do not inflate certainty or importance.
 
 EVIDENCE
-- Never attribute to an unnamed body of work: no "research shows", "studies show", "studies have documented", "experts say", "science confirms", "supported by research". State the specific finding or mechanism plainly at its real level of certainty, or leave it out.
-- For health effects keep cautious wording (may, is associated with). Never upgrade a finding into a promise.
+- Never attribute to an unnamed body of work: no "research shows", "studies show", "experts say", "growers agree", "science confirms". State the specific finding or mechanism plainly at its real level of certainty, or leave it out.
+- Throughput, capacity, yield and efficiency figures come from the manufacturer's published spec and are attributed to the manufacturer, with the conditions that apply (wet or dry, material type, settings).
+
+CANNABIS AND COMPLIANCE
+- Write for adults (21+) in legal markets. Never write content aimed at, or likely to appeal to, minors.
+- Cannabis law differs between federal and state level and between states. Never state or imply that growing, processing or selling cannabis is legal everywhere, and never give legal advice. When legality matters to the article, tell the reader to check their state's rules and licensing requirements.
+- Never describe how to avoid detection, evade licensing, or move product across state lines.
+- No medical or therapeutic claims about cannabis or cannabis products (treats, cures, relieves, helps with a condition). If a health point is unavoidable, use cautious wording, name the source, and send health questions to a clinician.
+- Never promise yields, potency, THC or terpene levels, or quality outcomes ("bigger yields", "more potent", "preserves 100% of terpenes", "grams per watt"). Describe what the equipment does and what affects the result.
+- Solvent extraction (hydrocarbon, ethanol, CO2) is licensed-lab work. Describe equipment and process at overview level only, note that it belongs in a licensed, code-compliant facility, and never give home or DIY solvent extraction instructions. Solventless methods (rosin, ice water hash, dry sift) can be explained step by step.
+- Pest and disease control: only recommend products for use according to their label, and note that rules on what can be applied to cannabis vary by state.
+- Freeze-dried food: no food-safety guarantees. Say what freeze drying does to moisture and shelf life at its real level of certainty.
 
 FORMAT
-- Do NOT use em dashes (—) anywhere, and do not use spaced hyphens or spaced en dashes as punctuation. Use commas, periods, colons or parentheses. Ranges such as 160–190 are fine.
+- Do NOT use em dashes anywhere, and do not use spaced hyphens or spaced en dashes as punctuation. Use commas, periods, colons or parentheses. Ranges such as 4–6 tons are fine.
 - Headings are short, in sentence case, and name the subject or the action. Never a stock heading such as "Final thoughts", "Conclusion", "The bottom line", "Wrapping up" or "Putting it all together".
-- Use a list only when the items are parallel or sequential. Explanations stay in paragraphs.
+- Use a list only when the items are parallel or sequential. Explanations stay in paragraphs. Spec comparisons go in a table.
 - Never repeat a point already made. No recap paragraphs.
 - NEVER use these AI patterns: "In today's world...", "Let's dive into...", "It's important to note...", "When it comes to...", "Whether you're a...or a...".
 
 CLAIMS - NEVER STATE (factual accuracy, not style):
-- Never promise "white-glove delivery", "white-glove assembly", or that assembly is included. GTD does not offer this.
-- Never discuss shipping cost at all. Not "free shipping", not "shipping is not free", not "factor shipping into your budget". Shipping is handled at checkout and is not a topic for an article.
-- Never invent warranty length, delivery timeframes, return policies, financing terms, or certifications that are not in the product data.
-- Product feature bullets must describe the PRODUCT (materials, resistance type, capacity, power, certifications), not GTD's service.
-- Never claim years of experience, decades in the industry, certifications, or licences for GTD or its staff. None are evidenced.
-- Never write "medically reviewed", "reviewed by our...", "clinically proven", "doctor recommended", or "our experts". No such review process or credentialed staff exists.
-- GTD's real authority is verifiable: authorized dealer for the brands covered, equipment sold, shipped and installed by us, specifications taken from manufacturer documentation. Say that instead.
+- Never discuss shipping cost, free shipping thresholds, sales tax, delivery times or freight terms in an article. These are handled at checkout and by the site's policy pages, and they have brand and size exclusions.
+- Never promise installation, setup, inside delivery, lift-gate service or moving help. GTD does not offer these.
+- Never invent warranty length, return windows, restocking terms, financing terms or approval odds. Warranty is set by each manufacturer; state it only when it is in the product data.
+- Never write "lowest price guaranteed", "unbeatable prices", "best prices" or "#1". If price matching is relevant, say a price match is available before purchase and link to the policy.
+- Years in business: the only allowed wording is the site's own, "over 10 years of experience". Never inflate it ("decades", "generations", "since the beginning of the industry"). Never claim certifications, licences or in-house testing for GTD or its staff.
+- Never write "lab tested by us", "we tested", "our grow team", "our experts", "reviewed by", or "grower approved". No such process is documented.
+- GTD may be described as an authorized dealer for brands listed on its Brands page (https://greenthumbdepot.com/pages/brands). Never claim it for a brand that is not on that page.
+- GTD is a US company. Never state a city or state for it. When a reader needs to reach GTD, link to the contact page (https://greenthumbdepot.com/pages/contact-us).
+- Never state GTD's review rating, rebate percentages or commercial financing amounts.
+- Product feature bullets describe the PRODUCT (capacity, throughput, power, materials, certifications such as UL or ETL when in the product data), not GTD's service.
+- GTD's real authority is verifiable: it is an authorized dealer for the brands on its Brands page and stocks the major brands in each category side by side, specifications come from manufacturer documentation, and professional growers can book a free 30-minute consult with Elliott Gorfain, GTD's CEA specialist. Say that instead.
+- Support hours, when a CTA needs them: Monday to Friday, 9am to 6pm CST.
 
 NAMING RULES (NEVER violate):
-- Always "Sensory Deprivation Tanks" (never "Float Tanks")
-- "Massage Chairs" is fine, it is its own sub-collection alongside Massage Equipment
-- Always plural: "Cold Plunges", "Sensory Deprivation Tanks"
+- Use "cannabis" in body copy. Use "flower" for harvested, dried product and "buds" in trimming and harvest steps. Use "weed" only where it is the searched phrase (title, URL, one heading) and never in product or collection copy. Use "marijuana" only inside the official name of a law, program or agency. Never "pot", "ganja", "dank", "loud", "trees".
+- Brand and model names exactly as the manufacturer writes them: Harvest Right, NugSmasher, PurePressure, Lowtemp, Triminator, Twister, Mobius, Centurion Pro, GreenBroz, FOHSE, Fluence, Gavita, TrolMaster, AC Infinity, Spider Farmer, VIVOSUN, Current Culture H2O, Dosatron, HANNA Instruments, Bubble Magic, The Original Resinator.
+- Collection names exactly as they appear on the store.
+- "Pre-roll" is hyphenated. "Rosin press" is never "rosin machine" in copy.
 
 SEO REQUIREMENTS:
+- The primary keyword for a collection belongs to the collection page. Articles target adjacent and more specific queries and link to the collection.
 - Use the primary keyword where a person would naturally say it: the title, the opening section, and one or two headings. Elsewhere use the plain name of the thing. Never repeat a phrase to hit a count.
 - Headings say what the section answers.
-- Prioritize the buyer's question and depth over length. Explain it better than competing articles would.
+- Prioritize the grower's question and depth over length. Explain it better than competing articles and forum threads do.
 
-TONE: Specific, evidence-based, conversational, and confident when recommending.
+TONE: Specific, practical and grower-literate; confident when recommending a machine for a given scale, plain about what equipment can and cannot promise.
 
-Before finalizing any section, read each sentence once as the buyer would. If its meaning is not clear on one read, or it would fit any article in any category, rewrite it.`;
+Before finalizing any section, read each sentence once as a commercial grower would. If its meaning is not clear on one read, it oversells, or it would fit any article in any category, rewrite it.`;
 
 /**
  * Phrases that should never appear in published GTD content.
@@ -113,101 +134,110 @@ export const BANNED_PHRASES: string[] = [
   "the secret to",
   "take it to the next level",
   "elevate your",
-  // Vague wellness language
-  "wellness journey",
-  "holistic lifestyle",
-  "total well-being",
+  // Grow-store cliches
+  "grow like a pro",
+  "take your grow to the next level",
+  "next-level harvest",
+  "massive yields",
+  "monster yields",
+  "bigger yields",
+  "explosive growth",
+  "bigger, better buds",
+  "fire buds",
+  "sticky icky",
+  "top-shelf results",
+  "bag appeal that sells itself",
+  "green rush",
+  "set it and forget it",
+  "cultivation superstore",
+  "sustainable living superstore",
+  "unbeatable prices",
+  "lowest price guaranteed",
 ];
 
 /**
- * Service and shipping claims GTD cannot support. Added Aug 3 2026 after an
- * audit found "White-Glove Delivery Included" hardcoded as the first bullet of
- * every product card sitewide, plus "Free Shipping Included" used as filler.
- * GTD does not offer white-glove delivery or assembly, and free shipping is
- * conditional on product class (not offered on freight items such as saunas).
- *
- * These are checked separately from BANNED_PHRASES because they are accuracy
- * problems, not voice problems: a hit here is a factual claim to correct, not a
- * stylistic tic. Bulk cleanup of published posts lives in lib/product-bullets.ts
- * and /api/maintenance/bullet-audit.
+ * Claims GTD cannot support. These are checked separately from BANNED_PHRASES
+ * because they are accuracy problems, not voice problems: a hit here is a
+ * factual claim to correct, not a stylistic tic. Each one traces to a line in
+ * the CLAIMS or CANNABIS AND COMPLIANCE blocks of WRITING_RULES.
  */
 export const UNSUPPORTED_CLAIMS: Array<{ pattern: RegExp; note: string }> = [
-  // Catalogue-scope claims. A brands roundup with four featured products
-  // from two vendors wrote "GTD currently carries Prism Fitness and PRx
-  // Performance" and "the brands available through Green Thumb Depot".
-  // The featured products are a selection from hundreds of vendors; the
-  // article may never describe them as the whole range.
+  // Catalogue scope. The featured products in an article are a selection from
+  // a far larger range; the article may never describe them as the whole range.
   { pattern: /\b(?:GTD|Green Thumb Depot|we)\s+(?:currently\s+)?(?:carr(?:y|ies)|stocks?|offers?|sells?)\s+(?:only\s+)?(?:two|three|four|2|3|4)?\s*(?:brands?|vendors?|manufacturers?)?\s*(?::|,)?\s*[A-Z][\w&.'-]*(?:\s+[A-Z][\w&.'-]*)*\s+and\s+[A-Z][\w&.'-]*/g, note: "names featured vendors as the brands GTD carries; the catalogue is far larger" },
   { pattern: /\b(?:the|all|every|only)\s+(?:[\w-]+\s+){0,4}(?:brands?|vendors?|models?|options?|manufacturers?)\s+(?:available|offered|sold|stocked|carried)\s+(?:through|by|at|from)\s+(?:GTD|Green Thumb Depot|us)\b/gi, note: "implies the featured products are the whole range" },
   { pattern: /\b(?:GTD|Green Thumb Depot)\s+(?:currently\s+)?(?:carries|stocks|offers)\s+(?:two|three|four|2|3|4)\s+(?:brands?|vendors?|manufacturers?)\b/gi, note: "counts featured vendors as the whole range" },
   { pattern: /\b(?:only|the two|both)\s+(?:brands?|vendors?)\s+(?:GTD|Green Thumb Depot|we)\s+(?:carr(?:y|ies)|stocks?|sells?)\b/gi, note: "implies the featured products are the whole range" },
-  { pattern: /white[\s-]?glove/gi, note: "GTD does not offer white-glove delivery or assembly" },
-  { pattern: /free\s+shipping/gi, note: "free shipping is conditional on product class, never a blanket claim" },
-  { pattern: /shipping\s+is\s+free/gi, note: "free shipping is conditional on product class" },
-  // Any mention of shipping cost, either polarity. "Shipping on freight items
-  // like saunas is not free" shipped in an FAQ after the model paraphrased the
-  // old rule text back at the reader.
+
+  // Shipping, tax and delivery. Handled at checkout, with brand and size exclusions.
+  { pattern: /free\s+shipping/gi, note: "shipping cost and free shipping are never discussed in an article" },
+  { pattern: /shipping\s+is\s+free/gi, note: "shipping cost and free shipping are never discussed in an article" },
   { pattern: /\bshipping\b[^.]{0,40}\b(?:free|cost|costs|fee|fees|charge|charges|price|budget)\b/gi, note: "shipping cost is never discussed in an article, either way" },
   { pattern: /\b(?:cost|costs|fee|fees|charge|charges|price)\b[^.]{0,20}\bshipping\b/gi, note: "shipping cost is never discussed in an article, either way" },
-  { pattern: /assembly\s+included/gi, note: "assembly is not included" },
-  { pattern: /includes?\s+(?:free\s+)?assembly/gi, note: "assembly is not included" },
+  { pattern: /\bsales\s+tax\b/gi, note: "sales tax is handled at checkout, not in an article" },
+  { pattern: /\b(?:ships?|shipped|delivered|arrives?|delivery)\s+(?:in|within)\s+\d+/gi, note: "delivery timeframes vary by brand and freight, do not state one" },
+
+  // Services GTD does not offer.
+  { pattern: /white[\s-]?glove/gi, note: "GTD does not offer white-glove delivery or installation" },
+  { pattern: /\b(?:inside\s+delivery|lift[\s-]?gate)\b/gi, note: "GTD does not promise inside delivery or lift-gate service" },
+  { pattern: /\b(?:free|includes?|included|complimentary)\s+(?:professional\s+)?(?:installation|set[\s-]?up|assembly)\b/gi, note: "installation, setup and assembly are not offered" },
+  { pattern: /\b(?:installation|assembly|set[\s-]?up)\s+(?:is\s+)?included\b/gi, note: "installation, setup and assembly are not offered" },
+
+  // Warranty, returns, financing, rebates.
   { pattern: /lifetime\s+warranty/gi, note: "warranty terms are set per manufacturer, verify before claiming" },
+  { pattern: /\b\d+[\s-]day\s+(?:returns?|return\s+policy|money[\s-]back)\b/gi, note: "return windows are not stated in articles, link to the policy" },
+  { pattern: /\brestocking\s+fees?\b/gi, note: "restocking terms are not stated in articles, link to the policy" },
+  { pattern: /\b0%\s+(?:apr|interest|financing)\b/gi, note: "financing terms are not confirmed for articles" },
+  { pattern: /\b(?:guaranteed|instant|easy)\s+approval\b/gi, note: "financing approval is never promised" },
+  { pattern: /\bup\s+to\s+\$?500,?000\b/gi, note: "commercial financing amounts are not confirmed, do not state them" },
+  { pattern: /\brebates?\s+(?:of\s+)?up\s+to\b|\b\d+%\s+rebates?\b/gi, note: "rebate percentages and eligibility are not confirmed, do not state them" },
 
-  // ── AUTHORSHIP AND CREDENTIALS (added Aug 2026) ────────────────────────────
-  // Content is generated from manufacturer and product data. GTD's real
-  // authority is being an authorized dealer that sells, ships and installs this
-  // equipment. That is verifiable; invented tenure, certifications and review
-  // processes are not. Patterns are written to leave the approved service
-  // bullets ("Ongoing Expert Phone Support", "Expert US-Based Support") and
-  // genuine product certifications (ETL, UL, CSA) alone.
-  { pattern: /\b\d+\+?\s*years?\s+(?:of\s+)?(?:experience|expertise|in\s+the\s+(?:industry|business|field))\b/gi, note: "years-of-experience figures are not evidenced, do not claim them" },
-  { pattern: /\b(?:decades?|generations?)\s+of\s+(?:experience|expertise)\b/gi, note: "vague long-tenure claims are not evidenced" },
-  { pattern: /\bmedically\s+reviewed\b/gi, note: "GTD does not run a medical review process" },
+  // Price claims. Only a pre-purchase price match exists.
+  { pattern: /\b(?:lowest|best|unbeatable|cheapest)\s+prices?\b/gi, note: "price superlative; only a pre-purchase price match exists" },
+  { pattern: /\bprice\s+guarantee\b|\bguaranteed\s+lowest\b/gi, note: "price guarantee; only a pre-purchase price match exists" },
+  { pattern: /#1\s+(?:source|store|supplier|retailer|choice|rated|destination)\b/gi, note: "unevidenced #1 claim" },
+  { pattern: /\brated\s+\d(?:\.\d)?\s*(?:\/|out\s+of)\s*5\b/gi, note: "GTD's review rating is never stated" },
+
+  // Authorship, tenure and credentials. The only allowed tenure wording is the
+  // site's own, "over 10 years of experience".
+  { pattern: /\b(?!10\s+years\s+of\s+experience)\d+\+?\s*years?\s+(?:of\s+)?(?:experience|expertise|in\s+the\s+(?:industry|business|field))\b/gi, note: "the only allowed tenure wording is \"over 10 years of experience\"" },
+  { pattern: /\b(?:decades?|generations?)\s+of\s+(?:experience|expertise)\b/gi, note: "inflated tenure claim" },
+  { pattern: /\b(?:lab[\s-]tested\s+by\s+us|we(?:'ve|\s+have)?\s+tested|tested\s+in\s+our|our\s+grow\s+(?:team|room)|grower[\s-]approved)\b/gi, note: "no in-house testing or grow team is documented" },
   { pattern: /\breviewed\s+by\s+(?:our|a|an)\b/gi, note: "no named reviewer process exists, do not imply one" },
-  { pattern: /\bclinically\s+(?:proven|validated|tested)\b/gi, note: "clinical efficacy claims require cited evidence, never assert them" },
-  { pattern: /\b(?:doctor|physician|dentist)[\s-]?(?:recommended|approved|endorsed)\b/gi, note: "no practitioner endorsement exists" },
-  { pattern: /\bboard[\s-]certified\b/gi, note: "no board certification exists" },
-  { pattern: /\bour\s+(?:certified|licensed|accredited|board[\s-]certified)\b/gi, note: "GTD staff hold no certifications we can evidence" },
-  { pattern: /\bour\s+(?:team\s+of\s+)?experts?\b/gi, note: "do not assert in-house expert staff, say what is true: authorized dealer, we sell and install it" },
-  { pattern: /\bcertified\s+(?:sauna|wellness|fitness|recovery|health)\s+(?:expert|specialist|professional|coach)\b/gi, note: "invented practitioner credential" },
+  { pattern: /\bour\s+(?:certified|licensed|accredited)\b/gi, note: "GTD staff hold no certifications we can evidence" },
+  { pattern: /\bour\s+(?:team\s+of\s+)?experts?\b/gi, note: "do not assert in-house expert staff; say what is true: authorized dealer, free consult for professional growers" },
   { pattern: /\b(?:industry[\s-]leading\s+expertise|unrivalled\s+expertise|unmatched\s+expertise)\b/gi, note: "unevidenced expertise superlative" },
+  { pattern: /\b(?:GTD|Green Thumb Depot|we)\s+(?:is|are)\s+(?:based|located|headquartered)\s+in\b/gi, note: "never state a city or state for GTD; say US company and link to the contact page" },
 
-  // ── HEALTH EFFICACY (added Aug 21 2026) ────────────────────────────────────
-  // GTD sells equipment. It is not a supplement company and not a clinic, and a
-  // bald health claim on a page with a buy button is the kind an FTC action is
-  // built on. Two decks shipped before this existed: "builds mental toughness,
-  // boosts immunity, and transforms your body from the inside out" and "your
-  // body's fat-burning furnace".
-  //
-  // Deliberately narrow. These target MARKETING VERBS attached to a health
-  // outcome, not physiological discussion. "Research on cold water immersion
-  // documents norepinephrine increases" is fine and must stay fine; "boosts
-  // immunity" is not. Note that "anti-aging" is absent on purpose — GTD has a
-  // published article using it in the title, so it is house vocabulary.
-  { pattern: /\b(?:boosts?|boosting|strengthens?|supercharges?|supercharging)\s+(?:your\s+)?immun(?:ity|e\s+system|e\s+function)\b/gi, note: "immunity claims are not evidenced and are FTC-sensitive on a sales page" },
-  { pattern: /\bimmune[\s-]boosting\b/gi, note: "immunity claim, not evidenced" },
-  { pattern: /\b(?:cures?|curing)\s+(?:your\s+)?(?:disease|illness|depression|anxiety|arthritis|insomnia)\b/gi, note: "disease-cure claim, never make one" },
-  { pattern: /\bprevents?\s+(?:disease|illness|cancer|infection)\b/gi, note: "disease-prevention claim, never make one" },
-  { pattern: /\bdetox(?:es|ify|ifies|ifying|ification)?\b/gi, note: "detox has no defined physiological meaning, do not use it" },
-  { pattern: /\b(?:flush(?:es|ing)?|remov(?:e|es|ing)|eliminat(?:e|es|ing))\s+toxins\b/gi, note: "toxin-removal claim, not evidenced" },
-  { pattern: /\b(?:burns?|burning|melts?|melting|torches?|torching|blasts?)\s+(?:body\s+)?fat\b/gi, note: "fat-loss claim in marketing voice, describe the mechanism instead" },
-  // "fat-burning" as a compound adjective, which the verb pattern above misses
-  // because the noun precedes the verb: "your body's fat-burning brown adipose
-  // tissue" slipped through a deck. Thermogenesis is a real mechanism and the
-  // article should describe it; "fat-burning" is how a supplement label says it.
-  { pattern: /\bfat[\s-]burning\b/gi, note: "compound-adjective fat-loss claim, describe thermogenesis plainly" },
-  { pattern: /\bcalorie[\s-]burning\s+furnace\b/gi, note: "hype, describe thermogenesis plainly" },
-  { pattern: /\btorch(?:es|ing)?\s+calories\b/gi, note: "fat-loss claim in marketing voice" },
-  { pattern: /\btransforms?\s+your\s+(?:body|life|health|metabolism|physiology)\b/gi, note: "unfalsifiable transformation claim" },
+  // Yield, potency and quality outcomes.
+  { pattern: /\b(?:guaranteed?|bigger|massive|monster|explosive|doubles?|triples?)\s+(?:your\s+)?yields?\b/gi, note: "yield promise; describe what the equipment does and what affects the result" },
+  { pattern: /\b(?:boosts?|increases?|maximi[sz]es?|improves?)\s+(?:your\s+)?(?:yields?|potency|thc|terpenes?|terpene\s+levels?)\b/gi, note: "yield, potency or terpene outcome promised" },
+  { pattern: /\bmore\s+potent\b/gi, note: "potency outcome promised" },
+  { pattern: /\b(?:preserves?|retains?|keeps?)\s+100%\b/gi, note: "absolute preservation claim" },
+  { pattern: /\bgrams?\s+per\s+watt\b/gi, note: "grams-per-watt is a yield promise, do not use it" },
+  { pattern: /\bguaranteed\s+(?:results|harvest|quality)\b/gi, note: "outcome guarantee, never make one" },
   { pattern: /\bscientifically\s+proven\b/gi, note: "say what the research shows, never assert proof" },
-  { pattern: /\bguaranteed\s+(?:results|weight\s+loss|recovery)\b/gi, note: "outcome guarantee, never make one" },
+
+  // Cannabis, medical and legal.
+  { pattern: /\b(?:treats?|cures?|relieves?|heals?|fights?)\s+(?:anxiety|pain|chronic\s+pain|insomnia|depression|cancer|epilepsy|seizures|nausea|inflammation|arthritis|ptsd)\b/gi, note: "medical or therapeutic claim about cannabis, never make one" },
+  { pattern: /\b(?:medical|medicinal|therapeutic|health)\s+benefits\s+of\s+(?:cannabis|marijuana|weed|thc|cbd|rosin|hash)\b/gi, note: "medical or therapeutic claim about cannabis" },
+  { pattern: /\bclinically\s+(?:proven|validated|tested)\b/gi, note: "clinical efficacy claims require cited evidence, never assert them" },
+  { pattern: /\b(?:doctor|physician)[\s-]?(?:recommended|approved|endorsed)\b/gi, note: "no practitioner endorsement exists" },
+  { pattern: /\blegal\s+(?:everywhere|nationwide|in\s+all\s+(?:50\s+)?states|in\s+every\s+state)\b/gi, note: "cannabis legality varies by state; never imply it is universal" },
+  { pattern: /\b(?:100%|completely|fully|perfectly)\s+legal\b/gi, note: "never give a blanket legality statement; tell the reader to check state rules" },
+  { pattern: /\b(?:diy|home|homemade|at[\s-]home)\s+(?:bho|butane|propane|hydrocarbon|solvent|ethanol|co2)\s+(?:extraction|extracts?|hash\s+oil)\b/gi, note: "home or DIY solvent extraction instructions are never given" },
+  { pattern: /\bopen[\s-]blast(?:ing)?\b/gi, note: "open blasting is unsafe and unlicensed; never describe it as a method" },
+  { pattern: /\b(?:guaranteed|completely|100%)\s+(?:food[\s-])?safe\b/gi, note: "no food-safety guarantee for freeze-dried food" },
 ];
 
 /** Forbidden names mapped to their canonical replacements. */
 export const NAMING_VIOLATIONS: Array<{ pattern: RegExp; correct: string }> = [
-  { pattern: /float\s+tanks?/gi, correct: "Sensory Deprivation Tanks" },
-  // "massage chairs" rule removed July 6 2026 — massage sub-collections
-  // (massage-chairs, massage-guns, etc.) now exist; the term is correct usage.
+  { pattern: /\brosin\s+machines?\b/gi, correct: "rosin press" },
+  { pattern: /\bpre\s+rolls?\b|\bprerolls?\b/gi, correct: "pre-roll" },
+  { pattern: /\bganja\b/gi, correct: "cannabis" },
+  { pattern: /\bdank\b/gi, correct: "cannabis (or cut the word)" },
+  { pattern: /\bnug\s+smasher\b/gi, correct: "NugSmasher" },
+  { pattern: /\bharvestright\b/gi, correct: "Harvest Right" },
 ];
 
 export interface BrandCheckResult {
@@ -241,58 +271,22 @@ function toText(html: string): string {
  * @param expectFaq   When true, validates the FAQ has exactly 8 questions
  */
 /**
- * Brands GTD does NOT carry, across every category it writes about. Added Aug 20
- * 2026 after a generated FAQ told readers to buy "a brand like Plunge, Ice Barrel,
- * or Edge Theory Labs" on GTD's own article. The model reaches for the names it
- * has seen most often online, which are the DTC brands with the biggest ad spend,
- * so a prompt rule alone does not hold.
+ * Brands GTD does NOT carry. The model reaches for the names it has seen most
+ * often online, so a prompt rule alone does not hold.
  *
- * This list is a SEED, not the guard. A hand-typed list can only ever cover the
- * categories someone was testing on the day it was written (the first version was
- * fifteen cold plunge and sauna brands and caught nothing on a treadmill article).
- * The structural check in findUnknownBrands() is what generalises: it looks for
- * the "brands like X, Y or Z" construction and flags any proper noun in it that is
- * not a vendor in the product data for the article. Keep this list short and
- * distinctive; it exists for bare mentions outside that construction.
+ * This list is a SEED, not the guard, and it starts EMPTY on purpose. The
+ * structural check in findUnknownBrands() is what generalises: it looks for
+ * the "brands like X, Y or Z" construction and flags any proper noun in it
+ * that is not a vendor in the product data for the article.
  *
- * Bare "Plunge" is a common noun on this site, so it is matched only in an
- * explicit brand-list context.
+ * Do not add a brand here until it has been checked against the Shopify vendor
+ * list AND the Brands page (https://greenthumbdepot.com/pages/brands). GTD
+ * carries about 190 brands, including several that competitors are known for
+ * (Mars Hydro, Vipar Spectra, Gavita, Fluence), so a well-known name is not
+ * evidence that GTD does not stock it. Unverified candidates from the voice
+ * doc: Gorilla Grow Tent, HLG, Athena, Lumatek, Rosin Tech.
  */
 export const UNCARRIED_BRANDS: Array<{ pattern: RegExp; note: string }> = [
-  // Cold plunge
-  { pattern: /\bIce\s?Barrel\b/gi,            note: "competitor, GTD does not carry it" },
-  { pattern: /\bEdge\s+Theory(\s+Labs)?\b/gi,  note: "competitor, GTD does not carry it" },
-  { pattern: /\bRenu\s+Therapy\b/gi,          note: "competitor, GTD does not carry it" },
-  { pattern: /\bBlue\s?Cube\b/gi,             note: "competitor, GTD does not carry it" },
-  { pattern: /\bMorozko(\s+Forge)?\b/gi,       note: "competitor, GTD does not carry it" },
-  { pattern: /\bPolar\s+Monkeys\b/gi,         note: "competitor, GTD does not carry it" },
-  { pattern: /\bPenguin\s+Chillers?\b/gi,      note: "competitor, GTD does not carry it" },
-  { pattern: /\bCold\s+Stoic\b/gi,            note: "competitor, GTD does not carry it" },
-  { pattern: /\bPlungeAll\b/gi,               note: "competitor, GTD does not carry it" },
-  // Sauna and light
-  { pattern: /\bSun\s?Home\s+Saunas?\b/gi,    note: "competitor, GTD does not carry it" },
-  { pattern: /\bClearlight\b/gi,              note: "competitor, GTD does not carry it" },
-  { pattern: /\bSunlighten\b/gi,              note: "competitor, GTD does not carry it" },
-  { pattern: /\bHigherDOSE\b/gi,              note: "competitor, GTD does not carry it" },
-  { pattern: /\bTherasage\b/gi,               note: "competitor, GTD does not carry it" },
-  { pattern: /\bJoovv\b/gi,                   note: "competitor, GTD does not carry it" },
-  { pattern: /\bMito\s?Red\b/gi,             note: "competitor, GTD does not carry it" },
-  // Recovery and massage
-  { pattern: /\bTheragun\b/gi,                note: "competitor, GTD does not carry it" },
-  { pattern: /\bTherabody\b/gi,               note: "competitor, GTD does not carry it" },
-  { pattern: /\bHyperice\b/gi,                note: "competitor, GTD does not carry it" },
-  { pattern: /\bHypervolt\b/gi,               note: "competitor, GTD does not carry it" },
-  { pattern: /\bNormatec\b/gi,                note: "competitor, GTD does not carry it" },
-  // Fitness
-  { pattern: /\bPeloton\b/gi,                 note: "competitor, GTD does not carry it" },
-  { pattern: /\bNordicTrack\b/gi,             note: "competitor, GTD does not carry it" },
-  { pattern: /\bBowflex\b/gi,                 note: "competitor, GTD does not carry it" },
-  { pattern: /\bRogue\s+Fitness\b/gi,        note: "competitor, GTD does not carry it" },
-  { pattern: /\bConcept\s?2\b/gi,            note: "competitor, GTD does not carry it" },
-  { pattern: /\bTonal\b/gi,                   note: "competitor, GTD does not carry it" },
-  { pattern: /\bHydrow\b/gi,                  note: "competitor, GTD does not carry it" },
-  // Bare "Plunge" as a brand, only inside an explicit list of brands.
-  { pattern: /brands?\s+(?:like|such\s+as)[^.]{0,80}\bPlunge\b/gi, note: "\u201cPlunge\u201d here reads as the competitor brand, not the product category" },
 ];
 
 /**
@@ -302,7 +296,7 @@ export const UNCARRIED_BRANDS: Array<{ pattern: RegExp; note: string }> = [
  * can never be.
  */
 const BRAND_LIST_CONSTRUCTION =
-  /\b(?:brands?|makers?|manufacturers?|companies|names?|models?|units?|options?|those|others?|some|many|ones?|products?|chambers?|saunas?|machines?)\s+(?:like|such\s+as|including|from|by)\s+(?:those\s+(?:from|by)\s+)?([^.;:!?\n]{0,140})/gi;
+  /\b(?:brands?|makers?|manufacturers?|companies|names?|models?|units?|options?|those|others?|some|many|ones?|products?|trimmers?|presses|lights?|machines?)\s+(?:like|such\s+as|including|from|by)\s+(?:those\s+(?:from|by)\s+)?([^.;:!?\n]{0,140})/gi;
 
 /**
  * Capitalised words that are not brands. Sentence-initial words are not a
@@ -310,13 +304,15 @@ const BRAND_LIST_CONSTRUCTION =
  * product categories and GTD's own names all show up capitalised mid-sentence.
  */
 const NOT_A_BRAND = new Set([
-  "gtd", "peak", "primal", "wellness", "us", "usa", "uk", "eu", "hsa", "fsa", "led", "emf",
-  "uv", "ata", "ir", "fir", "kw", "btu", "etl", "ul", "csa", "fda", "nih", "cdc", "the", "a", "an",
+  "gtd", "green", "thumb", "depot", "us", "usa", "uk", "eu", "led", "hps", "cmh", "uv", "ir",
+  "ppfd", "ppf", "par", "dli", "vpd", "ec", "ph", "tds", "co2", "thc", "cbd", "hvac", "cea",
+  "dwc", "rdwc", "nft", "psi", "gph", "cfm", "kw", "btu", "etl", "ul", "csa", "dlc", "fda",
+  "usda", "epa", "osha", "the", "a", "an",
   "and", "or", "of", "for", "with", "in", "on", "at", "to", "from", "by", "i", "your", "our",
   "january", "february", "march", "april", "may", "june", "july", "august", "september",
   "october", "november", "december", "monday", "tuesday", "wednesday", "thursday", "friday",
-  "saturday", "sunday", "american", "european", "canadian", "finnish", "japanese", "chinese",
-  "german", "italian", "cedar", "hemlock", "thermowood", "spruce", "aspen", "nordic",
+  "saturday", "sunday", "american", "european", "canadian", "dutch", "japanese", "chinese",
+  "german", "italian", "indica", "sativa", "cannabis", "hemp",
 ]);
 
 /** Lowercased, trimmed, punctuation stripped. */
@@ -330,8 +326,8 @@ function normBrand(s: string): string {
  * Proper-noun runs inside a brand-list construction that do not match any known
  * vendor. `known` should be the vendors from the article's product data plus
  * any brand named in the brief or title; a run matches if it equals a known
- * vendor, is a prefix of one, or is one word of a multi-word vendor ("Dynamic"
- * for "Dynamic Cold Plunge Therapy").
+ * vendor, is a prefix of one, or is one word of a multi-word vendor ("Current"
+ * for "Current Culture H2O").
  *
  * Returns the unknown names, deduplicated. Empty means clean.
  */
@@ -474,10 +470,10 @@ export const AI_TELLS: Array<{ pattern: RegExp; note: string }> = [
   { pattern: /\bnot because\b[^.]{1,80}\bbut because\b/gi, note: "staged reversal, state the reason directly" },
   { pattern: /\bThe (?:best|right|smartest) [^.]{1,60}\b(?:are|is) not\b[^.]{1,80}\. (?:They|It) (?:are|is)\b/g, note: "staged reversal, state the point directly" },
   // Uncounted majorities and invented experience
-  { pattern: /(?:^|[.!?]\s+)Most (?:people|buyers|shoppers|owners|users|customers|lifters|athletes|home gym owners|homeowners|beginners)\b/g, note: "uncounted majority claim" },
+  { pattern: /(?:^|[.!?]\s+)Most (?:people|buyers|shoppers|owners|users|customers|growers|cultivators|facilities|operators|home growers|beginners)\b/g, note: "uncounted majority claim" },
   { pattern: /\b(?:surprises|catches out|trips up) (?:people|buyers|most|many)\b/gi, note: "invented customer experience" },
   { pattern: /\bnobody (?:thinks|talks|plans|tells you)\b/gi, note: "invented customer experience" },
-  { pattern: /\b(?:in our experience|we see this|we(?:'ve| have) seen (?:this|it|many|plenty)|customers (?:often |always )?tell us|we hear from)\b/gi, note: "invented experience" },
+  { pattern: /\b(?:in our experience|we see this|we(?:'ve| have) seen (?:this|it|many|plenty)|customers (?:often |always )?tell us|we hear from|in our grow room|we(?:'ve| have) run this)\b/gi, note: "invented experience" },
   // Vague attribution
   { pattern: /\b(?:research|studies|science|experts?|the literature|exercise science)\s+(?:on [^.,;]{1,60}?\s+)?(?:consistently |generally |clearly |repeatedly )?(?:shows?|finds?|suggests?|says?|agrees?|confirms?|indicates?)\b/gi, note: "vague attribution, state the finding or cut it" },
   { pattern: /\bstudies (?:have )?(?:shown|documented|found|demonstrated)\b/gi, note: "vague attribution, state the finding or cut it" },
