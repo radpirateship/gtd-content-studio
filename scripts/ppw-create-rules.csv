@@ -1,0 +1,44 @@
+slug,rule_summary,notes
+airex,ALL: VENDOR EQUALS Airex,Brand page: vendor rule per house convention.
+game-ready,ALL: VENDOR EQUALS Game Ready,Brand page: vendor rule per house convention.
+spirit,ALL: VENDOR EQUALS Spirit,Brand page: vendor rule per house convention.
+heat-therapy,ALL: TYPE EQUALS Clinical Equipment,"Type-first per house convention. Tag filter to add on review: heat therapy. CAUTION: the 19 tagged products span types (Clinical Equipment 9, Recovery 9, Compression 1), so type+tag will exclude some; review membership."
+cold-compression-wrap,ALL: TYPE EQUALS Accessories,Type-first per house convention. Tag filter to add on review: cold compression wrap.
+cold-compression-sleeve,ALL: TYPE EQUALS Accessories,Type-first per house convention. Tag filter to add on review: cold compression sleeve.
+kinvent,ALL: VENDOR EQUALS Kinvent,Brand page: vendor rule per house convention.
+intelect,ALL: VENDOR EQUALS Intelect,Brand page: vendor rule per house convention.
+microfet,ALL: VENDOR EQUALS MicroFET,Brand page: vendor rule per house convention.
+balance-pad,ALL: TYPE EQUALS Balance Equipment,Type-first per house convention. Tag filter to add on review: balance pad.
+resistance-bands,ALL: TYPE EQUALS Strength Equipment,Type-first per house convention. Tag filter to add on review: Resistance Bands.
+therapy-cushion,ALL: TYPE EQUALS Accessories,Type-first per house convention. Tag filter to add on review: therapy cushion.
+cervical-traction,ALL: TYPE EQUALS Clinical Equipment,Type-first per house convention. Tag filter to add on review: cervical traction.
+lift-assist,ALL: TYPE EQUALS Mobility Aids,Type-first per house convention. Tag filter to add on review: lift-assist.
+cold-therapy,ALL: TYPE EQUALS Recovery,"Type-first per house convention. Tag filter to add on review: cold therapy. CAUTION: the 4 tagged products span types (Recovery 2, Clinical Equipment 2), so type+tag will exclude some; review membership."
+ergofet,ALL: VENDOR EQUALS ErgoFET,Brand page: vendor rule per house convention.
+feather,ALL: VENDOR EQUALS Feather,Brand page: vendor rule per house convention.
+balance-beam,ALL: TYPE EQUALS Balance Equipment,Type-first per house convention. Tag filter to add on review: balance beam.
+lumbar-traction,ALL: TYPE EQUALS Clinical Equipment,Type-first per house convention. Tag filter to add on review: lumbar traction.
+cold-compression,ALL: TYPE EQUALS Compression,Type-first per house convention. Tag filter to add on review: Cold Compression.
+journey,ALL: VENDOR EQUALS Journey,Brand page: vendor rule per house convention.
+lafayette,ALL: VENDOR EQUALS Lafayette,Brand page: vendor rule per house convention.
+saunders,ALL: VENDOR EQUALS Saunders,Brand page: vendor rule per house convention.
+vitalstim,ALL: VENDOR EQUALS VitalStim,Brand page: vendor rule per house convention.
+amrex,ALL: VENDOR EQUALS Amrex,Brand page: vendor rule per house convention.
+comfortrac,ALL: VENDOR EQUALS ComforTrac,Brand page: vendor rule per house convention.
+diowave,ALL: VENDOR EQUALS Diowave,Brand page: vendor rule per house convention.
+heartsmart,ALL: VENDOR EQUALS Heartsmart,Brand page: vendor rule per house convention.
+liftup,ALL: VENDOR EQUALS Liftup,Brand page: vendor rule per house convention.
+obi,ALL: VENDOR EQUALS Obi,Brand page: vendor rule per house convention.
+upwalker,ALL: VENDOR EQUALS UPWalker,Brand page: vendor rule per house convention.
+activebody,ALL: VENDOR EQUALS Activebody,Brand page: vendor rule per house convention.
+cando,ALL: VENDOR EQUALS CanDo,Brand page: vendor rule per house convention.
+core-stix,ALL: VENDOR EQUALS Core Stix,Brand page: vendor rule per house convention.
+dynatronics,ALL: VENDOR EQUALS Dynatronics,Brand page: vendor rule per house convention.
+ekho,ALL: VENDOR EQUALS Ekho,Brand page: vendor rule per house convention.
+helix,ALL: VENDOR EQUALS Helix,Brand page: vendor rule per house convention.
+joerns-healthcare,ALL: VENDOR EQUALS Joerns Healthcare,Brand page: vendor rule per house convention.
+liveband-bfr,ALL: VENDOR EQUALS LiveBand BFR,Brand page: vendor rule per house convention.
+shuttle,ALL: VENDOR EQUALS Shuttle,Brand page: vendor rule per house convention.
+trueform,ALL: VENDOR EQUALS Trueform,Brand page: vendor rule per house convention.
+web-slide,ALL: VENDOR EQUALS Web-Slide,Brand page: vendor rule per house convention.
+wheeleez,ALL: VENDOR EQUALS Wheeleez,Brand page: vendor rule per house convention.

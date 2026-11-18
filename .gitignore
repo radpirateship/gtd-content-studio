@@ -1,0 +1,17 @@
+# v0 runtime files (should only exist in preview, not in git)
+__v0_runtime_loader.js
+__v0_devtools.tsx
+__v0_jsx-dev-runtime.ts
+
+# Common ignores
+node_modules/
+.next/
+.env*.local
+.DS_Store
+.vercel
+
+# build artifacts
+tsconfig.tsbuildinfo
+
+# let Vercel resolve deps fresh (matches original repo; avoids cross-platform sharp lockfile issue)
+package-lock.json
