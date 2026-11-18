@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "JWT not yet valid" }, { status: 401 });
     }
 
-    // dest claim is the shop origin (e.g. "https://peakprimalwellnessllc.myshopify.com")
+    // dest claim is the shop origin (e.g. "https://green-thumb-depot.myshopify.com")
     const dest: string | undefined = payload.dest;
     if (!dest) {
       return NextResponse.json({ error: "JWT missing dest claim" }, { status: 401 });

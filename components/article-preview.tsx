@@ -104,7 +104,7 @@ import { CATEGORY_LABELS } from '@/lib/types'
     try {
       await navigator.clipboard.writeText(article.htmlContent || '')
       setCopiedForShopify(true)
-      window.open('https://peakprimalwellnessllc.myshopify.com/admin/articles/new', '_blank')
+      window.open('https://green-thumb-depot.myshopify.com/admin/articles/new', '_blank')
       setTimeout(() => setCopiedForShopify(false), 5000)
     } catch {
       const textarea = document.createElement('textarea')
@@ -114,7 +114,7 @@ import { CATEGORY_LABELS } from '@/lib/types'
       document.execCommand('copy')
       document.body.removeChild(textarea)
       setCopiedForShopify(true)
-      window.open('https://peakprimalwellnessllc.myshopify.com/admin/articles/new', '_blank')
+      window.open('https://green-thumb-depot.myshopify.com/admin/articles/new', '_blank')
       setTimeout(() => setCopiedForShopify(false), 5000)
     }
   }

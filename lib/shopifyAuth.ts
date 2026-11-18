@@ -9,7 +9,7 @@
  * Tokens from the authorization code flow are permanent (don't expire).
  */
 
-export const SHOPIFY_ADMIN_DOMAIN = "peakprimalwellnessllc.myshopify.com";
+export const SHOPIFY_ADMIN_DOMAIN = "green-thumb-depot.myshopify.com";
 
 /**
  * Get the Shopify Admin API access token.

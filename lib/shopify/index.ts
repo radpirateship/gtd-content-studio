@@ -4,7 +4,7 @@ import { DEFAULT_PAGE_SIZE, DEFAULT_SORT_KEY } from "./constants";
 import { CATEGORY_TO_COLLECTION } from "@/lib/collections";
 
 const SHOPIFY_API_VERSION = "2024-01";
-const HARDCODED_DOMAIN = "peakprimalwellnessllc.myshopify.com";
+const HARDCODED_DOMAIN = "green-thumb-depot.myshopify.com";
 
 // Read ALL Shopify config lazily at request time (not module load)
 function getShopifyConfig() {
