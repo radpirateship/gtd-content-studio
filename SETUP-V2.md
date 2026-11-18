@@ -1,19 +1,19 @@
-# PPW Content Studio v2 — Setup Checklist (for Ryan)
+# GTD Content Studio v2 — Setup Checklist (for Ryan)
 
-This is a fully separate repo from `ppw-content-studio`. The original app, its
+This is a fully separate repo from `gtd-content-studio`. The original app, its
 Vercel project, and its traffic are untouched and always available to go back to.
 
 ## One-time setup (~10 minutes)
 
 ### 1. Publish this repo to GitHub (2 clicks)
 - Open **GitHub Desktop** → File → **Add local repository** → choose
-  `Documents\GitHub\ppw-content-studio-v2`
+  `Documents\GitHub\gtd-content-studio-v2`
 - Click **Publish repository** — keep "Keep this code private" CHECKED ✔
 
 ### 2. Create the Vercel project
-- vercel.com → **Add New → Project** → Import `ppw-content-studio-v2`
+- vercel.com → **Add New → Project** → Import `gtd-content-studio-v2`
 - Before clicking Deploy, add Environment Variables (copy the values from the
-  ORIGINAL ppw-content-studio project → Settings → Environment Variables):
+  ORIGINAL gtd-content-studio project → Settings → Environment Variables):
   - `DATABASE_URL`
   - `SHOPIFY_ACCESS_TOKEN`
   - `ANTHROPIC_API_KEY`
@@ -29,7 +29,7 @@ Vercel project, and its traffic are untouched and always available to go back to
   connection string for v2, so v2 experiments can never touch production data.
 
 ### 4. Housekeeping
-- There is a broken half-created folder `GitHub\ppw-content-studio-v2` ONLY IF
+- There is a broken half-created folder `GitHub\gtd-content-studio-v2` ONLY IF
   this file is missing from it — if you're reading this inside that folder, it's fine.
 - The `v2-upgrade` branch on the ORIGINAL repo is now unused (we went with a
   separate repo instead). Safe to delete on GitHub, or leave it.
@@ -57,6 +57,6 @@ Vercel project, and its traffic are untouched and always available to go back to
   `app/api/collections/[slug]/route.ts` — currently hidden by
   `ignoreBuildErrors: true` in next.config.mjs. Cleanup scheduled for the
   UI overhaul phase.
-- See the audit docs in the "PPW Content Generator Vercel" folder for the full
+- See the audit docs in the "GTD Content Generator Vercel" folder for the full
   roadmap (Phases 2-5: CSV elimination, Shopify product sync with collection
   scoping, Content Refresh bulk rewrite, image upgrades, UI overhaul).

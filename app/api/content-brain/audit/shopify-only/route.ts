@@ -187,7 +187,7 @@ export async function POST(req: NextRequest) {
         shopify_id: a.id,
         title: a.title,
         handle: a.handle,
-        url: `https://peakprimalwellness.com/blogs/wellness/${a.handle}`,
+        url: `https://greenthumbdepot.com/blogs/guides/${a.handle}`,
         published_at: publishedAt ? publishedAt.toISOString().split('T')[0] : 'unknown',
         age_flag: isOld ? 'OLD (before cutoff)' : 'recent',
         word_count_approx: a.word_count_approx,

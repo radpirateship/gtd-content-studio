@@ -1,6 +1,6 @@
 // ============================================================================
 // PRODUCT-CARD BULLET AUDIT — parse, inventory and repair the feature bullets
-// inside .ppw-product-card blocks across published blog articles.
+// inside .gtd-product-card blocks across published blog articles.
 //
 // WHY THIS EXISTS
 // Product-card bullets were never product-specific. extractFeatures() in
@@ -9,7 +9,7 @@
 // and always appended "Ongoing Expert Phone Support" as the last, then padded
 // the middle with generic filler ("Free Shipping Included", "Expert US-Based
 // Support", ...) whenever the product matched fewer than two featureMap
-// patterns. PPW does not offer white-glove delivery/assembly, and free
+// patterns. GTD does not offer white-glove delivery/assembly, and free
 // shipping is conditional on product class (not offered on freight items such
 // as saunas), so both claims had to come out of every published post.
 //
@@ -60,7 +60,7 @@ export const REVIEW_PATTERNS: Array<{ pattern: RegExp; reason: string }> = [
   { pattern: /warrant/i, reason: "warranty term, verify against the manufacturer" },
   { pattern: /\bAPR\b|financed|financing/i, reason: "financing figures go stale" },
   { pattern: /^price:\s*\$|\$[\d,]+\s*(?:-|–)/i, reason: "hardcoded price drifts from Shopify" },
-  { pattern: /professional (?:installation|delivery|assembly)/i, reason: "service claim, confirm PPW offers it" },
+  { pattern: /professional (?:installation|delivery|assembly)/i, reason: "service claim, confirm GTD offers it" },
   { pattern: /guarantee/i, reason: "guarantee claim, confirm it exists" },
   { pattern: /\blifetime\b/i, reason: "lifetime claim, rarely accurate" },
 ];
@@ -76,7 +76,7 @@ export function reviewReasons(label: string): string[] {
 }
 
 /**
- * The single service bullet PPW keeps on a product card. Ryan's call, Aug 3 2026:
+ * The single service bullet GTD keeps on a product card. Ryan's call, Aug 3 2026:
  * two product-specific specs plus this one line. Everything else on a card must
  * describe the product.
  *
@@ -205,18 +205,18 @@ function detectGlyph(ulHtml: string): string {
 }
 
 /**
- * Locate every .ppw-product-card and parse its bullet list.
+ * Locate every .gtd-product-card and parse its bullet list.
  *
  * The card markup is generator-produced and stable: a card opens with
- * <div class="ppw-product-card" ...>, contains exactly one <ul> of <li> feature
- * bullets, and closes with <a class="ppw-cta" href="/products/<handle>">. We
+ * <div class="gtd-product-card" ...>, contains exactly one <ul> of <li> feature
+ * bullets, and closes with <a class="gtd-cta" href="/products/<handle>">. We
  * slice from each card start to the next card start (or the end of the enclosing
  * section) rather than trying to balance <div> tags, which is both simpler and
  * resilient to the nested image/price divs.
  */
 export function parseCards(html: string): ParsedCard[] {
   const cards: ParsedCard[] = [];
-  const cardRe = /<div[^>]*class="[^"]*\bppw-product-card\b[^"]*"[^>]*>/gi;
+  const cardRe = /<div[^>]*class="[^"]*\bgtd-product-card\b[^"]*"[^>]*>/gi;
 
   const starts: number[] = [];
   let m: RegExpExecArray | null;
@@ -245,7 +245,7 @@ export function parseCards(html: string): ParsedCard[] {
     if (bullets.length === 0) continue;
 
     const handle =
-      /<a[^>]*class="[^"]*\bppw-cta\b[^"]*"[^>]*href="[^"]*\/products\/([^"?#]+)/i.exec(chunk)?.[1] ??
+      /<a[^>]*class="[^"]*\bgtd-cta\b[^"]*"[^>]*href="[^"]*\/products\/([^"?#]+)/i.exec(chunk)?.[1] ??
       /href="[^"]*\/products\/([^"?#]+)/i.exec(chunk)?.[1] ??
       null;
 
@@ -764,7 +764,7 @@ export function swapCardProduct(
 
     // CTA label
     chunk = chunk.replace(
-      /(<a[^>]*class="[^"]*\bppw-cta\b[^"]*"[^>]*>)[\s\S]*?(<\/a>)/i,
+      /(<a[^>]*class="[^"]*\bgtd-cta\b[^"]*"[^>]*>)[\s\S]*?(<\/a>)/i,
       (_m, pre: string, post: string) => `${pre}View ${shortName(product.title)}${post}`
     );
 

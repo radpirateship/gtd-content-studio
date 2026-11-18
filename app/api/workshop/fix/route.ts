@@ -45,7 +45,7 @@ async function fixEmDashes(bodyHtml: string): Promise<{ html: string; fixedBlock
 
 ${offenders.map((o, i) => `${i + 1}. ${o}`).join("\n")}`;
     const raw = await callAI(
-      `You are a precise copy editor for Peak Primal Wellness.\n${WRITING_RULES}`,
+      `You are a precise copy editor for Green Thumb Depot.\n${WRITING_RULES}`,
       prompt,
       { maxTokens: 8000 }
     );
@@ -131,11 +131,11 @@ export async function POST(request: NextRequest) {
 }
 
 // ── Voice upgrade ────────────────────────────────────────────────────────────
-// Rewrites prose section-by-section to comply with PPW brand voice. Template
+// Rewrites prose section-by-section to comply with GTD brand voice. Template
 // blocks (FAQ, product cards, related articles, CTA) are never touched, and
 // any rewritten section that loses a link falls back to the original.
 
-const SKIP_SEGMENT = /ppw-faq|ppw-acc|featured-products|Continue Your Wellness|ppw-cta|ppw-card|application\/ld\+json/i;
+const SKIP_SEGMENT = /gtd-faq|gtd-acc|featured-products|Continue Your Wellness|gtd-cta|gtd-card|application\/ld\+json/i;
 
 function voicePenaltyScore(html: string): number {
   const v = validateBrandRules(html);
@@ -167,7 +167,7 @@ async function voiceUpgrade(bodyHtml: string): Promise<{ html: string; changed: 
     return { html: stripped, changed: stripped !== bodyHtml, message: "No prose sections to upgrade" };
   }
 
-  const system = `You are a senior copy editor at Peak Primal Wellness, a premium wellness equipment brand.
+  const system = `You are a senior copy editor at Green Thumb Depot, a premium wellness equipment brand.
 ${WRITING_RULES}
 
 BANNED PHRASES (remove/replace every occurrence): ${BANNED_PHRASES.join("; ")}`;

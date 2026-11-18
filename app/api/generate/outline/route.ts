@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const { title, keyword, category } = await request.json();
 
-    const systemPrompt = `You are an expert SEO content strategist for Peak Primal Wellness, specializing in wellness equipment content. Create detailed, SEO-optimized article outlines that will rank well and provide genuine value to readers interested in ${category}.`;
+    const systemPrompt = `You are an expert SEO content strategist for Green Thumb Depot, specializing in wellness equipment content. Create detailed, SEO-optimized article outlines that will rank well and provide genuine value to readers interested in ${category}.`;
 
     const userPrompt = `Create a detailed article outline for the following:
 

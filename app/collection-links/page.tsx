@@ -142,7 +142,7 @@ export default function CollectionLinksPage() {
         esc(r.handle), esc(r.title), esc(r.tags), String(r.inContentCount),
         esc(r.proposed.map((p) => `${p.handle} (${p.method})`).join(" | ")),
         r.hasBottomCta ? "yes" : "NO",
-        esc(`https://peakprimalwellness.com/blogs/${r.blogHandle}/${r.handle}`),
+        esc(`https://greenthumbdepot.com/blogs/${r.blogHandle}/${r.handle}`),
       ].join(","));
     }
     const blob = new Blob([lines.join("\n")], { type: "text/csv" });
@@ -273,7 +273,7 @@ export default function CollectionLinksPage() {
                     </td>
                     <td className="p-2 max-w-sm">
                       <a
-                        href={`https://peakprimalwellness.com/blogs/${r.blogHandle}/${r.handle}`}
+                        href={`https://greenthumbdepot.com/blogs/${r.blogHandle}/${r.handle}`}
                         target="_blank"
                         rel="noreferrer"
                         className="text-blue-600 hover:underline"

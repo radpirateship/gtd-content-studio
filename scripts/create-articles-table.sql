@@ -1,4 +1,4 @@
--- Create articles table for PPW Content Studio
+-- Create articles table for GTD Content Studio
 CREATE TABLE IF NOT EXISTS articles (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,

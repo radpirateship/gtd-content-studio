@@ -1,5 +1,5 @@
 // app/api/content-brain/migrate-v6/route.ts
-// Seeds the four sports collections into ppw_collections + ultimate_guide fields,
+// Seeds the four sports collections into gtd_collections + ultimate_guide fields,
 // and re-syncs all MASTER_COLLECTIONS into collections_registry so dropdowns
 // stay in sync.
 // Hit POST /api/content-brain/migrate-v6 once after deploying.
@@ -11,7 +11,7 @@ const SPORTS_COLLECTIONS = [
   {
     slug: 'lacrosse-equipment',
     label: 'Lacrosse Equipment',
-    url: 'https://peakprimalwellness.com/collections/lacrosse-equipment',
+    url: 'https://greenthumbdepot.com/collections/lacrosse-equipment',
     category: 'Fitness',
     primary_keyword: 'lacrosse training equipment',
     search_volume: 250,
@@ -21,7 +21,7 @@ const SPORTS_COLLECTIONS = [
   {
     slug: 'pickleball-paddles',
     label: 'Pickleball Paddles',
-    url: 'https://peakprimalwellness.com/collections/pickleball-paddles',
+    url: 'https://greenthumbdepot.com/collections/pickleball-paddles',
     category: 'Fitness',
     primary_keyword: 'pickleball paddle buying guide',
     search_volume: 100,
@@ -31,7 +31,7 @@ const SPORTS_COLLECTIONS = [
   {
     slug: 'reaction-training',
     label: 'Reaction Training',
-    url: 'https://peakprimalwellness.com/collections/reaction-training',
+    url: 'https://greenthumbdepot.com/collections/reaction-training',
     category: 'Fitness',
     primary_keyword: 'reaction time training',
     search_volume: 700,
@@ -41,7 +41,7 @@ const SPORTS_COLLECTIONS = [
   {
     slug: 'timing-systems',
     label: 'Timing Systems',
-    url: 'https://peakprimalwellness.com/collections/timing-systems',
+    url: 'https://greenthumbdepot.com/collections/timing-systems',
     category: 'Fitness',
     primary_keyword: 'timing gates',
     search_volume: 300,
@@ -51,7 +51,7 @@ const SPORTS_COLLECTIONS = [
   {
     slug: 'sauna-kits',
     label: 'Sauna Kits',
-    url: 'https://peakprimalwellness.com/collections/sauna-kits',
+    url: 'https://greenthumbdepot.com/collections/sauna-kits',
     category: 'Saunas',
     primary_keyword: 'sauna kits',
     search_volume: 0,
@@ -61,7 +61,7 @@ const SPORTS_COLLECTIONS = [
   {
     slug: 'emf-protection',
     label: 'EMF Protection',
-    url: 'https://peakprimalwellness.com/collections/emf-protection',
+    url: 'https://greenthumbdepot.com/collections/emf-protection',
     category: 'Wellness',
     primary_keyword: 'emf protection',
     search_volume: 0,
@@ -77,29 +77,29 @@ export async function POST() {
   try {
     // 1. Ensure ultimate_guide columns exist
     await sql`
-      ALTER TABLE ppw_collections
+      ALTER TABLE gtd_collections
         ADD COLUMN IF NOT EXISTS ultimate_guide_title TEXT,
         ADD COLUMN IF NOT EXISTS ultimate_guide_url   TEXT
     `
 
-    // 2. Upsert sports collections into ppw_collections
+    // 2. Upsert sports collections into gtd_collections
     for (const col of SPORTS_COLLECTIONS) {
       await sql`
-        INSERT INTO ppw_collections
+        INSERT INTO gtd_collections
           (slug, url, category, primary_keyword, search_volume,
            ultimate_guide_title, ultimate_guide_url)
         VALUES
           (${col.slug}, ${col.url}, ${col.category}, ${col.primary_keyword},
            ${col.search_volume}, ${col.ultimate_guide_title}, ${col.ultimate_guide_url})
         ON CONFLICT (slug) DO UPDATE SET
-          url                 = COALESCE(ppw_collections.url, EXCLUDED.url),
+          url                 = COALESCE(gtd_collections.url, EXCLUDED.url),
           category            = EXCLUDED.category,
-          primary_keyword     = COALESCE(ppw_collections.primary_keyword, EXCLUDED.primary_keyword),
-          search_volume       = COALESCE(ppw_collections.search_volume, EXCLUDED.search_volume),
-          ultimate_guide_title = COALESCE(ppw_collections.ultimate_guide_title, EXCLUDED.ultimate_guide_title),
-          ultimate_guide_url   = COALESCE(ppw_collections.ultimate_guide_url, EXCLUDED.ultimate_guide_url)
+          primary_keyword     = COALESCE(gtd_collections.primary_keyword, EXCLUDED.primary_keyword),
+          search_volume       = COALESCE(gtd_collections.search_volume, EXCLUDED.search_volume),
+          ultimate_guide_title = COALESCE(gtd_collections.ultimate_guide_title, EXCLUDED.ultimate_guide_title),
+          ultimate_guide_url   = COALESCE(gtd_collections.ultimate_guide_url, EXCLUDED.ultimate_guide_url)
       `
-      results.push(`upserted ppw_collections: ${col.slug}`)
+      results.push(`upserted gtd_collections: ${col.slug}`)
     }
 
     // 3. Sync all MASTER_COLLECTIONS into collections_registry

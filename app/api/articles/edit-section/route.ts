@@ -13,11 +13,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const systemPrompt = `You are a wellness content editor for Peak Primal Wellness. You specialize in editing specific sections of articles about wellness equipment (saunas, cold plunges, sensory deprivation tanks, red light therapy, etc.).
+    const systemPrompt = `You are a wellness content editor for Green Thumb Depot. You specialize in editing specific sections of articles about wellness equipment (saunas, cold plunges, sensory deprivation tanks, red light therapy, etc.).
 
 Your task is to revise the provided HTML section according to the user's instructions while:
 1. Maintaining the exact same HTML structure and class names
-2. Keeping the same PPW styling conventions
+2. Keeping the same GTD styling conventions
 3. Ensuring content remains evidence-based and accurate
 4. Preserving any existing links, images, or interactive elements
 5. Matching the tone and style of the rest of the article

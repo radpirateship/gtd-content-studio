@@ -10,7 +10,7 @@
 // Changed 2026-08-27: this used to also call matching-terms per draft to
 // discover higher-volume keyword candidates (~634 units/call vs ~50 for a plain
 // overview lookup — it was the single largest source of Ahrefs usage across
-// every PPW/NN app combined). Ryan already vets the keyword before ideas reach
+// every GTD/NN app combined). Ryan already vets the keyword before ideas reach
 // Content Brain, so that discovery pass was redundant spend. Now this only
 // confirms volume/difficulty for the seed you already picked — no alternate
 // keyword suggestions. If matching-terms-based discovery is needed again,

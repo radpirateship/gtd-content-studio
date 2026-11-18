@@ -56,7 +56,7 @@ export async function GET() {
     `) as unknown as Row[]
 
     const wb = new ExcelJS.Workbook()
-    wb.creator = 'PPW Content Brain'
+    wb.creator = 'GTD Content Brain'
     wb.created = new Date()
 
     // Summary sheet first — snapshot of state
@@ -174,7 +174,7 @@ export async function GET() {
     }
 
     const buffer = await wb.xlsx.writeBuffer()
-    const filename = `PPW_Topical_Authority_${new Date().toISOString().slice(0, 10)}.xlsx`
+    const filename = `GTD_Topical_Authority_${new Date().toISOString().slice(0, 10)}.xlsx`
     return new NextResponse(buffer as ArrayBuffer, {
       headers: {
         'Content-Type':

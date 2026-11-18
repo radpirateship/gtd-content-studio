@@ -1,4 +1,4 @@
-# PPW Content Studio — Bulk Upload CSV Guide
+# GTD Content Studio — Bulk Upload CSV Guide
 
 ## Quick Start
 
@@ -20,8 +20,8 @@ The CSV template has **13 columns**. Only the first 3 are required — the rest 
 | 12 | `metaDescription` | No | Auto-generated | Custom meta description for SEO |
 | 13 | `shopifySlug` | ⚡ Recommended | Auto-generated from title | Shopify blog URL slug |
 
-> ⚠️ **`shopifySlug` must include the `/blogs/wellness/` prefix.**
-> Correct: `/blogs/wellness/best-exercise-bike-for-home`
+> ⚠️ **`shopifySlug` must include the `/blogs/guides/` prefix.**
+> Correct: `/blogs/guides/best-exercise-bike-for-home`
 > Wrong: `best-exercise-bike-for-home`
 >
 > If omitted, the app auto-generates a slug from the title — which may not match your planned URL structure.
@@ -94,7 +94,7 @@ These must match exactly (case-insensitive matching is applied):
 
 ### `includeComparisonTable`
 
-Set to `true` for comparison and buyer's guide articles where a side-by-side product grid adds value. The AI will generate a PPW-styled comparison table within the article.
+Set to `true` for comparison and buyer's guide articles where a side-by-side product grid adds value. The AI will generate a GTD-styled comparison table within the article.
 
 ### `specialInstructions`
 
@@ -124,7 +124,7 @@ Custom meta description for SEO. If left blank, the app auto-generates one from 
 
 ### `shopifySlug`
 
-The URL handle for the Shopify blog post. **Must include the `/blogs/wellness/` prefix.** The app strips the prefix internally to get the bare handle for Shopify, but expects the full path in the CSV for consistency with the Topical Authority spreadsheets.
+The URL handle for the Shopify blog post. **Must include the `/blogs/guides/` prefix.** The app strips the prefix internally to get the bare handle for Shopify, but expects the full path in the CSV for consistency with the Topical Authority spreadsheets.
 
 If omitted, the app generates a slug from the article title using a basic regex (lowercase, hyphens for spaces). This often doesn't match the planned URL from your authority guide — always supply the slug from your spreadsheet.
 
@@ -141,7 +141,7 @@ If omitted, the app generates a slug from the article title using a basic regex 
 | Collection | `collection` | Required |
 | Title Tag | `titleTag` | Optional — auto-generated if blank |
 | Meta Description | `metaDescription` | Optional — quote if it contains commas |
-| URL / Existing URL | `shopifySlug` | Recommended — must include `/blogs/wellness/` prefix |
+| URL / Existing URL | `shopifySlug` | Recommended — must include `/blogs/guides/` prefix |
 
 ### Fields the App Handles Automatically
 
@@ -180,8 +180,8 @@ The app will use these defaults: articleType=auto, audience=general, tone=author
 
 ```csv
 title,keyword,collection,articleType,audience,tone,wordCount,includeComparisonTable,specialInstructions,priority,titleTag,metaDescription,shopifySlug
-"Best Infrared Saunas for Home Use 2025","best infrared saunas",Infrared Saunas,buyers-guide,first-time,authoritative,2500,true,,P1,Best Infrared Saunas for Home: Expert Picks,"Find the best infrared saunas for home use. Expert-tested picks compared by heat type, build quality, and value.",/blogs/wellness/best-infrared-saunas-for-home
-"Infrared Sauna vs Traditional: Complete Comparison","infrared vs traditional sauna",Infrared Saunas,comparison,general,comparison,2200,true,,P1,Infrared vs Traditional Sauna: Full Comparison,"Infrared sauna vs traditional sauna — which is better? We compare heat delivery, health benefits, and cost.",/blogs/wellness/infrared-sauna-vs-traditional
-"How to Choose Your First Cold Plunge","how to choose cold plunge",Cold Plunges,buyers-guide,first-time,educational,2000,false,"Address common concerns about cold shock",P2,How to Choose a Cold Plunge: Beginner's Guide,"Not sure which cold plunge to buy? This step-by-step guide covers temperature, size, and budget.",/blogs/wellness/how-to-choose-cold-plunge
-"Best Exercise Bikes for Home Use","best exercise bike for home",Exercise Bikes,listicle,general,conversational,2000,true,,P1,Best Exercise Bike for Home: Expert Picks,"Find the best exercise bike for home use. Expert-tested picks compared across resistance type, comfort, and durability.",/blogs/wellness/best-exercise-bike-for-home
+"Best Infrared Saunas for Home Use 2025","best infrared saunas",Infrared Saunas,buyers-guide,first-time,authoritative,2500,true,,P1,Best Infrared Saunas for Home: Expert Picks,"Find the best infrared saunas for home use. Expert-tested picks compared by heat type, build quality, and value.",/blogs/guides/best-infrared-saunas-for-home
+"Infrared Sauna vs Traditional: Complete Comparison","infrared vs traditional sauna",Infrared Saunas,comparison,general,comparison,2200,true,,P1,Infrared vs Traditional Sauna: Full Comparison,"Infrared sauna vs traditional sauna — which is better? We compare heat delivery, health benefits, and cost.",/blogs/guides/infrared-sauna-vs-traditional
+"How to Choose Your First Cold Plunge","how to choose cold plunge",Cold Plunges,buyers-guide,first-time,educational,2000,false,"Address common concerns about cold shock",P2,How to Choose a Cold Plunge: Beginner's Guide,"Not sure which cold plunge to buy? This step-by-step guide covers temperature, size, and budget.",/blogs/guides/how-to-choose-cold-plunge
+"Best Exercise Bikes for Home Use","best exercise bike for home",Exercise Bikes,listicle,general,conversational,2000,true,,P1,Best Exercise Bike for Home: Expert Picks,"Find the best exercise bike for home use. Expert-tested picks compared across resistance type, comfort, and durability.",/blogs/guides/best-exercise-bike-for-home
 ```

@@ -25,9 +25,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
 
-    const token = crypto.createHash("sha256").update(`ppw-v2:${sitePassword}`).digest("hex");
+    const token = crypto.createHash("sha256").update(`gtd-v2:${sitePassword}`).digest("hex");
     const response = NextResponse.json({ success: true });
-    response.cookies.set("ppw-auth", token, {
+    response.cookies.set("gtd-auth", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

@@ -1,5 +1,5 @@
 /**
- * PPW Tag Mapping – Single source of truth for Shopify article tags
+ * GTD Tag Mapping – Single source of truth for Shopify article tags
  * Maps collection slugs and articleType values to human-readable display tags
  */
 

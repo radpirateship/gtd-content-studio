@@ -53,14 +53,14 @@ interface ShopifySearchResult {
   has_faq?: boolean
 }
 
-// PPW collection slugs (single source of truth in lib/collections.ts)
-const PPW_CATEGORIES = COLLECTION_SLUGS
+// GTD collection slugs (single source of truth in lib/collections.ts)
+const GTD_CATEGORIES = COLLECTION_SLUGS
 
 export function RevampArticleView({ initialSource, onAnalysisComplete }: RevampArticleViewProps) {
   const [activeTab, setActiveTab] = useState<'paste' | 'shopify' | 'browse'>('paste')
   const [articleContent, setArticleContent] = useState('')
   const [citations, setCitations] = useState<Citation[]>([{ id: '1', url: '', title: '', notes: '' }])
-  const [category, setCategory] = useState(PPW_CATEGORIES[0])
+  const [category, setCategory] = useState(GTD_CATEGORIES[0])
   const [keyword, setKeyword] = useState('')
   const [tone, setTone] = useState('Educational')
   const [wordCount, setWordCount] = useState('2000')
@@ -196,7 +196,7 @@ export function RevampArticleView({ initialSource, onAnalysisComplete }: RevampA
           handle: data.handle || prev?.handle,
           shopifyId: data.legacy_id || prev?.shopifyId,
           title: data.title || prev?.title,
-          sourceUrl: prev?.sourceUrl || data.online_store_url || (data.handle ? `https://peakprimalwellness.com/blogs/${data.blog_handle || 'news'}/${data.handle}` : undefined),
+          sourceUrl: prev?.sourceUrl || data.online_store_url || (data.handle ? `https://greenthumbdepot.com/blogs/${data.blog_handle || 'news'}/${data.handle}` : undefined),
           publishedAt: data.published_at || prev?.publishedAt,
           author: data.author || prev?.author,
           trackingStatus: prev?.trackingStatus,
@@ -394,7 +394,7 @@ export function RevampArticleView({ initialSource, onAnalysisComplete }: RevampA
   useEffect(() => {
     if (!initialSource?.slug) return
 
-    setCategory(initialSource.category || PPW_CATEGORIES[0])
+    setCategory(initialSource.category || GTD_CATEGORIES[0])
     setKeyword(initialSource.keyword || initialSource.slug.replace(/-/g, ' '))
     setSourceContext({
       handle: initialSource.slug,
@@ -459,7 +459,7 @@ export function RevampArticleView({ initialSource, onAnalysisComplete }: RevampA
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-[11px] font-mono mb-1 hover:underline truncate max-w-full"
-              style={{ color: 'var(--ppw-accent)' }}
+              style={{ color: 'var(--gtd-accent)' }}
               title={sourceContext.sourceUrl}
             >
               {sourceContext.sourceUrl}
@@ -477,8 +477,8 @@ export function RevampArticleView({ initialSource, onAnalysisComplete }: RevampA
             onClick={() => setActiveTab('paste')}
             className="px-4 py-2.5 text-[12px] font-medium border-b-[2px] transition-all"
             style={{
-              color: activeTab === 'paste' ? 'var(--ppw-accent)' : 'var(--text3)',
-              borderBottomColor: activeTab === 'paste' ? 'var(--ppw-accent)' : 'transparent',
+              color: activeTab === 'paste' ? 'var(--gtd-accent)' : 'var(--text3)',
+              borderBottomColor: activeTab === 'paste' ? 'var(--gtd-accent)' : 'transparent',
             }}
           >
             Paste Content
@@ -487,8 +487,8 @@ export function RevampArticleView({ initialSource, onAnalysisComplete }: RevampA
             onClick={() => setActiveTab('shopify')}
             className="px-4 py-2.5 text-[12px] font-medium border-b-[2px] transition-all"
             style={{
-              color: activeTab === 'shopify' ? 'var(--ppw-accent)' : 'var(--text3)',
-              borderBottomColor: activeTab === 'shopify' ? 'var(--ppw-accent)' : 'transparent',
+              color: activeTab === 'shopify' ? 'var(--gtd-accent)' : 'var(--text3)',
+              borderBottomColor: activeTab === 'shopify' ? 'var(--gtd-accent)' : 'transparent',
             }}
           >
             Fetch from Shopify
@@ -502,8 +502,8 @@ export function RevampArticleView({ initialSource, onAnalysisComplete }: RevampA
             }}
             className="px-4 py-2.5 text-[12px] font-medium border-b-[2px] transition-all"
             style={{
-              color: activeTab === 'browse' ? 'var(--ppw-accent)' : 'var(--text3)',
-              borderBottomColor: activeTab === 'browse' ? 'var(--ppw-accent)' : 'transparent',
+              color: activeTab === 'browse' ? 'var(--gtd-accent)' : 'var(--text3)',
+              borderBottomColor: activeTab === 'browse' ? 'var(--gtd-accent)' : 'transparent',
             }}
           >
             Browse
@@ -557,7 +557,7 @@ export function RevampArticleView({ initialSource, onAnalysisComplete }: RevampA
                   </button>
                 </div>
                 <p className="mt-2 text-[11px]" style={{ color: 'var(--text4)' }}>
-                  Exact handles and full Peak Primal Wellness blog URLs fetch immediately. Broader queries return a result list to choose from.
+                  Exact handles and full Green Thumb Depot blog URLs fetch immediately. Broader queries return a result list to choose from.
                 </p>
               </div>
 
@@ -648,7 +648,7 @@ export function RevampArticleView({ initialSource, onAnalysisComplete }: RevampA
                   <div className="flex flex-col items-center justify-center py-4 text-center">
                     <Upload className="h-5 w-5 mb-2" style={{ color: 'var(--text3)' }} />
                     <div className="text-[13px] font-medium" style={{ color: 'var(--text2)' }}>
-                      {isUploadingCSV ? 'Uploading...' : 'Upload GSC data (ppw-blog-posts.csv)'}
+                      {isUploadingCSV ? 'Uploading...' : 'Upload GSC data (gtd-blog-posts.csv)'}
                     </div>
                     <div className="text-[11px] mt-0.5" style={{ color: 'var(--text3)' }}>
                       Click to browse
@@ -753,7 +753,7 @@ export function RevampArticleView({ initialSource, onAnalysisComplete }: RevampA
               className="w-full px-3 py-2 rounded-lg border text-[12px]"
               style={{ background: 'var(--bg)', borderColor: 'var(--border)', color: 'var(--text1)' }}
             >
-              {PPW_CATEGORIES.map(cat => (
+              {GTD_CATEGORIES.map(cat => (
                 <option key={cat} value={cat}>
                   {cat.replace(/-/g, ' ')}
                 </option>
@@ -866,7 +866,7 @@ export function RevampArticleView({ initialSource, onAnalysisComplete }: RevampA
               <button
                 onClick={addCitation}
                 className="flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded transition-all"
-                style={{ color: 'var(--ppw-accent)' }}
+                style={{ color: 'var(--gtd-accent)' }}
               >
                 <Plus className="h-3 w-3" />
                 Add

@@ -8,7 +8,7 @@
 //       { action: "validate-facts" }                check title/meta against the collection's live brands and prices; repair; re-apply row
 //       { action: "fix-lengths" }                  shorten title (>60) and meta (>158) in place; re-applies to the row if it was applied
 //       { action: "apply", toRow?: true, toShopify?: boolean }
-//           toRow: write primary_keyword, secondary_keywords, title_tag, meta_description to ppw_collections
+//           toRow: write primary_keyword, secondary_keywords, title_tag, meta_description to gtd_collections
 //           toShopify: write title_tag / description_tag metafields on the live collection
 import { type NextRequest, NextResponse } from "next/server";
 import { getSQL } from "@/lib/db";
@@ -75,7 +75,7 @@ export async function GET(_req: NextRequest, { params }: Ctx) {
     await ensureKeywordResearchTable(sql);
     const r = await load(sql, slug);
     if (!r) return NextResponse.json({ error: "No research for this collection" }, { status: 404 });
-    const col = ((await sql`SELECT slug, category, primary_keyword, secondary_keywords, title_tag, meta_description, product_count, notes, shopify_collection_id FROM ppw_collections WHERE slug = ${slug}`) as Array<Record<string, any>>)[0] || null;
+    const col = ((await sql`SELECT slug, category, primary_keyword, secondary_keywords, title_tag, meta_description, product_count, notes, shopify_collection_id FROM gtd_collections WHERE slug = ${slug}`) as Array<Record<string, any>>)[0] || null;
     let shopify: { id: number; title: string; title_tag: string | null; description_tag: string | null } | null = null;
     try {
       const live = await resolveCollectionId(slug);
@@ -113,7 +113,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
     await ensureKeywordResearchTable(sql);
     const r = await load(sql, slug);
     if (!r) return NextResponse.json({ error: "No research for this collection" }, { status: 404 });
-    const col = ((await sql`SELECT category, product_count, notes FROM ppw_collections WHERE slug = ${slug}`) as Array<Record<string, any>>)[0] || null;
+    const col = ((await sql`SELECT category, product_count, notes FROM gtd_collections WHERE slug = ${slug}`) as Array<Record<string, any>>)[0] || null;
 
     if (body.action === "fetch-ideas") {
       const seed = (body.seed || "").trim();
@@ -148,7 +148,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
       if (changed.length) {
         await sql`UPDATE collection_keyword_research SET recommendation = ${JSON.stringify(next)}::jsonb WHERE slug = ${slug}`;
         if (r.applied_row_at) {
-          await sql`UPDATE ppw_collections SET title_tag = ${next.title_tag}, meta_description = ${next.meta_description}, keywords_updated_at = NOW() WHERE slug = ${slug}`;
+          await sql`UPDATE gtd_collections SET title_tag = ${next.title_tag}, meta_description = ${next.meta_description}, keywords_updated_at = NOW() WHERE slug = ${slug}`;
           await sql`UPDATE collection_keyword_research SET applied_row_at = NOW() WHERE slug = ${slug}`;
         }
       }
@@ -252,7 +252,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
       if (changed) {
         await sql`UPDATE collection_keyword_research SET recommendation = ${JSON.stringify(next)}::jsonb WHERE slug = ${slug}`;
         if (r.applied_row_at) {
-          await sql`UPDATE ppw_collections SET meta_description = ${next.meta_description}, keywords_updated_at = NOW() WHERE slug = ${slug}`;
+          await sql`UPDATE gtd_collections SET meta_description = ${next.meta_description}, keywords_updated_at = NOW() WHERE slug = ${slug}`;
           await sql`UPDATE collection_keyword_research SET applied_row_at = NOW() WHERE slug = ${slug}`;
         }
       }
@@ -270,7 +270,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
       if (changed) {
         await sql`UPDATE collection_keyword_research SET recommendation = ${JSON.stringify(next)}::jsonb WHERE slug = ${slug}`;
         if (r.applied_row_at) {
-          await sql`UPDATE ppw_collections SET title_tag = ${next.title_tag}, meta_description = ${next.meta_description}, keywords_updated_at = NOW() WHERE slug = ${slug}`;
+          await sql`UPDATE gtd_collections SET title_tag = ${next.title_tag}, meta_description = ${next.meta_description}, keywords_updated_at = NOW() WHERE slug = ${slug}`;
           await sql`UPDATE collection_keyword_research SET applied_row_at = NOW() WHERE slug = ${slug}`;
         }
       }
@@ -290,7 +290,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
       const remaining = findFactIssues(next, facts, vendors);
       await sql`UPDATE collection_keyword_research SET recommendation = ${JSON.stringify(next)}::jsonb WHERE slug = ${slug}`;
       if (r.applied_row_at) {
-        await sql`UPDATE ppw_collections SET title_tag = ${next.title_tag}, meta_description = ${next.meta_description}, keywords_updated_at = NOW() WHERE slug = ${slug}`;
+        await sql`UPDATE gtd_collections SET title_tag = ${next.title_tag}, meta_description = ${next.meta_description}, keywords_updated_at = NOW() WHERE slug = ${slug}`;
         await sql`UPDATE collection_keyword_research SET applied_row_at = NOW() WHERE slug = ${slug}`;
       }
       return NextResponse.json({ ok: true, issues, remaining, title_tag: next.title_tag, meta_description: next.meta_description, facts: { vendors: facts.vendors.slice(0, 8), minPrice: facts.minPrice, maxPrice: facts.maxPrice } });
@@ -316,7 +316,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
       if (body.toRow !== false) {
         if (keepTitle) {
           await sql`
-            UPDATE ppw_collections SET
+            UPDATE gtd_collections SET
               primary_keyword = ${rec.primary},
               secondary_keywords = ${rec.secondaries},
               meta_description = ${rec.meta_description},
@@ -325,7 +325,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
           `;
         } else {
           await sql`
-            UPDATE ppw_collections SET
+            UPDATE gtd_collections SET
               primary_keyword = ${rec.primary},
               secondary_keywords = ${rec.secondaries},
               title_tag = ${rec.title_tag},

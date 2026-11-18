@@ -1,5 +1,5 @@
-// Article content generation route — PPW Style Guide compliant
-// Generates full PPW-templated articles with navigation, products, FAQ, schema
+// Article content generation route — GTD Style Guide compliant
+// Generates full GTD-templated articles with navigation, products, FAQ, schema
 import { type NextRequest, NextResponse } from "next/server";
 import { type WellnessCategory } from "@/lib/types";
 import { callAI, looksLikeReasoning } from "@/lib/ai";
@@ -8,7 +8,7 @@ import { isExcludedVendor, liftedVendors } from "@/lib/product-exclusions";
 import { WRITING_RULES, validateBrandRules, stripEmDashes, scrubUncarriedBrands, scrubSeoJargon } from "@/lib/brandRules";
 import { CATEGORY_TO_COLLECTION } from "@/lib/collections";
 import { asHub } from "@/lib/collection-category";
-import { PPW_STYLES } from "@/lib/ppw-template";
+import { GTD_STYLES } from "@/lib/gtd-template";
 import {
   V2_BODY_SPEC, V2_FAQ_SPEC, V2_ANSWER_SPEC, V2_TAKEAWAYS_SPEC,
   buildV2Header, buildV2Answer, buildV2Takeaways, buildV2Toc, buildV2Picks, buildV2GuideLink,
@@ -30,9 +30,9 @@ import { getSQL } from "@/lib/db";
 export const maxDuration = 300;
 
 // ============================================================================
-// PPW STYLE BLOCK — Embedded in every article for Shopify compatibility
+// GTD STYLE BLOCK — Embedded in every article for Shopify compatibility
 // ============================================================================
-// PPW_STYLES lives in lib/ppw-template.ts and is FROZEN, legacy only. It was
+// GTD_STYLES lives in lib/gtd-template.ts and is FROZEN, legacy only. It was
 // duplicated here; now imported so there is one copy. See the notice there.
 
 // ============================================================================
@@ -270,7 +270,7 @@ function extractFeatures(product: {
   // product data could not. Two real specs means no filler at all.
   // The vendor's own bullet list beats anything we can synthesise, and it is
   // their words rather than ours: "3C to 38C control range", "330 lbs weight
-  // capacity", "Canadian cedar exterior housing". Roughly half of PPW products
+  // capacity", "Canadian cedar exterior housing". Roughly half of GTD products
   // carry such a list. Whatever it cannot supply, the keyword map above fills.
   const fromDescription = specsFromDescription(product.description, 3);
   const seen = new Set(fromDescription.map((s) => s.toLowerCase().replace(/[^a-z0-9]/g, "")));
@@ -285,7 +285,7 @@ function extractFeatures(product: {
 
   // Never "free shipping" (conditional on product class and not offered on
   // freight items such as saunas) and never a white-glove or assembly promise,
-  // neither of which PPW offers. A card showing filler means the Shopify
+  // neither of which GTD offers. A card showing filler means the Shopify
   // description is thin; /product-bullets surfaces those for a manual spec.
   const FALLBACKS = ['Quality Inspected Before Shipping', 'Ongoing US-Based Phone Support'];
   while (specs.length < 2 && FALLBACKS.length) specs.push(FALLBACKS.shift() as string);
@@ -294,7 +294,7 @@ function extractFeatures(product: {
 }
 
 // ============================================================================
-// HELPER: Build PPW product card HTML (matches Costco article style)
+// HELPER: Build GTD product card HTML (matches Costco article style)
 // ============================================================================
 function buildProductCard(product: {
   title: string;
@@ -313,7 +313,7 @@ function buildProductCard(product: {
   const features = extractFeatures(product);
 
   const imageHtml = product.imageUrl
-    ? `<div class="ppw-product-image-container"><img src="${product.imageUrl}" alt="${product.title}" class="ppw-product-image" loading="lazy" /></div>`
+    ? `<div class="gtd-product-image-container"><img src="${product.imageUrl}" alt="${product.title}" class="gtd-product-image" loading="lazy" /></div>`
     : "";
 
   // Format price with commas and clean trailing decimals
@@ -335,15 +335,15 @@ function buildProductCard(product: {
       : `<li>\u2705 ${f}</li>`
   ).join("\n");
 
-  return `<div class="ppw-product-card" style="border-color:${badge.color};">
-<span class="ppw-badge" style="background:${badge.color};align-self:flex-start;margin-bottom:1rem;">${badge.label}</span>
+  return `<div class="gtd-product-card" style="border-color:${badge.color};">
+<span class="gtd-badge" style="background:${badge.color};align-self:flex-start;margin-bottom:1rem;">${badge.label}</span>
 ${imageHtml}
 <h3>${product.title}</h3>
 ${priceHtml}
 <ul>
 ${featureBullets}
 </ul>
-<div style="margin-top:auto;"><a class="ppw-cta" href="${productUrl}">View ${shortName}</a></div>
+<div style="margin-top:auto;"><a class="gtd-cta" href="${productUrl}">View ${shortName}</a></div>
 </div>`;
 }
 
@@ -354,15 +354,15 @@ function buildRelatedArticlesHtml(articles: { title: string; url: string; descri
   if (!articles || articles.length === 0) return "";
   const displayArticles = articles.slice(0, 3);
   const cards = displayArticles.map((a) =>
-    `<article class="ppw-card">
-<h3 class="ppw-card-title"><a href="${a.url}" class="ppw-links">${a.title}</a></h3>
-<p class="ppw-sm">${a.description}</p>
+    `<article class="gtd-card">
+<h3 class="gtd-card-title"><a href="${a.url}" class="gtd-links">${a.title}</a></h3>
+<p class="gtd-sm">${a.description}</p>
 </article>`
   ).join("\n");
 
-  return `<section class="ppw-section">
+  return `<section class="gtd-section">
 <h2>Continue Your Wellness Journey</h2>
-<div class="ppw-grid cols-3">
+<div class="gtd-grid cols-3">
 ${cards}
 </div>
 </section>`;
@@ -378,7 +378,7 @@ export async function POST(request: NextRequest) {
       articleType, audience, collection, specialInstructions, includeComparisonTable,
       internalLinks } = body;
 
-    // template_version 2 is the ppwb- design system in the ppw-blog.css theme
+    // template_version 2 is the gtdb- design system in the gtd-blog.css theme
     // asset. Version 1 is the frozen legacy path with its inline <style> block.
     // Default to 2 for new articles; send templateVersion: 1 to force legacy.
     const useV2 = Number(body.templateVersion ?? 2) === 2;
@@ -419,16 +419,16 @@ export async function POST(request: NextRequest) {
 
     const typeInstruction = ARTICLE_TYPE_INSTRUCTIONS[articleType || ''] || '';
     const audienceInstruction = AUDIENCE_INSTRUCTIONS[audience || ''] || AUDIENCE_INSTRUCTIONS['general'];
-    const collectionContext = collection ? `This article is for the "${collection}" product collection on Peak Primal Wellness.` : '';
-    const comparisonInstruction = includeComparisonTable ? '\n- Include a comparison table using PPW grid markup: <div class="ppw-grid cols-2"> or cols-3 with ppw-card items comparing key features, specs, or options. CRITICAL: You MUST close the </div> for ppw-grid and then close the </section> tag IMMEDIATELY after the last ppw-card. Do NOT leave any unclosed div or section tags — the FAQ is appended after your output and unclosed tags will swallow it. The comparison table must NOT be the last content section — follow it with at least one more short prose section before the article ends.' : '';
+    const collectionContext = collection ? `This article is for the "${collection}" product collection on Green Thumb Depot.` : '';
+    const comparisonInstruction = includeComparisonTable ? '\n- Include a comparison table using GTD grid markup: <div class="gtd-grid cols-2"> or cols-3 with gtd-card items comparing key features, specs, or options. CRITICAL: You MUST close the </div> for gtd-grid and then close the </section> tag IMMEDIATELY after the last gtd-card. Do NOT leave any unclosed div or section tags — the FAQ is appended after your output and unclosed tags will swallow it. The comparison table must NOT be the last content section — follow it with at least one more short prose section before the article ends.' : '';
     const specialContext = specialInstructions ? `\nSPECIAL INSTRUCTIONS FROM EDITOR:\n${specialInstructions}` : '';
 
     // ==================================================================
-    // AI PROMPT — Instructs Claude to output PPW-class-based HTML
+    // AI PROMPT — Instructs Claude to output GTD-class-based HTML
     // ==================================================================
     // ── LINK INVENTORY ──────────────────────────────────────────────────────
     // The model cannot know a slug. Given a link budget and no list, it writes
-    // slugs that look exactly right and 404 — that is how /blogs/wellness/
+    // slugs that look exactly right and 404 — that is how /blogs/guides/
     // cold-plunge-setup-guide and /collections/cold-plunge (singular) shipped.
     // internalLinks comes from topical_authority, already scoped to this
     // article's collection; collections come from MASTER_COLLECTIONS, filtered
@@ -446,7 +446,7 @@ export async function POST(request: NextRequest) {
     // because losing every internal link is worse than risking a stale one.
     // relatedArticles feeds the "Keep reading" tiles and comes from the same
     // unvalidated tables, so it needs the same filter. Validating only the body
-    // inventory left /blogs/wellness/tips-for-beginners-using-cold-plunges, a
+    // inventory left /blogs/guides/tips-for-beginners-using-cold-plunges, a
     // 404, sitting in the tiles of a published article.
     let relatedForV2: { title: string; url: string; description: string }[] = relatedArticles || [];
     try {
@@ -533,7 +533,7 @@ export async function POST(request: NextRequest) {
             // just itself and this returns nothing. Two tiles, or none, beats
             // three tiles about another category.
             const have = new Set(relatedForV2.map((r) => linkKey(r.url)));
-            const selfKey = linkKey(`/blogs/wellness/${String(title).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`);
+            const selfKey = linkKey(`/blogs/guides/${String(title).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`);
             for (const row of rows) {
               if (relatedForV2.length >= 3) break;
               const k = linkKey(row.existing_url);
@@ -558,7 +558,7 @@ export async function POST(request: NextRequest) {
     linkArticles = linkArticles.slice(0, 12);
 
     // The article's own collection. Ryan's standing instruction: the synced
-    // collection hub (ppw_collections, refreshed from Shopify by
+    // collection hub (gtd_collections, refreshed from Shopify by
     // /api/collections/sync-shopify) is the authority, not the hand-typed
     // MASTER_COLLECTIONS array. The array is the last-resort fallback only,
     // for when the database is unreachable.
@@ -567,7 +567,7 @@ export async function POST(request: NextRequest) {
       const sql = getSQL();
       const rows = await sql`
         SELECT slug, category, title_tag, primary_keyword
-        FROM ppw_collections
+        FROM gtd_collections
         WHERE slug = ${category} OR slug = ${CATEGORY_COLLECTION[category] ?? category}
         LIMIT 1`;
       const row = Array.from(rows)[0] as { slug: string; category?: string | null; title_tag?: string | null; primary_keyword?: string | null } | undefined;
@@ -582,12 +582,12 @@ export async function POST(request: NextRequest) {
         };
       }
     } catch (e) {
-      console.warn("[v0] Generate: ppw_collections lookup for own collection failed:", e instanceof Error ? e.message : e);
+      console.warn("[v0] Generate: gtd_collections lookup for own collection failed:", e instanceof Error ? e.message : e);
     }
     if (!ownCollection) {
       const m = MASTER_COLLECTIONS.find((c) => c.slug === category || c.shopifyHandle === category);
       if (m) ownCollection = { slug: m.slug, label: m.label, shopifyHandle: m.shopifyHandle, hub: m.hub };
-      console.warn(`[v0] Generate: own collection "${category}" not in ppw_collections, ${m ? "using MASTER_COLLECTIONS fallback" : "trying live Shopify title"}`);
+      console.warn(`[v0] Generate: own collection "${category}" not in gtd_collections, ${m ? "using MASTER_COLLECTIONS fallback" : "trying live Shopify title"}`);
     }
     if (!ownCollection && category) {
       // Last resort before shipping a raw slug as the kicker: the live
@@ -674,7 +674,7 @@ export async function POST(request: NextRequest) {
     // MASTER_COLLECTIONS is not the wrong list — collections_registry auto-syncs
     // FROM it on every request, so the array is upstream, not stale. But the
     // registry also holds collections added through the app that the array has
-    // never heard of, and ppw_collections holds the keywords per collection,
+    // never heard of, and gtd_collections holds the keywords per collection,
     // which is far better relevance signal than matching label words.
     // The array stays as the fallback if either query fails.
     type Cand = { slug: string; label: string; handle: string; keywords: string; hub: string };
@@ -684,13 +684,13 @@ export async function POST(request: NextRequest) {
 
     try {
       const sql = getSQL();
-      // ppw_collections is the Collections tool's own table — the full catalogue,
+      // gtd_collections is the Collections tool's own table — the full catalogue,
       // roughly 271 rows, not the 54 hand-listed hubs in MASTER_COLLECTIONS.
       // It also carries the keywords each collection targets, which is far better
       // relevance signal than matching words in a label.
       const rows = await sql`
         SELECT slug, category, primary_keyword, secondary_keywords, title_tag, is_hidden
-        FROM ppw_collections`;
+        FROM gtd_collections`;
       const live = (Array.from(rows) as {
         slug: string; category?: string | null; primary_keyword?: string | null;
         secondary_keywords?: unknown; title_tag?: string | null; is_hidden?: boolean | null;
@@ -714,10 +714,10 @@ export async function POST(request: NextRequest) {
             hub: asHub(r.category) || master?.hub || "",
           };
         });
-        console.log(`[v0] Generate: ${candidates.length} collection candidates from ppw_collections (MASTER_COLLECTIONS has ${MASTER_COLLECTIONS.length})`);
+        console.log(`[v0] Generate: ${candidates.length} collection candidates from gtd_collections (MASTER_COLLECTIONS has ${MASTER_COLLECTIONS.length})`);
       }
     } catch (e) {
-      console.warn("[v0] Generate: ppw_collections query failed, using MASTER_COLLECTIONS:", e instanceof Error ? e.message : e);
+      console.warn("[v0] Generate: gtd_collections query failed, using MASTER_COLLECTIONS:", e instanceof Error ? e.message : e);
     }
 
     // Shopify is the authority on which collection handles exist. Same treatment
@@ -805,7 +805,7 @@ export async function POST(request: NextRequest) {
     // a competitor plug, whatever the category.
     // Model names count too: "Golden Designs Arosa" and "Klosters" were flagged
     // as rival brands because only vendors were listed. Titles of the featured
-    // products and of the whole collection pool make every model PPW sells a
+    // products and of the whole collection pool make every model GTD sells a
     // known name.
     const knownVendors: string[] = [
       ...((products || []) as { vendor?: string; title?: string }[]).flatMap((p) => [p.vendor || "", p.title || ""]).filter(Boolean),
@@ -904,7 +904,7 @@ export async function POST(request: NextRequest) {
       (linkArticles.length ? "" : " — NO article URLs supplied, internal links will be suppressed"),
     );
 
-    const systemPrompt = `You are a Senior Content Editor at Peak Primal Wellness, a premium wellness equipment publication.
+    const systemPrompt = `You are a Senior Content Editor at Green Thumb Depot, a premium wellness equipment publication.
 
 ${useV2 ? `${V2_BODY_SPEC}
 
@@ -914,21 +914,21 @@ ${catalogueResearch}
 
 ${cmpBrief}
 
-${linkBrief}` : `OUTPUT FORMAT — You MUST use PPW CSS classes (already defined in the page). Do NOT use inline styles. Do NOT use markdown syntax (**, __, *, _, ##, etc.) — use only HTML tags like <strong>, <em>, <h2>, etc.
+${linkBrief}` : `OUTPUT FORMAT — You MUST use GTD CSS classes (already defined in the page). Do NOT use inline styles. Do NOT use markdown syntax (**, __, *, _, ##, etc.) — use only HTML tags like <strong>, <em>, <h2>, etc.
 
 STRUCTURE YOU MUST FOLLOW:
-1. Start directly with body section content (NO <style>, NO <div class="ppw-wrap">, NO <nav>, NO <h1> — those are added by the template)
+1. Start directly with body section content (NO <style>, NO <div class="gtd-wrap">, NO <nav>, NO <h1> — those are added by the template)
 2. First section: A "Key Takeaways" box:
-   <section class="ppw-section ppw-muted">
+   <section class="gtd-section gtd-muted">
    <h2>Key Takeaways</h2>
    <ul><li><strong>Label:</strong> description</li>...</ul>
    </section>
 3. Body sections, each wrapped in:
-   <section id="SLUG" class="ppw-section">
+   <section id="SLUG" class="gtd-section">
    <h2>Section Title</h2>
    ...paragraphs, lists, callout boxes...
    </section>
-4. Use <div class="ppw-callout"> for important callout blocks
+4. Use <div class="gtd-callout"> for important callout blocks
 5. Do NOT include any image tags or image placeholders. Images are added separately after content generation.
 6. Do NOT include an FAQ section. The FAQ is generated in a separate step — do NOT output any FAQ markup, <details> elements, or "Frequently Asked Questions" headings.
 7. If you include a comparison table, it must NEVER be the last section. Always follow a comparison table with a prose wrap-up section (e.g., "Final Thoughts", "Making Your Choice", or a brief conclusion paragraph) so the article body ends with a clean </section> tag containing regular paragraph content.
@@ -967,11 +967,11 @@ Requirements:
 - Do NOT include an FAQ section (it is generated separately)
 ${useV2
   ? `- Do NOT write a key-takeaways box, a table of contents, a shop CTA or a related-articles list. Those are assembled separately.
-- Every section: <h2 class="ppwb-h2" id="kebab-case-id">Title</h2> then <p class="ppwb-p">`
-  : `- Key Takeaways section first using ppw-muted class
-- All sections use ppw-section class with kebab-case IDs`}`;
+- Every section: <h2 class="gtdb-h2" id="kebab-case-id">Title</h2> then <p class="gtdb-p">`
+  : `- Key Takeaways section first using gtd-muted class
+- All sections use gtd-section class with kebab-case IDs`}`;
 
-    console.log("[v0] Generate: calling AI for PPW body content...");
+    console.log("[v0] Generate: calling AI for GTD body content...");
     // Cap tokens dynamically: words ÷ 0.75 gives token equivalent, +25% headroom for HTML tags
     // v2 markup is far heavier than v1: step lists, spec strips, callouts and
     // blockquotes are all wrapper-dense, so 25% tag headroom under-counts badly
@@ -1083,11 +1083,11 @@ ${useV2
         for (const part of parts) {
           const h = part.match(/<h2\b[^>]*>([\s\S]*?)<\/h2>/i);
           if (!h) continue;
-          if (/ppwb-picks|ppwb-shop|ppwb-related|id="faq"|id="picks"/i.test(part.slice(0, 200))) continue;
+          if (/gtdb-picks|gtdb-shop|gtdb-related|id="faq"|id="picks"/i.test(part.slice(0, 200))) continue;
           const heading = h[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
           const text = part
             .slice(h.index! + h[0].length)
-            .replace(/<div class="ppwb-pick[\s\S]*?<\/div>\s*<\/div>/gi, " ")
+            .replace(/<div class="gtdb-pick[\s\S]*?<\/div>\s*<\/div>/gi, " ")
             .replace(/<[^>]+>/g, " ")
             .replace(/\s+/g, " ")
             .trim()
@@ -1109,7 +1109,7 @@ ${useV2
           { maxTokens: 100 },
         ).then(stripEmDashes),
         callAI(
-          `You are a Senior Content Editor at Peak Primal Wellness.\n${V2_ANSWER_SPEC}`,
+          `You are a Senior Content Editor at Green Thumb Depot.\n${V2_ANSWER_SPEC}`,
           `Article title: "${title}". Primary keyword: ${keyword}. Category: ${categoryLabel}.${consistency}`,
           { maxTokens: 600 },
         ).then(stripEmDashes).then(async (first) => {
@@ -1119,19 +1119,19 @@ ${useV2
           if (first && !looksLikeReasoning(first) && first.length >= 40) return first;
           console.warn("[generate] answer looked like leaked reasoning; regenerating");
           const again = await callAI(
-            `You are a Senior Content Editor at Peak Primal Wellness.\n${V2_ANSWER_SPEC}\nOutput ONLY the final answer text. The first character of your reply must be the first character of the answer.`,
+            `You are a Senior Content Editor at Green Thumb Depot.\n${V2_ANSWER_SPEC}\nOutput ONLY the final answer text. The first character of your reply must be the first character of the answer.`,
             `Article title: "${title}". Primary keyword: ${keyword}. Category: ${categoryLabel}.${consistency}`,
             { maxTokens: 600 },
           ).then(stripEmDashes);
           return again && !looksLikeReasoning(again) ? again : "";
         }),
         callAI(
-          `You are a Senior Content Editor at Peak Primal Wellness.\n${V2_FAQ_SPEC}\n${WRITING_RULES}`,
+          `You are a Senior Content Editor at Green Thumb Depot.\n${V2_FAQ_SPEC}\n${WRITING_RULES}`,
           `Article title: "${title}". Primary keyword: ${keyword}. Category: ${categoryLabel}.${consistency}`,
           { maxTokens: 2500 },
         ).then(stripEmDashes),
         callAI(
-          `You are a Senior Content Editor at Peak Primal Wellness.\n${V2_TAKEAWAYS_SPEC}\n${WRITING_RULES}`,
+          `You are a Senior Content Editor at Green Thumb Depot.\n${V2_TAKEAWAYS_SPEC}\n${WRITING_RULES}`,
           // Takeaways get the body only, not the product brief: with the
           // listings in view the model summarised the products and their
           // prices instead of the article.
@@ -1155,7 +1155,7 @@ ${useV2
         console.warn(`[v0] Generate v2: FAQ yielded ${faqPairs.length} usable pair(s), regenerating once`);
         try {
           const again = await callAI(
-            `You are a Senior Content Editor at Peak Primal Wellness.\n${V2_FAQ_SPEC}\n${WRITING_RULES}`,
+            `You are a Senior Content Editor at Green Thumb Depot.\n${V2_FAQ_SPEC}\n${WRITING_RULES}`,
             `Article title: "${title}". Primary keyword: ${keyword}. Category: ${categoryLabel}.${consistency}`,
             { maxTokens: 2500 },
           ).then(stripEmDashes);
@@ -1178,8 +1178,8 @@ ${useV2
         console.warn("[brand-check] deck failed, rewriting:", deckCheck.warnings.join(" | "));
         try {
           const rewritten = await callAI(
-            `You write article subtitles for Peak Primal Wellness, a wellness equipment retailer.\n\n` +
-              `The subtitle below makes health claims PPW cannot support. Rewrite it so it makes ` +
+            `You write article subtitles for Green Thumb Depot, a wellness equipment retailer.\n\n` +
+              `The subtitle below makes health claims GTD cannot support. Rewrite it so it makes ` +
               `NO health-efficacy claim. Do not say anything boosts immunity, burns fat, detoxes, ` +
               `cures, prevents disease or transforms the body. Describe what the article covers ` +
               `instead of promising an outcome. One sentence, under 150 characters, no quotes.`,
@@ -1224,8 +1224,8 @@ ${useV2
         for (const f of stillBad) {
           try {
             const fixed = await callAI(
-              `You are rewriting one FAQ answer for Peak Primal Wellness.\n\n` +
-                `The answer below names one or more brands PPW does not sell. Rewrite it so it ` +
+              `You are rewriting one FAQ answer for Green Thumb Depot.\n\n` +
+                `The answer below names one or more brands GTD does not sell. Rewrite it so it ` +
                 `names NO brand at all. Describe the tier instead ("an entry-level model", ` +
                 `"a commercial-grade unit"). Keep the same length, the same ` +
                 `facts and the same plain tone. Return ONLY the rewritten answer, no quotes, ` +
@@ -1266,7 +1266,7 @@ ${useV2
       cleanedBodyContent = sealed.html;
 
       // sealTruncatedBody compares tag COUNTS, which is not the same as nesting.
-      // An article shipped with its fourth <li class="ppwb-step"> never closed
+      // An article shipped with its fourth <li class="gtdb-step"> never closed
       // and still counted 23 <li> against 23 </li>, so that guard passed and the
       // FAQ, shop card, author block and keep-reading tiles all rendered inside
       // the open list item. Close what is genuinely open before anything is
@@ -1322,7 +1322,7 @@ ${useV2
         // and the nav read "What research can".
         const navAttr = /\bdata-nav=(["'])([\s\S]*?)\1/i.exec(attrs);
         tocItems.push({ id, text, navLabel: navAttr ? navAttr[2].trim() : undefined });
-        bodyForV2 = bodyForV2.replace(m[0], `<h2 class="ppwb-h2" id="${id}">${text}</h2>`);
+        bodyForV2 = bodyForV2.replace(m[0], `<h2 class="gtdb-h2" id="${id}">${text}</h2>`);
       });
       // Deterministic half of the link rule. The inventory in the prompt is a
       // request; this is the guarantee. Anything pointing at the site that was
@@ -1337,7 +1337,7 @@ ${useV2
       // Back-to-back anchors read as one link. Unwrap the second.
       const linkSplit = splitAdjacentLinks(bodyForV2);
       bodyForV2 = linkSplit.html;
-      // Comparison table rows that name a product PPW sells link to it, with a
+      // Comparison table rows that name a product GTD sells link to it, with a
       // thumbnail. Featured products first so the card and the row agree, then
       // the rest of the collection.
       const tableLinks = linkComparisonTable(bodyForV2, [...((products || []) as typeof catalogPool), ...catalogPool], (products || []).length);
@@ -1346,7 +1346,7 @@ ${useV2
         console.log(`[v0] Generate v2: linked ${tableLinks.linked.length} comparison row(s) to products: ${tableLinks.linked.join(" | ")}`);
       }
       // Six rows maximum. A prompt rule is a request; this is the guarantee.
-      // Linked rows are kept first, so a trimmed table shows what PPW sells.
+      // Linked rows are kept first, so a trimmed table shows what GTD sells.
       const cmpCap = capComparisonRows(bodyForV2, 6);
       bodyForV2 = cmpCap.html;
       if (cmpCap.dropped.length) {
@@ -1417,7 +1417,7 @@ ${useV2
         const sql = getSQL();
         const rows = Array.from(await sql`
           SELECT slug, ultimate_guide_title, ultimate_guide_url
-          FROM ppw_collections
+          FROM gtd_collections
           WHERE ultimate_guide_url IS NOT NULL AND ultimate_guide_url <> ''`) as
           { slug: string; ultimate_guide_title: string; ultimate_guide_url: string }[];
         const norm = (t: string) => ` ${t.toLowerCase().replace(/[^a-z0-9]+/g, " ")} `;
@@ -1487,7 +1487,7 @@ ${useV2
           // The breadcrumb's tagged URL must match the tag the article
           // publishes with (slug of the trimmed label), or it 404s now that
           // tags are "home-gym-equipment" rather than the full handle.
-          hubUrl: `/blogs/wellness/tagged/${categoryLabel.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`,
+          hubUrl: `/blogs/guides/tagged/${categoryLabel.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`,
           readTime,
           author,
         }),
@@ -1594,13 +1594,13 @@ ${useV2
       });
     }
 
-    const faqSystemPrompt = `You are a Senior Content Editor at Peak Primal Wellness. Generate ONLY an FAQ section for an article. Output ONLY the HTML below — no explanation, no markdown, no wrapping tags.
+    const faqSystemPrompt = `You are a Senior Content Editor at Green Thumb Depot. Generate ONLY an FAQ section for an article. Output ONLY the HTML below — no explanation, no markdown, no wrapping tags.
 
 FORMAT (use this EXACT structure):
-<section id="faq" class="ppw-section">
+<section id="faq" class="gtd-section">
 <h2>Frequently Asked Questions</h2>
-<div class="ppw-faq-list">
-<details class="ppw-faq-item"><summary class="ppw-faq-question">Question?</summary><div class="ppw-faq-answer"><p>Answer paragraph.</p></div></details>
+<div class="gtd-faq-list">
+<details class="gtd-faq-item"><summary class="gtd-faq-question">Question?</summary><div class="gtd-faq-answer"><p>Answer paragraph.</p></div></details>
 </div>
 </section>
 
@@ -1610,7 +1610,7 @@ RULES:
 - Questions should cover different aspects (benefits, safety, cost, setup, maintenance, etc.)
 - Do NOT use markdown syntax — HTML only
 - Do NOT include any content outside the <section> tags
-- Do NOT include comparison tables, product grids, or any ppw-grid / ppw-card markup. This is an FAQ section ONLY — no product comparisons, feature grids, or tabular layouts.`;
+- Do NOT include comparison tables, product grids, or any gtd-grid / gtd-card markup. This is an FAQ section ONLY — no product comparisons, feature grids, or tabular layouts.`;
 
     const faqUserPrompt = `Write an FAQ section for this article:
 
@@ -1624,12 +1624,12 @@ CATEGORY: ${categoryLabel}`;
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/__(.+?)__/g, '<em>$1</em>')
       // Strip any comparison table / product grid markup that leaked into FAQ
-      .replace(/<div\s+class="ppw-grid[^"]*">[\s\S]*?<\/div>\s*<\/div>/gi, '')
-      .replace(/<div\s+class="ppw-card[^"]*">[\s\S]*?<\/div>/gi, '')
+      .replace(/<div\s+class="gtd-grid[^"]*">[\s\S]*?<\/div>\s*<\/div>/gi, '')
+      .replace(/<div\s+class="gtd-card[^"]*">[\s\S]*?<\/div>/gi, '')
       .trim();
 
     // Validate the FAQ output has the expected structure before appending
-    if (cleanedFaqContent.includes('id="faq"') && cleanedFaqContent.includes('ppw-faq-item')) {
+    if (cleanedFaqContent.includes('id="faq"') && cleanedFaqContent.includes('gtd-faq-item')) {
       cleanedBodyContent = cleanedBodyContent + '\n' + cleanedFaqContent;
       console.log("[v0] Generate: FAQ section generated and appended successfully");
     } else {
@@ -1647,19 +1647,19 @@ CATEGORY: ${categoryLabel}`;
     const mainContent = faqMatch ? cleanedBodyContent.replace(faqRegex, "").trim() : cleanedBodyContent;
 
     // Sanitize FAQ section — strip any stray block-level closing tags the AI
-    // occasionally injects inside <div class="ppw-faq-answer"> blocks
+    // occasionally injects inside <div class="gtd-faq-answer"> blocks
     // (e.g. </section>, </article>) which break the HTML structure
     let cleanFaqSection = faqSection;
     if (cleanFaqSection) {
       cleanFaqSection = cleanFaqSection.replace(
-        /(<div class="ppw-faq-answer">)([\s\S]*?)(<\/div>)/gi,
+        /(<div class="gtd-faq-answer">)([\s\S]*?)(<\/div>)/gi,
         (match: string, open: string, body: string, close: string) => {
           // Remove any stray </section>, </article>, or comparison grid markup inside answer bodies
           const cleanBody = body
             .replace(/<\/section>/gi, '')
             .replace(/<\/article>/gi, '')
-            .replace(/<div\s+class="ppw-grid[^"]*">[\s\S]*?<\/div>/gi, '')
-            .replace(/<div\s+class="ppw-card[^"]*">[\s\S]*?<\/div>/gi, '');
+            .replace(/<div\s+class="gtd-grid[^"]*">[\s\S]*?<\/div>/gi, '')
+            .replace(/<div\s+class="gtd-card[^"]*">[\s\S]*?<\/div>/gi, '');
           return open + cleanBody + close;
         }
       );
@@ -1669,7 +1669,7 @@ CATEGORY: ${categoryLabel}`;
     const faqItems: { question: string; answer: string }[] = [];
     if (cleanFaqSection) {
       const questionMatches = Array.from(cleanFaqSection.matchAll(/<summary[^>]*>(.*?)<\/summary>/gi));
-      const answerMatches = Array.from(cleanFaqSection.matchAll(/<div class="ppw-faq-answer">([\s\S]*?)<\/div>/gi));
+      const answerMatches = Array.from(cleanFaqSection.matchAll(/<div class="gtd-faq-answer">([\s\S]*?)<\/div>/gi));
       questionMatches.forEach((qm, i) => {
         const q = qm[1].replace(/<[^>]+>/g, "").trim();
         const a = answerMatches[i] ? answerMatches[i][1].replace(/<[^>]+>/g, "").trim() : "";
@@ -1704,11 +1704,11 @@ CATEGORY: ${categoryLabel}`;
     const subtitlePrompt = `Write a single compelling subtitle sentence (under 150 chars) for an article titled "${title}" about ${keyword}. Return ONLY the sentence, no quotes.`;
     const subtitle = stripEmDashes(await callAI("You write concise article subtitles.", subtitlePrompt, { maxTokens: 100 }));
 
-    const overviewHtml = `<section id="overview" class="ppw-section">
-<div class="ppw-kicker">${categoryLabel}</div>
+    const overviewHtml = `<section id="overview" class="gtd-section">
+<div class="gtd-kicker">${categoryLabel}</div>
 <h1>${title}</h1>
-<p class="ppw-subtitle">${subtitle.trim()}</p>
-<div class="ppw-meta"><span>By Peak Primal Wellness</span><span class="ppw-dot"></span><span>${readTime} min read</span></div>
+<p class="gtd-subtitle">${subtitle.trim()}</p>
+<div class="gtd-meta"><span>By Green Thumb Depot</span><span class="gtd-dot"></span><span>${readTime} min read</span></div>
 </section>`;
 
     // ==================================================================
@@ -1719,10 +1719,10 @@ CATEGORY: ${categoryLabel}`;
       // Always show up to 4 products in a 2-column grid (2x2)
       const displayProducts = products.slice(0, 4);
       const cards = displayProducts.map((p: { title: string; description?: string; price?: string; imageUrl?: string; url?: string; handle?: string; vendor?: string; tags?: string }, i: number) => buildProductCard(p, i, displayProducts)).join("\n");
-      productsHtml = `\n<section id="featured-products" class="ppw-section">
-<h2 class="ppw-center">Top ${categoryLabel} Picks</h2>
-<p style="margin-bottom:3rem;color:#666;font-size:1.6rem;" class="ppw-center">Premium quality with pre-delivery inspection and expert support.</p>
-<div class="ppw-grid cols-2">
+      productsHtml = `\n<section id="featured-products" class="gtd-section">
+<h2 class="gtd-center">Top ${categoryLabel} Picks</h2>
+<p style="margin-bottom:3rem;color:#666;font-size:1.6rem;" class="gtd-center">Premium quality with pre-delivery inspection and expert support.</p>
+<div class="gtd-grid cols-2">
 ${cards}
 </div>
 </section>`;
@@ -1738,7 +1738,7 @@ ${cards}
       const sql = getSQL();
       const rows = await sql`
         SELECT ultimate_guide_title, ultimate_guide_url
-        FROM ppw_collections
+        FROM gtd_collections
         WHERE slug = ${category}
           AND ultimate_guide_url IS NOT NULL
         LIMIT 1
@@ -1755,11 +1755,11 @@ ${cards}
     }
     if (guideEntry) {
       // Palette corrected Aug 2026: this callout used a dark green (#2d6a4f)
-      // that appears in no PPW palette. Now cream ground with the gold left
-      // rule, matching the .ppw-pillar treatment on collection pages. The
-      // ppw-guide-callout class is still defined in no stylesheet, so the
+      // that appears in no GTD palette. Now cream ground with the gold left
+      // rule, matching the .gtd-pillar treatment on collection pages. The
+      // gtd-guide-callout class is still defined in no stylesheet, so the
       // inline styles are load-bearing until the v2 template lands.
-      ultimateGuideHtml = `\n<section class="ppw-section ppw-guide-callout" style="background:#faf7f1;border-left:3px solid #c8a96e;border-radius:8px;padding:2.4rem 3rem;margin:3rem 0;">
+      ultimateGuideHtml = `\n<section class="gtd-section gtd-guide-callout" style="background:#faf7f1;border-left:3px solid #c8a96e;border-radius:8px;padding:2.4rem 3rem;margin:3rem 0;">
 <p style="margin:0;font-size:1.6rem;color:#8a6d2f;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Go deeper</p>
 <p style="margin:0.8rem 0 0;font-size:1.5rem;line-height:1.6;color:#4b5563;">Want the full picture? Read our <a href="${guideEntry.url}" style="color:#09195B;font-weight:700;text-decoration:underline;">${guideEntry.title}</a> for everything you need to know.</p>
 </section>`;
@@ -1773,8 +1773,8 @@ ${cards}
     // ==================================================================
     // BUILD — Shop CTA
     // ==================================================================
-    const ctaHtml = `\n<section class="ppw-section ppw-center">
-<a href="/collections/${collectionSlug}" class="ppw-cta">Shop The Collection</a>
+    const ctaHtml = `\n<section class="gtd-section gtd-center">
+<a href="/collections/${collectionSlug}" class="gtd-cta">Shop The Collection</a>
 </section>`;
 
     // ==================================================================
@@ -1793,7 +1793,7 @@ ${cards}
       : "";
 
     // ==================================================================
-    // FINAL ASSEMBLY — Full PPW article
+    // FINAL ASSEMBLY — Full GTD article
     // Insert AFTER Key Takeaways (first </section> in body):
     //   1. Ultimate Guide Link
     //   2. Featured Products
@@ -1812,7 +1812,7 @@ ${cards}
     }
 
     // ==================================================================
-    // BUILD — PPW Navigation (from FINAL assembled content)
+    // BUILD — GTD Navigation (from FINAL assembled content)
     // Parse all H2s from the completed article body to catch every section
     // ==================================================================
     const fullBodyForNav = `${bodyWithProducts}${cleanFaqSection}`;
@@ -1833,12 +1833,12 @@ ${cards}
       `<a href="#overview">Overview</a>`,
       ...finalNavItems.map((n) => `<a href="#${n.id}">${n.text}</a>`),
     ];
-    const navHtml = `<nav class="ppw-topnav" aria-label="Quick navigation">\n${navLinks.join("\n")}\n</nav>`;
+    const navHtml = `<nav class="gtd-topnav" aria-label="Quick navigation">\n${navLinks.join("\n")}\n</nav>`;
 
-    const finalHtml = `${PPW_STYLES}
+    const finalHtml = `${GTD_STYLES}
 
-<div class="ppw-wrap" style="text-align: start;">
-<article class="ppw-container ppw-article" itemscope itemtype="https://schema.org/Article">
+<div class="gtd-wrap" style="text-align: start;">
+<article class="gtd-container gtd-article" itemscope itemtype="https://schema.org/Article">
 
 ${navHtml}
 
@@ -1852,7 +1852,7 @@ ${ctaHtml}
 </div>
 ${faqSchema}`.trim();
 
-    console.log("[v0] Generate: PPW article assembled, total length:", finalHtml.length);
+    console.log("[v0] Generate: GTD article assembled, total length:", finalHtml.length);
 
     return NextResponse.json({
       content: finalHtml,

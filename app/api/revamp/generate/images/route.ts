@@ -45,11 +45,11 @@ export async function POST(request: NextRequest) {
     console.log("[revamp/images] Creating image storyboard...")
 
     // Corrected Aug 2026. This prompt described a supplement brand with black
-    // backgrounds and #1A90FF / #26D07C accents, none of which are PPW. It came
+    // backgrounds and #1A90FF / #26D07C accents, none of which are GTD. It came
     // across with the Naked Nutrition feature port and was never rewritten, so
     // every image from this route was off-brand. Palette now matches
-    // lib/ppw-image-style.ts and the ppw-blog.css design system.
-    const storyboardSystem = `You are an art director for Peak Primal Wellness, a retailer of high-end wellness and recovery equipment: saunas, cold plunges, hyperbaric chambers, red light therapy, home gym and clinical rehab equipment. You create image briefs for article illustrations. The brand aesthetic is clean, modern and technical: white or warm off-white backgrounds, deep navy (#09195B) as the dominant colour, muted gold (#C8A96E) as the accent, and uncluttered professional composition.`
+    // lib/gtd-image-style.ts and the gtd-blog.css design system.
+    const storyboardSystem = `You are an art director for Green Thumb Depot, a retailer of high-end wellness and recovery equipment: saunas, cold plunges, hyperbaric chambers, red light therapy, home gym and clinical rehab equipment. You create image briefs for article illustrations. The brand aesthetic is clean, modern and technical: white or warm off-white backgrounds, deep navy (#09195B) as the dominant colour, muted gold (#C8A96E) as the accent, and uncluttered professional composition.`
 
     const storyboardUser = `Analyze this article body and create exactly ${maxImages} image descriptions for contextual illustrations to insert between sections.
 
@@ -128,7 +128,7 @@ Style: High-quality ${slot.style} on a white (#FFFFFF) or warm off-white (#FAF7F
         "i"
       )
 
-      const imageHtml = `\n<figure class="ppw-content-image">
+      const imageHtml = `\n<figure class="gtd-content-image">
 <img src="${img.imageUrl}" alt="${img.description.substring(0, 120)}" loading="lazy" />
 </figure>\n`
 

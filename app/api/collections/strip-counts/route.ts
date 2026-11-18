@@ -16,11 +16,11 @@ export const maxDuration = 300;
 const API_VERSION = "2024-10";
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-// eyebrow: "<div class=\"ppw-eyebrow\">Exercise Bikes &middot; 11 models &middot; 4 brands</div>"
+// eyebrow: "<div class=\"gtd-eyebrow\">Exercise Bikes &middot; 11 models &middot; 4 brands</div>"
 // -> keep just the category label. Entity or literal middot both handled.
-const EYEBROW_RE = /(<div class="ppw-eyebrow">)([^<]*?)\s*(?:&middot;|·)\s*\d+\s*models?(?:\s*(?:&middot;|·)\s*\d+\s*brands?)?\s*(<\/div>)/gi;
+const EYEBROW_RE = /(<div class="gtd-eyebrow">)([^<]*?)\s*(?:&middot;|·)\s*\d+\s*models?(?:\s*(?:&middot;|·)\s*\d+\s*brands?)?\s*(<\/div>)/gi;
 // brand tile "N models" subtitle line
-const TILE_RE = /<div class="ppw-btile-sub">\s*\d+\s*models?\s*<\/div>/gi;
+const TILE_RE = /<div class="gtd-btile-sub">\s*\d+\s*models?\s*<\/div>/gi;
 
 function stripCounts(html: string): string {
   return html
@@ -58,7 +58,7 @@ export async function POST() {
         for (const c of list) {
           checked++;
           const body = c.body_html || "";
-          if (!body.includes("ppw-eyebrow")) continue;
+          if (!body.includes("gtd-eyebrow")) continue;
           const stripped = stripCounts(body);
           if (stripped === body) continue;
           const r = await shopifyFetch(`${type}_collections/${c.id}.json`, token, {
@@ -78,7 +78,7 @@ export async function POST() {
     const drafts = (await sql`SELECT slug, body_html FROM collection_improve_drafts`) as Array<{ slug: string; body_html: string | null }>;
     for (const d of drafts) {
       const body = d.body_html || "";
-      if (!body.includes("ppw-eyebrow")) continue;
+      if (!body.includes("gtd-eyebrow")) continue;
       const stripped = stripCounts(body);
       if (stripped === body) continue;
       await sql`UPDATE collection_improve_drafts SET body_html = ${stripped} WHERE slug = ${d.slug}`;

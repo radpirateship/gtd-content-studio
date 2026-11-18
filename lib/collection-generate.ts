@@ -1,12 +1,12 @@
 // ============================================================================
 // lib/collection-generate.ts — pure helpers for Generate mode
-// (docs/PPW_Collection_Generator_Cowork_Instructions.md).
+// (docs/GTD_Collection_Generator_Cowork_Instructions.md).
 //
 // v2 (July 30 2026): assemblePage emits the approved Claude Design Studio
 // templates (docs/design-templates/category-template.html + brand-template.html).
 // All static styling is INLINE; hover states, the FAQ accordion, and
-// responsive grid collapses come from the THEME asset ppw-collections.css
-// via the ppw-hv-* / ppw-g* / ppw-split-* / faq-modern classes.
+// responsive grid collapses come from the THEME asset gtd-collections.css
+// via the gtd-hv-* / gtd-g* / gtd-split-* / faq-modern classes.
 // Pages no longer embed a <style> block.
 // Everything here is deterministic and testable; the route supplies AI text.
 // ============================================================================
@@ -32,7 +32,7 @@ const escAttr = (s: string) => String(s).replace(/"/g, "&quot;");
 export function extractPreserved(html: string): PreservedElements {
   const learningLinks: { url: string; title: string }[] = [];
   // cluster cards
-  for (const m of html.matchAll(/<[^>]*class="[^"]*ppw-cluster-card[^"]*"[\s\S]*?<\/a>/gi)) {
+  for (const m of html.matchAll(/<[^>]*class="[^"]*gtd-cluster-card[^"]*"[\s\S]*?<\/a>/gi)) {
     const href = m[0].match(/href="([^"]+)"/i)?.[1];
     const title = m[0].match(/<h4[^>]*>([\s\S]*?)<\/h4>/i)?.[1] || m[0].match(/<(?:strong|h3)[^>]*>([\s\S]*?)<\/(?:strong|h3)>/i)?.[1];
     if (href && title) learningLinks.push({ url: href, title: strip(title) });
@@ -264,7 +264,7 @@ export function medianPrice(products: GenProduct[]): number {
   return p.length % 2 ? p[m] : (p[m - 1] + p[m]) / 2;
 }
 
-/** Compare-table rule (PPW rules update July 31): median variant price under
+/** Compare-table rule (GTD rules update July 31): median variant price under
  *  $300 omit; $300 to $1,000 include only when the collection has 3+ distinct
  *  base models (not size variants of one item); over $1,000 always include —
  *  buying guide and compare table coexist on high-AOV equipment pages. */
@@ -389,62 +389,62 @@ export function selectLearningLinks(
 }
 
 // ── design-language building blocks (inline styles; classes only for
-//    hover/responsive behavior defined in the theme's ppw-collections.css) ───
+//    hover/responsive behavior defined in the theme's gtd-collections.css) ───
 const PADX = "clamp(16px,4vw,40px)";
 const F = "Poppins,sans-serif";
 const NAVY = "#09195B";
 const GOLD_TEXT = "#8a6d2f";
 
-// All shared styling lives in the THEME asset ppw-collections.css (v2
+// All shared styling lives in the THEME asset gtd-collections.css (v2
 // component classes) — Shopify caps collection body_html at 64 KB, so the
 // generator emits classes and keeps only one-off values inline.
 const SECTION_CLS: Record<string, string> = {
   white: "",
-  "white-b": " ppw-sec-b",
-  cream: " ppw-sec-cream",
-  navy: " ppw-sec-navy",
-  blush: " ppw-sec-blush",
+  "white-b": " gtd-sec-b",
+  cream: " gtd-sec-cream",
+  navy: " gtd-sec-navy",
+  blush: " gtd-sec-blush",
 };
 
 function secOpen(id: string, bg: keyof typeof SECTION_CLS): string {
-  return `<section id="${id}" class="ppw-anchor ppw-sec${SECTION_CLS[bg]}${id === "faq" ? " faq-modern" : ""}">`;
+  return `<section id="${id}" class="gtd-anchor gtd-sec${SECTION_CLS[bg]}${id === "faq" ? " faq-modern" : ""}">`;
 }
 
 function eyebrow(text: string, onNavy = false): string {
-  return `<div class="ppw-eyebrow${onNavy ? " ppw-eyebrow-light" : ""}">${text}</div>`;
+  return `<div class="gtd-eyebrow${onNavy ? " gtd-eyebrow-light" : ""}">${text}</div>`;
 }
 
 function h2big(text: string, opts: { size?: number; mb?: number; color?: string } = {}): string {
   const { size = 28, mb = 24, color = NAVY } = opts;
   const st = `${size !== 28 ? `font-size:${size}px;` : ""}${mb !== 24 ? `margin-bottom:${mb}px;` : ""}${color !== NAVY ? `color:${color};` : ""}`;
-  return `<h2 class="ppw-h2"${st ? ` style="${st}"` : ""}>${text}</h2>`;
+  return `<h2 class="gtd-h2"${st ? ` style="${st}"` : ""}>${text}</h2>`;
 }
 
 function para(text: string, mb = 12): string {
-  return `<p class="ppw-p"${mb !== 12 ? ` style="margin-bottom:${mb}px"` : ""}>${text}</p>`;
+  return `<p class="gtd-p"${mb !== 12 ? ` style="margin-bottom:${mb}px"` : ""}>${text}</p>`;
 }
 
 const CHECK_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round"><path d="m5 13 5 5L20 6"></path></svg>`;
 
 function checkRow(label: string, text: string): string {
-  return `<div class="ppw-check"><span>${CHECK_SVG}</span><span><strong>${label}:</strong> ${text}</span></div>`;
+  return `<div class="gtd-check"><span>${CHECK_SVG}</span><span><strong>${label}:</strong> ${text}</span></div>`;
 }
 
-const BADGE_CLS = ["ppw-badge-gold", "ppw-badge-navy", "ppw-badge-dark"];
+const BADGE_CLS = ["gtd-badge-gold", "gtd-badge-navy", "gtd-badge-dark"];
 
 function pickCard(p: GenProduct, badge: string, badgeCls: string, specs: string[], showVendor: boolean): string {
   const img = p.imageUrl
     ? `<img src="${escAttr(p.imageUrl)}" alt="${escAttr(p.title)}" loading="lazy" />`
     : `<span style="font:700 10.5px/1 ${F};letter-spacing:.08em;text-transform:uppercase;color:#a3aab8;display:grid;place-items:center;height:100%">${escAttr(p.vendor || "Product")}</span>`;
   const specLines = specs.slice(0, 3).map((s) => `<span>${s}</span>`).join("");
-  return `<a class="ppw-hv-gold ppw-pick" href="/products/${p.handle}">
-<div class="ppw-pick-img">${img}<span class="ppw-badge ${badgeCls}">${badge}</span></div>
-<div class="ppw-pick-body">
-${showVendor && p.vendor ? `<div class="ppw-pick-vendor">${p.vendor}</div>` : ""}
-<div class="ppw-pick-title">${p.title}</div>
-<div class="ppw-pick-specs">${specLines}</div>
-<span class="ppw-pick-price">${fmt(p.price)}</span>
-<span class="ppw-cta">View Model &rsaquo;</span>
+  return `<a class="gtd-hv-gold gtd-pick" href="/products/${p.handle}">
+<div class="gtd-pick-img">${img}<span class="gtd-badge ${badgeCls}">${badge}</span></div>
+<div class="gtd-pick-body">
+${showVendor && p.vendor ? `<div class="gtd-pick-vendor">${p.vendor}</div>` : ""}
+<div class="gtd-pick-title">${p.title}</div>
+<div class="gtd-pick-specs">${specLines}</div>
+<span class="gtd-pick-price">${fmt(p.price)}</span>
+<span class="gtd-cta">View Model &rsaquo;</span>
 </div></a>`;
 }
 
@@ -459,10 +459,10 @@ export type OwnershipCard = { text: string; meta: string[] };
 
 function ownershipCardHtml(kind: string, title: string, card: OwnershipCard): string {
   const meta = (card.meta || []).slice(0, 2).map((m) => `<span>${m}</span>`).join("");
-  return `<div class="ppw-own">
-<div class="ppw-own-head">${OWN_ICONS[kind]}<h3>${title}</h3></div>
+  return `<div class="gtd-own">
+<div class="gtd-own-head">${OWN_ICONS[kind]}<h3>${title}</h3></div>
 <p>${card.text}</p>
-${meta ? `<div class="ppw-own-meta">${meta}</div>` : ""}
+${meta ? `<div class="gtd-own-meta">${meta}</div>` : ""}
 </div>`;
 }
 
@@ -471,7 +471,7 @@ ${meta ? `<div class="ppw-own-meta">${meta}</div>` : ""}
  *  Text-only compare tables are not acceptable for published pages. */
 function compareSectionHtml(rows: GenProduct[], heading: string, shortDesc: (d: string, words?: number) => string): string {
   return `${secOpen("compare", "cream")}${eyebrow("Side by Side")}${h2big(heading)}
-<div class="ppw-cmp-wrap"><div class="ppw-cmp-scroll"><table class="ppw-cmp">
+<div class="gtd-cmp-wrap"><div class="gtd-cmp-scroll"><table class="gtd-cmp">
 <tr><th></th><th>Model</th><th>Highlights</th><th>Price</th><th></th></tr>
 ${rows.map((p) => `<tr>
 <td class="ti">${p.imageUrl ? `<img src="${escAttr(p.imageUrl)}" alt="${escAttr(p.title)}" width="96" loading="lazy" /><div>${p.title.split(/\s+/).slice(0, 4).join(" ")}</div>` : ""}</td>
@@ -574,19 +574,19 @@ ${g.intro2 ? para(g.intro2, 22) : ""}
     const logo = brandName ? brandLogo(brandName) : null;
     const glanceRows = (g.brandGlance || []).slice(0, 6);
     const glance = glanceRows.length
-      ? `<div class="ppw-glance">
+      ? `<div class="gtd-glance">
 ${logo ? `<div style="height:44px;display:flex;align-items:center;margin-bottom:12px"><img src="${escAttr(logo)}" alt="${escAttr(brandName || "")} logo" loading="lazy" style="max-height:40px;max-width:70%;object-fit:contain" /></div>` : ""}
-<div class="ppw-glance-label">At a Glance</div>
-<div class="ppw-glance-rows">
-${glanceRows.map((r) => `<div class="ppw-glance-row"><span>${r.label}</span><span>${r.value}</span></div>`).join("\n")}
+<div class="gtd-glance-label">At a Glance</div>
+<div class="gtd-glance-rows">
+${glanceRows.map((r) => `<div class="gtd-glance-row"><span>${r.label}</span><span>${r.value}</span></div>`).join("\n")}
 </div></div>`
       : "";
-    parts.push(`${secOpen(overviewId, "white")}${glance ? `<div class="ppw-split-320" style="gap:32px;align-items:start"><div>${introBlock}</div>${glance}</div>` : introBlock}</section>`);
+    parts.push(`${secOpen(overviewId, "white")}${glance ? `<div class="gtd-split-320" style="gap:32px;align-items:start"><div>${introBlock}</div>${glance}</div>` : introBlock}</section>`);
   } else {
     const hero = heroImageUrl
-      ? `<figure class="ppw-fig"><img src="${escAttr(heroImageUrl)}" alt="${escAttr(collectionTitle)}" loading="lazy" /></figure>`
+      ? `<figure class="gtd-fig"><img src="${escAttr(heroImageUrl)}" alt="${escAttr(collectionTitle)}" loading="lazy" /></figure>`
       : "";
-    parts.push(`${secOpen(overviewId, "white")}${hero ? `<div class="ppw-split-380" style="gap:36px;align-items:start"><div>${introBlock}</div>${hero}</div>` : introBlock}</section>`);
+    parts.push(`${secOpen(overviewId, "white")}${hero ? `<div class="gtd-split-380" style="gap:36px;align-items:start"><div>${introBlock}</div>${hero}</div>` : introBlock}</section>`);
   }
 
   // ── 2. Top picks / Lineup ─────────────────────────────────────────────────
@@ -602,7 +602,7 @@ ${glanceRows.map((r) => `<div class="ppw-glance-row"><span>${r.label}</span><spa
     }).join("\n");
     parts.push(`${secOpen(picksId, "cream")}
 <div style="margin-bottom:24px">${eyebrow(isBrand ? "Featured Models" : "Hand-Picked")}${h2big(isBrand ? `${brandName ? `${brandName} ` : ""}Models to Start With` : `${featured.length === 3 ? "Three" : "The"} We Recommend First`, { mb: 0 })}</div>
-<div class="ppw-g3" style="gap:20px">${cards}</div></section>`);
+<div class="gtd-g3" style="gap:20px">${cards}</div></section>`);
   }
 
   // ── preserved: quiz CTA (after picks) ─────────────────────────────────────
@@ -614,10 +614,10 @@ ${glanceRows.map((r) => `<div class="ppw-glance-row"><span>${r.label}</span><spa
     navItems.push({ id: "quiz", label: "Find Your Match" });
     parts.push(`${secOpen("quiz", "cream")}${eyebrow("Not Sure Where to Start?")}${h2big(q.title || `Find Your ${catLabel} Match`, { mb: q.desc ? 12 : 22 })}
 ${q.desc ? para(q.desc, 22) : ""}
-<a class="ppw-hv-cream ppw-pillar" href="${escAttr(q.url)}">
-<div><div class="ppw-pillar-kicker">Interactive Quiz</div>
-<div class="ppw-pillar-title">${q.title || `Which ${catLabel} Is Right for You?`}</div></div>
-<span class="ppw-pillar-cta">Take the Quiz &rsaquo;</span>
+<a class="gtd-hv-cream gtd-pillar" href="${escAttr(q.url)}">
+<div><div class="gtd-pillar-kicker">Interactive Quiz</div>
+<div class="gtd-pillar-title">${q.title || `Which ${catLabel} Is Right for You?`}</div></div>
+<span class="gtd-pillar-cta">Take the Quiz &rsaquo;</span>
 </a></section>`);
   }
 
@@ -625,13 +625,13 @@ ${q.desc ? para(q.desc, 22) : ""}
     // ── 3. Buying guide (three decisions) ───────────────────────────────────
     if (g.buyingGuide && g.buyingGuide.length > 0) {
       navItems.push({ id: "guide", label: "How to Choose" });
-      const cards = g.buyingGuide.slice(0, 3).map((c, i) => `<div class="ppw-hv-lift ppw-gcard">
-<div class="ppw-ghead"><span class="ppw-gnum">0${i + 1}</span><h3>${c.heading}</h3></div>
-<div class="ppw-glist">${c.bullets.slice(0, 3).map((b) => `<p><strong>${b.label}:</strong> ${b.text}</p>`).join("\n")}</div>
+      const cards = g.buyingGuide.slice(0, 3).map((c, i) => `<div class="gtd-hv-lift gtd-gcard">
+<div class="gtd-ghead"><span class="gtd-gnum">0${i + 1}</span><h3>${c.heading}</h3></div>
+<div class="gtd-glist">${c.bullets.slice(0, 3).map((b) => `<p><strong>${b.label}:</strong> ${b.text}</p>`).join("\n")}</div>
 </div>`).join("\n");
       parts.push(`${secOpen("guide", "white-b")}${eyebrow("Buying Guide")}${h2big(`${catLabel} Buying Guide: Three Decisions`, { mb: 8 })}
 ${para("Answer these in order and the shortlist writes itself.", 26)}
-<div class="ppw-g3" style="gap:20px">${cards}</div></section>`);
+<div class="gtd-g3" style="gap:20px">${cards}</div></section>`);
     }
 
     // ── 3b. Compare table (median-price rule, July 31): coexists with the
@@ -643,8 +643,8 @@ ${para("Answer these in order and the shortlist writes itself.", 26)}
 
     // ── 4. Key benefits ─────────────────────────────────────────────────────
     navItems.push({ id: "benefits", label: "Benefits" });
-    const bCards = g.benefits.slice(0, 4).map((b) => `<div class="ppw-bcard"><span class="ppw-bicon">${b.emoji}</span><div><h3>${b.heading}</h3><p>${b.text}</p></div></div>`).join("\n");
-    parts.push(`${secOpen("benefits", opts.includeCompare ? "white-b" : "cream")}${eyebrow(`Why ${catLabel}`)}${h2big(`Key Benefits of ${catLabel}`, { mb: 26 })}<div class="ppw-g2" style="gap:18px">${bCards}</div></section>`);
+    const bCards = g.benefits.slice(0, 4).map((b) => `<div class="gtd-bcard"><span class="gtd-bicon">${b.emoji}</span><div><h3>${b.heading}</h3><p>${b.text}</p></div></div>`).join("\n");
+    parts.push(`${secOpen("benefits", opts.includeCompare ? "white-b" : "cream")}${eyebrow(`Why ${catLabel}`)}${h2big(`Key Benefits of ${catLabel}`, { mb: 26 })}<div class="gtd-g2" style="gap:18px">${bCards}</div></section>`);
 
     // ── 5. Brands in this category ──────────────────────────────────────────
     if (vendors.length >= 2) {
@@ -653,12 +653,12 @@ ${para("Answer these in order and the shortlist writes itself.", 26)}
       const tiles = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8).map(([v]) => {
         const logo = brandLogo(v);
         const handle = brandCollectionHandle(v);
-        const inner = `<div class="ppw-blogo">${logo ? `<img src="${escAttr(logo)}" alt="${escAttr(v)} logo" loading="lazy" />` : `<span>${v}</span>`}</div>
-<div class="ppw-btile-name">${v}</div>
-${handle ? `<span class="ppw-btile-cta">Shop Brand &rsaquo;</span>` : ""}`;
+        const inner = `<div class="gtd-blogo">${logo ? `<img src="${escAttr(logo)}" alt="${escAttr(v)} logo" loading="lazy" />` : `<span>${v}</span>`}</div>
+<div class="gtd-btile-name">${v}</div>
+${handle ? `<span class="gtd-btile-cta">Shop Brand &rsaquo;</span>` : ""}`;
         return handle
-          ? `<a class="ppw-hv-tile ppw-btile" href="/collections/${handle}">${inner}</a>`
-          : `<div class="ppw-btile">${inner}</div>`;
+          ? `<a class="gtd-hv-tile gtd-btile" href="/collections/${handle}">${inner}</a>`
+          : `<div class="gtd-btile">${inner}</div>`;
       }).join("\n");
       navItems.push({ id: "brands", label: "Brands" });
       parts.push(`${secOpen("brands", "white-b")}
@@ -666,16 +666,16 @@ ${handle ? `<span class="ppw-btile-cta">Shop Brand &rsaquo;</span>` : ""}`;
 <div>${eyebrow("Authorized Dealer")}${h2big("Brands in This Category", { mb: 0 })}</div>
 <span style="font:500 12px/1.5 ${F};color:#6b7280;max-width:34ch;text-align:right">Every brand here ships from an authorized dealer with full manufacturer warranty.</span>
 </div>
-<div class="ppw-g4" style="gap:16px">${tiles}</div></section>`);
+<div class="gtd-g4" style="gap:16px">${tiles}</div></section>`);
     }
 
     // ── 6. Space & placement stats ──────────────────────────────────────────
     if (g.spaceStats && g.spaceStats.length > 0) {
       navItems.push({ id: "space", label: "Space" });
-      const sCards = g.spaceStats.slice(0, 3).map((s) => `<div class="ppw-stat"><div class="ppw-stat-num">${s.stat}</div><h3>${s.heading}</h3><p>${s.text}</p></div>`).join("\n");
+      const sCards = g.spaceStats.slice(0, 3).map((s) => `<div class="gtd-stat"><div class="gtd-stat-num">${s.stat}</div><h3>${s.heading}</h3><p>${s.text}</p></div>`).join("\n");
       parts.push(`${secOpen("space", "cream")}${eyebrow("Before You Buy")}${h2big("Space and Placement", { mb: 8 })}
 ${para("Measure twice. These are the numbers that cause returns.", 24)}
-<div class="ppw-g3" style="gap:18px">${sCards}</div></section>`);
+<div class="gtd-g3" style="gap:18px">${sCards}</div></section>`);
     }
   } else {
     // ── BRAND: tiers ────────────────────────────────────────────────────────
@@ -683,15 +683,15 @@ ${para("Measure twice. These are the numbers that cause returns.", 24)}
       navItems.push({ id: "tiers", label: "The Lineup" });
       const tCards = g.tiers.slice(0, 3).map((t, i) => {
         const mid = i === 1;
-        const specRows = (t.specs || []).slice(0, 4).map((s) => `<div class="ppw-tier-row"><span>${s.label}</span><span>${s.value}</span></div>`).join("\n");
-        return `<div class="ppw-tier${mid ? " ppw-tier-mid" : ""}">
-<div class="ppw-tier-head"><div class="ppw-tier-kicker">${t.tierLabel}</div><div class="ppw-tier-name">${t.name}</div></div>
-<div class="ppw-tier-body">${specRows}<p>${t.text}</p></div>
+        const specRows = (t.specs || []).slice(0, 4).map((s) => `<div class="gtd-tier-row"><span>${s.label}</span><span>${s.value}</span></div>`).join("\n");
+        return `<div class="gtd-tier${mid ? " gtd-tier-mid" : ""}">
+<div class="gtd-tier-head"><div class="gtd-tier-kicker">${t.tierLabel}</div><div class="gtd-tier-name">${t.name}</div></div>
+<div class="gtd-tier-body">${specRows}<p>${t.text}</p></div>
 </div>`;
       }).join("\n");
       parts.push(`${secOpen("tiers", "white-b")}${eyebrow("The Lineup, Explained")}${h2big("Entry, Mid and Flagship", { mb: 8 })}
 ${para("Here is what actually changes between tiers.", 26)}
-<div class="ppw-g3" style="gap:18px;align-items:start">${tCards}</div></section>`);
+<div class="gtd-g3" style="gap:18px;align-items:start">${tCards}</div></section>`);
     }
 
     // ── BRAND: compare table (max 6 models, live prices — primary navigation) ─
@@ -701,11 +701,11 @@ ${para("Here is what actually changes between tiers.", 26)}
     // ── BRAND: honest fit ───────────────────────────────────────────────────
     if (g.fit && ((g.fit.yes || []).length > 0 || (g.fit.no || []).length > 0)) {
       navItems.push({ id: "fit", label: "Honest Fit" });
-      const list = (items: string[], plus: boolean) => items.slice(0, 4).map((t) => `<div class="ppw-fit-row"><span style="color:${plus ? "#16a34a" : "#94a3b8"}">${plus ? "+" : "&ndash;"}</span><span>${t}</span></div>`).join("\n");
+      const list = (items: string[], plus: boolean) => items.slice(0, 4).map((t) => `<div class="gtd-fit-row"><span style="color:${plus ? "#16a34a" : "#94a3b8"}">${plus ? "+" : "&ndash;"}</span><span>${t}</span></div>`).join("\n");
       parts.push(`${secOpen("fit", "white-b")}${eyebrow("Honest Fit")}${h2big(`Who ${brandName || "This Brand"} Is For`)}
-<div class="ppw-g2" style="gap:18px">
-<div class="ppw-fitcard" style="border-top:3px solid #16a34a"><h3 style="color:#16a34a">A Good Fit If You</h3><div class="ppw-fitlist">${list(g.fit.yes || [], true)}</div></div>
-<div class="ppw-fitcard" style="border-top:3px solid #94a3b8"><h3 style="color:#64748b">Look Elsewhere If You</h3><div class="ppw-fitlist">${list(g.fit.no || [], false)}</div></div>
+<div class="gtd-g2" style="gap:18px">
+<div class="gtd-fitcard" style="border-top:3px solid #16a34a"><h3 style="color:#16a34a">A Good Fit If You</h3><div class="gtd-fitlist">${list(g.fit.yes || [], true)}</div></div>
+<div class="gtd-fitcard" style="border-top:3px solid #94a3b8"><h3 style="color:#64748b">Look Elsewhere If You</h3><div class="gtd-fitlist">${list(g.fit.no || [], false)}</div></div>
 </div></section>`);
     }
 
@@ -716,18 +716,18 @@ ${para("Here is what actually changes between tiers.", 26)}
 <span style="flex:none;width:46px;height:46px;border-radius:12px;background:#f9fafb;border:1px solid #eef0f3;display:grid;place-items:center;font-size:20px">${b.emoji}</span>
 <div><h3 style="margin:0 0 6px;font:800 15px/1.2 ${F};text-transform:uppercase;letter-spacing:.02em;color:${NAVY}">${b.heading}</h3><p style="margin:0;font:400 13.5px/1.6 ${F};color:#4b5563">${b.text}</p></div>
 </div>`).join("\n");
-      parts.push(`${secOpen("benefits", "cream")}${eyebrow(`Why ${brandName || catLabel}`)}${h2big(`Key Benefits of ${brandName ? `${brandName} ` : ""}${catLabel}`, { mb: 26 })}<div class="ppw-g2" style="gap:18px">${bbCards}</div></section>`);
+      parts.push(`${secOpen("benefits", "cream")}${eyebrow(`Why ${brandName || catLabel}`)}${h2big(`Key Benefits of ${brandName ? `${brandName} ` : ""}${catLabel}`, { mb: 26 })}<div class="gtd-g2" style="gap:18px">${bbCards}</div></section>`);
     }
 
     // ── BRAND: certifications & construction ────────────────────────────────
     if (g.certs && g.certs.items && g.certs.items.length > 0) {
       navItems.push({ id: "certs", label: "Build Quality" });
       const shield = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E40AF" stroke-width="1.8" stroke-linecap="round" style="flex:none;margin-top:2px"><path d="M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6z"></path></svg>`;
-      const tiles = g.certs.items.slice(0, 4).map((c) => `<div class="ppw-ctile">${shield}<div><div class="ppw-ctile-title">${c.title}</div><div class="ppw-ctile-sub">${c.text}</div></div></div>`).join("\n");
+      const tiles = g.certs.items.slice(0, 4).map((c) => `<div class="gtd-ctile">${shield}<div><div class="gtd-ctile-title">${c.title}</div><div class="gtd-ctile-sub">${c.text}</div></div></div>`).join("\n");
       const detailImg = featured[1]?.imageUrl || featured[0]?.imageUrl || null;
-      const fig = detailImg ? `<figure class="ppw-fig"><img src="${escAttr(detailImg)}" alt="${escAttr(brandName || catLabel)} construction detail" loading="lazy" /></figure>` : "";
-      const inner = `${eyebrow("Build Quality")}${h2big("Certifications and Construction", { mb: 18 })}${para(g.certs.para, 20)}<div class="ppw-g2" style="gap:14px">${tiles}</div>`;
-      parts.push(`${secOpen("certs", "white-b")}${fig ? `<div class="ppw-split-340" style="gap:32px;align-items:start"><div>${inner}</div>${fig}</div>` : inner}</section>`);
+      const fig = detailImg ? `<figure class="gtd-fig"><img src="${escAttr(detailImg)}" alt="${escAttr(brandName || catLabel)} construction detail" loading="lazy" /></figure>` : "";
+      const inner = `${eyebrow("Build Quality")}${h2big("Certifications and Construction", { mb: 18 })}${para(g.certs.para, 20)}<div class="gtd-g2" style="gap:14px">${tiles}</div>`;
+      parts.push(`${secOpen("certs", "white-b")}${fig ? `<div class="gtd-split-340" style="gap:32px;align-items:start"><div>${inner}</div>${fig}</div>` : inner}</section>`);
     }
 
     // ── BRAND: story ────────────────────────────────────────────────────────
@@ -759,7 +759,7 @@ ${g.story.slice(0, 2).map((p) => para(p)).join("\n")}
         ].filter(Boolean);
     parts.push(`${secOpen("ownership", "navy")}
 <div style="margin-bottom:24px">${eyebrow(isAccessory ? "Warranty &middot; Care &middot; Returns" : "Delivery &middot; Install &middot; Warranty &middot; Care", true)}${h2big(isAccessory ? "Ownership: Warranty, Care and Returns" : "Ownership: Delivery, Install, Warranty and Care", { mb: 0, color: "#fff" })}</div>
-<div class="${cards.length === 3 ? "ppw-g3" : "ppw-g2"}" style="gap:16px">
+<div class="${cards.length === 3 ? "gtd-g3" : "gtd-g2"}" style="gap:16px">
 ${cards.join("\n")}
 </div></section>`);
   }
@@ -768,35 +768,35 @@ ${cards.join("\n")}
   if (preserved.learningLinks.length >= 3) {
     navItems.push({ id: "learning", label: "Learn" });
     const [pillar, ...rest] = preserved.learningLinks;
-    const tiles = rest.slice(0, 3).map((l) => `<a class="ppw-hv-tile ppw-ltile" href="${escAttr(l.url)}">
-<div class="ppw-ltile-kicker">From the Learning Center</div>
-<div class="ppw-ltile-title">${l.title}</div>
+    const tiles = rest.slice(0, 3).map((l) => `<a class="gtd-hv-tile gtd-ltile" href="${escAttr(l.url)}">
+<div class="gtd-ltile-kicker">From the Learning Center</div>
+<div class="gtd-ltile-title">${l.title}</div>
 </a>`).join("\n");
     parts.push(`${secOpen("learning", "white-b")}${eyebrow("Read Before You Buy")}${h2big(`Complete ${catLabel} Learning Center`, { mb: 22 })}
-<a class="ppw-hv-cream ppw-pillar" href="${escAttr(pillar.url)}">
-<div><div class="ppw-pillar-kicker">${pillar.url.includes("/pages/") ? "Ultimate Guide" : "Pillar Guide"}</div>
-<div class="ppw-pillar-title">${pillar.title}</div></div>
-<span class="ppw-pillar-cta">Read Guide &rsaquo;</span>
+<a class="gtd-hv-cream gtd-pillar" href="${escAttr(pillar.url)}">
+<div><div class="gtd-pillar-kicker">${pillar.url.includes("/pages/") ? "Ultimate Guide" : "Pillar Guide"}</div>
+<div class="gtd-pillar-title">${pillar.title}</div></div>
+<span class="gtd-pillar-cta">Read Guide &rsaquo;</span>
 </a>
-<div class="ppw-g3" style="gap:16px">${tiles}</div></section>`);
+<div class="gtd-g3" style="gap:16px">${tiles}</div></section>`);
   }
 
   // ── FAQ (.faq-modern, closes the page) ────────────────────────────────────
   navItems.push({ id: "faq", label: "FAQ" });
   parts.push(`${secOpen("faq", "cream")}${eyebrow("Questions")}${h2big(`${isBrand && brandName ? brandName : catLabel} FAQ`)}
-<div class="ppw-faqcol">
+<div class="gtd-faqcol">
 ${g.faq.map((f, i) => faqItem(f.q, f.a, i === 0)).join("\n")}
 </div></section>`);
 
   // ── Nav pills (built last, placed first) ──────────────────────────────────
-  const nav = `<nav aria-label="Quick navigation" style="display:flex;flex-wrap:wrap;gap:8px;padding:18px ${PADX} 0">${navItems.map((n) => `<a class="ppw-hv-nav ppw-pill" href="#${n.id}">${n.label}</a>`).join("")}</nav>`;
+  const nav = `<nav aria-label="Quick navigation" style="display:flex;flex-wrap:wrap;gap:8px;padding:18px ${PADX} 0">${navItems.map((n) => `<a class="gtd-hv-nav gtd-pill" href="#${n.id}">${n.label}</a>`).join("")}</nav>`;
 
   // ── Schema (single @graph) ────────────────────────────────────────────────
   const graph: any[] = [];
   graph.push({
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://peakprimalwellness.com" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://greenthumbdepot.com" },
       { "@type": "ListItem", position: 2, name: collectionTitle, item: collectionUrl },
     ],
   });
@@ -807,10 +807,10 @@ ${g.faq.map((f, i) => faqItem(f.q, f.a, i === 0)).join("\n")}
   const itemListSrc = isBrand ? selectFeatured(allProducts, Math.min(6, allProducts.length), { title: collectionTitle, keyword: brandName || catLabel }) : featured;
   graph.push({
     "@type": "ItemList",
-    name: isBrand && brandName ? `${brandName} Products at Peak Primal Wellness` : `Featured ${catLabel} at Peak Primal Wellness`,
+    name: isBrand && brandName ? `${brandName} Products at Green Thumb Depot` : `Featured ${catLabel} at Green Thumb Depot`,
     itemListElement: itemListSrc.map((p, i) => ({
       "@type": "ListItem", position: i + 1, name: p.title,
-      url: `https://peakprimalwellness.com/products/${p.handle}`,
+      url: `https://greenthumbdepot.com/products/${p.handle}`,
       offers: { "@type": "Offer", price: String(Math.round(p.price)), priceCurrency: "USD" },
     })),
   });
@@ -819,7 +819,7 @@ ${g.faq.map((f, i) => faqItem(f.q, f.a, i === 0)).join("\n")}
   }
   const schema = `<script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": graph })}</script>`;
 
-  return `<div class="ppw-collection">\n${nav}\n${parts.join("\n")}\n${schema}\n</div>`;
+  return `<div class="gtd-collection">\n${nav}\n${parts.join("\n")}\n${schema}\n</div>`;
 }
 
 /** Plural/suffix-tolerant keyword presence over the rendered page text.

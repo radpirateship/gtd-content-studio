@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import PPWChatPanel from "@/components/PPWChatPanel";
+import GTDChatPanel from "@/components/GTDChatPanel";
 
-const SYSTEM_PROMPT = `You are the PPW Content Studio assistant for Peak Primal Wellness, a premium DTC wellness brand selling infrared saunas, cold plunges, red light therapy, hyperbaric chambers, barrel saunas, and hydrogen water systems.
+const SYSTEM_PROMPT = `You are the GTD Content Studio assistant for Green Thumb Depot, a premium DTC wellness brand selling infrared saunas, cold plunges, red light therapy, hyperbaric chambers, barrel saunas, and hydrogen water systems.
 
 You have DIRECT ACCESS to Content Studio's data and functionality through tools. You can search articles, browse collections, check products, generate content, publish to Shopify, and update existing articles.
 
@@ -71,7 +71,7 @@ export default function ChatWrapper() {
         }}
       >
         {open && (
-          <PPWChatPanel
+          <GTDChatPanel
             systemPrompt={SYSTEM_PROMPT}
             welcomeMessage={
               "Hey! I'm your Content Studio Copilot. I have direct access to your articles, collections, products, and can generate + publish content.\n\nTry: \"Show me our infrared sauna articles\" or \"What collections need optimization?\""

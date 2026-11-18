@@ -74,7 +74,7 @@ function PromptCardItem({
         />
         {useBrandStyle && (
           <div style={{ marginTop: 4, fontSize: 11, color: '#9ca3af' }}>
-            + PPW brand style will be appended automatically
+            + GTD brand style will be appended automatically
           </div>
         )}
       </div>
@@ -312,7 +312,7 @@ export function ImageStudio() {
                 }} />
               </div>
               <span style={{ fontSize: 12, color: '#6b7280' }}>
-                PPW brand style {useBrandStyle ? <strong style={{ color: '#0F6E56' }}>ON</strong> : 'OFF'}
+                GTD brand style {useBrandStyle ? <strong style={{ color: '#0F6E56' }}>ON</strong> : 'OFF'}
               </span>
             </label>
 

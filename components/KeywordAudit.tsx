@@ -439,7 +439,7 @@ export function KeywordAudit() {
         {bulkLog.length > 0 && <div style={{ fontSize: 11, fontFamily: 'monospace', maxHeight: 120, overflowY: 'auto', border: '1px solid var(--border)', borderRadius: 6, padding: 6, marginBottom: 8 }}>{bulkLog.map((l, i) => <div key={i}>{l}</div>)}</div>}
         {rows.length === 0 && <div style={{ fontSize: 12, color: 'var(--text3)' }}>No research loaded yet. Click "Load bundled research".</div>}
         {visible.map((r) => (
-          <div key={r.slug} onClick={() => loadDetail(r.slug)} style={{ padding: '8px 10px', borderRadius: 6, cursor: 'pointer', marginBottom: 4, background: selected === r.slug ? 'var(--ppw-accent-light)' : 'transparent', border: '1px solid ' + (selected === r.slug ? 'var(--ppw-accent)' : 'var(--border)') }}>
+          <div key={r.slug} onClick={() => loadDetail(r.slug)} style={{ padding: '8px 10px', borderRadius: 6, cursor: 'pointer', marginBottom: 4, background: selected === r.slug ? 'var(--gtd-accent-light)' : 'transparent', border: '1px solid ' + (selected === r.slug ? 'var(--gtd-accent)' : 'var(--border)') }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, fontWeight: 600 }}>
               <span><input type="checkbox" checked={ticked.has(r.slug)} onClick={(e) => e.stopPropagation()} onChange={() => toggleTick(r.slug)} style={{ marginRight: 6 }} />{r.slug}</span>
               <span style={{ fontSize: 10, color: 'var(--text3)' }}>{r.category || 'Unsorted'}</span>
@@ -458,7 +458,7 @@ export function KeywordAudit() {
         {!detail && <div style={{ color: 'var(--text3)', fontSize: 13 }}>{selected ? 'Loading…' : 'Pick a collection on the left.'}</div>}
         {detail && R && (
           <div style={{ maxWidth: 980 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 4px' }}>/collections/{detail.slug} <a href={`https://peakprimalwellness.com/collections/${detail.slug}`} target="_blank" rel="noreferrer" style={{ fontSize: 12, marginLeft: 8 }}>open</a></h2>
+            <h2 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 4px' }}>/collections/{detail.slug} <a href={`https://greenthumbdepot.com/collections/${detail.slug}`} target="_blank" rel="noreferrer" style={{ fontSize: 12, marginLeft: 8 }}>open</a></h2>
             <div style={{ fontSize: 12, color: 'var(--text3)', marginBottom: 12 }}>Research pulled {R.pulled} · GSC {R.gsc.period}: {R.gsc.impressions} impressions, {R.gsc.clicks} clicks, {R.gsc.queries} queries · {detail.collection?.product_count ?? '?'} products</div>
 
             <section style={{ marginBottom: 14, padding: 12, border: '1px solid var(--border)', borderRadius: 8 }}>
@@ -469,7 +469,7 @@ export function KeywordAudit() {
               <div style={{ fontSize: 12 }}><b>Row keywords:</b> {detail.collection?.primary_keyword || '(none)'}{detail.collection?.secondary_keywords?.length ? ` + ${detail.collection.secondary_keywords.join(', ')}` : ''}</div>
             </section>
 
-            <section style={{ marginBottom: 14, padding: 12, border: '2px solid var(--ppw-accent)', borderRadius: 8 }}>
+            <section style={{ marginBottom: 14, padding: 12, border: '2px solid var(--gtd-accent)', borderRadius: 8 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                 <div style={{ fontWeight: 700, fontSize: 13 }}>Recommendation {detail.generated_at ? <span style={{ fontWeight: 400, color: 'var(--text3)' }}>· generated {new Date(detail.generated_at).toLocaleString()}</span> : null}</div>
                 <div style={{ display: 'flex', gap: 6 }}>

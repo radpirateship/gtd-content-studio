@@ -78,7 +78,7 @@ export function RevampGenerationProgress({ currentStep, errorMessage, failedStep
           <div className="flex items-center gap-3">
             <div
               className="h-8 w-8 rounded-full flex items-center justify-center"
-              style={{ background: 'var(--ppw-accent)' }}
+              style={{ background: 'var(--gtd-accent)' }}
             >
               <Check className="h-5 w-5 text-white" />
             </div>
@@ -88,7 +88,7 @@ export function RevampGenerationProgress({ currentStep, errorMessage, failedStep
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <Loader2 className="h-6 w-6 animate-spin" style={{ color: 'var(--ppw-accent)' }} />
+            <Loader2 className="h-6 w-6 animate-spin" style={{ color: 'var(--gtd-accent)' }} />
             <h2 className="text-[16px] font-semibold" style={{ color: 'var(--text1)' }}>
               Generating Your Article
             </h2>
@@ -106,9 +106,9 @@ export function RevampGenerationProgress({ currentStep, errorMessage, failedStep
             const isStepDone = currentStepIndex > index
             const isFuture = currentStepIndex < index
 
-            let circleBackground = isStepDone || isActive ? 'var(--ppw-accent)' : 'var(--surface)'
+            let circleBackground = isStepDone || isActive ? 'var(--gtd-accent)' : 'var(--surface)'
             let circleColor = isStepDone || isActive ? 'white' : 'var(--text3)'
-            let labelColor = isActive ? 'var(--ppw-accent)' : isStepDone ? 'var(--text1)' : 'var(--text3)'
+            let labelColor = isActive ? 'var(--gtd-accent)' : isStepDone ? 'var(--text1)' : 'var(--text3)'
             let descColor = isActive || isStepDone ? 'var(--text2)' : 'var(--text4)'
 
             if (isFailedStep) {
@@ -148,7 +148,7 @@ export function RevampGenerationProgress({ currentStep, errorMessage, failedStep
                       className="w-0.5 my-2 flex-1"
                       style={{
                         height: '28px',
-                        background: isStepDone ? 'var(--ppw-accent)' : 'var(--border)',
+                        background: isStepDone ? 'var(--gtd-accent)' : 'var(--border)',
                       }}
                     />
                   )}
@@ -228,7 +228,7 @@ export function RevampGenerationProgress({ currentStep, errorMessage, failedStep
       {isDone && (
         <div
           className="mt-6 p-4 rounded-lg border"
-          style={{ background: 'var(--bg)', borderColor: 'var(--ppw-accent)' }}
+          style={{ background: 'var(--bg)', borderColor: 'var(--gtd-accent)' }}
         >
           <p className="text-[12px]" style={{ color: 'var(--text2)' }}>
             Your article has been revamped with improved structure, new content, FAQ section, and schema markup. Ready to publish!

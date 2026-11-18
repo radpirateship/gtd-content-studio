@@ -845,7 +845,7 @@ export function RevampBacklogView({ onOpenRevamp, onEditArticle }: RevampBacklog
                 size="sm"
                 onClick={runRevamp}
                 disabled={bulkBusy || runState.running}
-                style={{ background: 'var(--ppw-accent, #1D9E75)', color: '#fff' }}
+                style={{ background: 'var(--gtd-accent, #1D9E75)', color: '#fff' }}
                 title="Regenerate on v2, keep images and URL, update the live article in place"
               >
                 {runState.running ? <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" /> : null}

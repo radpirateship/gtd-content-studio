@@ -14,7 +14,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { callAI } from '@/lib/ai';
-import { PPW_GLOBAL_STYLE } from '@/lib/ppw-image-style';
+import { GTD_GLOBAL_STYLE } from '@/lib/gtd-image-style';
 import { generateImageWithModel } from '@/lib/imageGeneration';
 
 export async function POST(req: NextRequest) {
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       }
 
       const fullPrompt = useBrandStyle
-        ? `${prompt}\n${PPW_GLOBAL_STYLE}`
+        ? `${prompt}\n${GTD_GLOBAL_STYLE}`
         : prompt;
 
       const result = await generateImageWithModel(
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'message is required' }, { status: 400 });
       }
 
-      const systemPrompt = `You are an expert AI image prompt writer for Peak Primal Wellness, a premium wellness equipment brand (peakprimalwellness.com).
+      const systemPrompt = `You are an expert AI image prompt writer for Green Thumb Depot, a premium wellness equipment brand (greenthumbdepot.com).
 
 Your job: read the user's natural-language request and return an array of detailed, ready-to-use image generation prompts for Gemini Imagen.
 

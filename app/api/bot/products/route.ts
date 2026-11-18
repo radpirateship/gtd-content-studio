@@ -3,7 +3,7 @@
 // GET /api/bot/products   (read-only, Bearer token, JSON only)
 //
 // Product titles, handles, prices and Shopify CDN image URLs for external
-// agents (Grok Bot, PPW - Email). Same data source as Library > Products:
+// agents (Grok Bot, GTD - Email). Same data source as Library > Products:
 // the live Shopify Admin API, with the cached products table as fallback when
 // Shopify cannot be reached. Nothing order, customer or checkout related.
 //
@@ -63,7 +63,7 @@ async function cachedProducts(opts: { vendor?: string | null; collection?: strin
       compareAtPrice: row.compare_at_price || null,
       sku: row.sku || "",
       images: row.image_url ? [row.image_url] : [],
-      url: row.url || (row.handle ? `https://peakprimalwellness.com/products/${row.handle}` : ""),
+      url: row.url || (row.handle ? `https://greenthumbdepot.com/products/${row.handle}` : ""),
       updatedAt: null,
       inStock: true,
     }));

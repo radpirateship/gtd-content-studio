@@ -34,7 +34,7 @@ export default function LoginPage() {
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0f172a" }}>
       <form onSubmit={handleSubmit} style={{ background: "#fff", padding: "2.5rem", borderRadius: 12, width: 360, boxShadow: "0 10px 30px rgba(0,0,0,0.3)" }}>
-        <h1 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4, color: "#0f172a" }}>PPW Content Studio v2</h1>
+        <h1 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4, color: "#0f172a" }}>GTD Content Studio v2</h1>
         <p style={{ fontSize: 13, color: "#64748b", marginBottom: 20 }}>Enter the site password to continue.</p>
         <label htmlFor="site-password" style={{ fontSize: 12, fontWeight: 600, color: "#334155", display: "block", marginBottom: 6 }}>
           Password

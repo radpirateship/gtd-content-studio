@@ -97,7 +97,7 @@ export async function POST(_request: NextRequest) {
       const results = await Promise.allSettled(
         batch.map(({ article, blogHandle }) => {
           const body = article.body_html || "";
-          const sourceUrl = `https://peakprimalwellness.com/blogs/${blogHandle}/${article.handle}`;
+          const sourceUrl = `https://greenthumbdepot.com/blogs/${blogHandle}/${article.handle}`;
           return sql`
             INSERT INTO blog_post_tracking (
               slug,
@@ -125,8 +125,8 @@ export async function POST(_request: NextRequest) {
               ${Boolean(article.image?.src)},
               ${/<img/i.test(body)},
               ${/href="\/blogs\//i.test(body)},
-              ${/ppw-card|ppw-product/i.test(body)},
-              ${/<details|ppw-faq/i.test(body)},
+              ${/gtd-card|gtd-product/i.test(body)},
+              ${/<details|gtd-faq/i.test(body)},
               NOW(),
               NOW()
             )

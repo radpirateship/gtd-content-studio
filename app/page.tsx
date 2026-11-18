@@ -263,17 +263,17 @@ export default function ContentStudio() {
       "@type": "Article",
       "headline": article.title,
       "description": article.metaDescription,
-      "author": { "@type": "Organization", "name": "Peak Primal Wellness" },
+      "author": { "@type": "Organization", "name": "Green Thumb Depot" },
       "publisher": {
         "@type": "Organization",
-        "name": "Peak Primal Wellness",
-        "logo": { "@type": "ImageObject", "url": "https://peakprimalwellness.com/logo.png" },
+        "name": "Green Thumb Depot",
+        "logo": { "@type": "ImageObject", "url": "https://greenthumbdepot.com/logo.png" },
       },
       "datePublished": new Date().toISOString(),
       "dateModified": new Date().toISOString(),
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": `https://peakprimalwellness.com/blogs/wellness/${article.slug}`,
+        "@id": `https://greenthumbdepot.com/blogs/guides/${article.slug}`,
       },
     }
     if (article.faqs && article.faqs.length > 0) {
@@ -437,7 +437,7 @@ export default function ContentStudio() {
           outline,
           products: products.map(p => ({
             title: p.title, description: p.description, price: p.price, imageUrl: p.imageUrl,
-            url: p.handle ? `https://peakprimalwellness.com/products/${p.handle}` : p.url, handle: p.handle,
+            url: p.handle ? `https://greenthumbdepot.com/products/${p.handle}` : p.url, handle: p.handle,
             vendor: p.vendor,
           })),
           relatedArticles,
@@ -457,7 +457,7 @@ export default function ContentStudio() {
         question: f.question, answer: f.briefAnswer,
       })) || []
 
-      const metaDescription = input.metaDescription || `Learn about ${input.keyword}. This comprehensive guide from Peak Primal Wellness covers everything you need to know about ${input.title.toLowerCase()}.`.slice(0, 160)
+      const metaDescription = input.metaDescription || `Learn about ${input.keyword}. This comprehensive guide from Green Thumb Depot covers everything you need to know about ${input.title.toLowerCase()}.`.slice(0, 160)
       const titleTag = input.titleTag || input.title
       const slug = input.shopifySlug || generateSlug(input.title)
       const textContent = content.replace(/<[^>]*>/g, ' ')
@@ -471,7 +471,7 @@ export default function ContentStudio() {
         products: products.map(p => ({
           ...p,
           tags: typeof p.tags === 'string' ? p.tags.split(',').map(t => t.trim()) : p.tags || [],
-          url: p.handle ? `https://peakprimalwellness.com/products/${p.handle}` : '#',
+          url: p.handle ? `https://greenthumbdepot.com/products/${p.handle}` : '#',
           isAvailable: true,
         })),
         faqs, schemaMarkup: '', category: input.category, keyword: input.keyword,

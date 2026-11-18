@@ -204,7 +204,7 @@ export function BrandCollectionsCreate() {
                         <div className="text-xs text-muted-foreground">{types}</div>
                       </td>
                       <td className="p-2 font-mono text-xs">
-                        <a href={`https://peakprimalwellness.com${r.path}`} target="_blank" rel="noreferrer" className="underline">{r.path}</a>
+                        <a href={`https://greenthumbdepot.com${r.path}`} target="_blank" rel="noreferrer" className="underline">{r.path}</a>
                         {r.queueRow.exists && <div className="text-muted-foreground">queue row exists{r.queueRow.shopifyId ? ` (id ${r.queueRow.shopifyId})` : ""}</div>}
                       </td>
                       <td className="p-2 text-right">{r.products.live} / {r.products.total}</td>

@@ -1,5 +1,5 @@
 /**
- * Lightweight error reporter. PPW does not use Sentry, so this logs to the
+ * Lightweight error reporter. GTD does not use Sentry, so this logs to the
  * server console (visible in Vercel logs). Signature kept compatible with the
  * NN version so ported routes can call reportError(err, context) unchanged.
  */

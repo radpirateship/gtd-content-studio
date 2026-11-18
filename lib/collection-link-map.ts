@@ -1,6 +1,6 @@
 /**
- * PPW collection link injection map — GENERATED from
- * PPW_Complete_Collection_Optimization_6.xlsx (July 4, 2026), approved by Ryan.
+ * GTD collection link injection map — GENERATED from
+ * GTD_Complete_Collection_Optimization_6.xlsx (July 4, 2026), approved by Ryan.
  * URLs are LIVE Shopify handles from the spreadsheet (several differ from the
  * app's internal slugs — see APP_SLUG_TO_LIVE_HANDLE). To adjust a pairing,
  * edit SECONDARY_MAP. To activate a NEW sauna collection once it exists in

@@ -1,12 +1,12 @@
 // app/api/content-brain/vet/route.ts
 // AI vetting: assess a content_brain row against keyword collisions, strategic
-// fit for PPW, and brief completeness. Returns a traffic_light + reasoning.
+// fit for GTD, and brief completeness. Returns a traffic_light + reasoning.
 // Does NOT save — the front end persists after the user confirms or overrides.
 import { NextRequest, NextResponse } from 'next/server'
 import { getSQL } from '@/lib/db'
 
 const SYSTEM_PROMPT = `
-You are the Content Brain vetting assistant for Peak Primal Wellness (PPW), a wellness equipment retailer
+You are the Content Brain vetting assistant for Green Thumb Depot (GTD), a wellness equipment retailer
 with topical authority clusters across Saunas, Recovery, Wellness, and Cardio.
 
 Your job: given a candidate article and the list of titles + keywords already in the content brain,
@@ -20,7 +20,7 @@ TRAFFIC LIGHT GUIDANCE:
 
 Assess:
 1. KEYWORD COLLISION (case-insensitive, fuzzy): does this target the same search intent as an existing row?
-2. STRATEGIC FIT: does it fit one of PPW's hubs and advance topical authority?
+2. STRATEGIC FIT: does it fit one of GTD's hubs and advance topical authority?
 3. BRIEF COMPLETENESS: does it have a clear article_type, audience, and cluster mapping?
 
 OUTPUT FORMAT — CRITICAL:

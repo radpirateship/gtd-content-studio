@@ -3,7 +3,7 @@
 // components/CollectionDetail.tsx
 //
 // The detail area for a single collection. Everything that used to live in
-// PPW_Complete_Collection_Optimization.xlsx, on one screen, editable in place.
+// GTD_Complete_Collection_Optimization.xlsx, on one screen, editable in place.
 //
 // Usage inside the collections tab:
 //   const [selected, setSelected] = useState<string | null>(null)

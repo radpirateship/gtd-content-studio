@@ -5,9 +5,9 @@ import { GUIDE_KEYWORDS } from "@/lib/collection-guide-keywords";
 /**
  * POST /api/collections/restore-keywords
  *
- * Bulk-resets primary_keyword + secondary_keywords on ppw_collections to the
+ * Bulk-resets primary_keyword + secondary_keywords on gtd_collections to the
  * CANONICAL values from the collection guide (lib/collection-guide-keywords.ts,
- * generated from PPW_Complete_Collection_Optimization_6.xlsx). Used to undo
+ * generated from GTD_Complete_Collection_Optimization_6.xlsx). Used to undo
  * the keyword inflation earlier generate runs caused by auto-merging Ahrefs
  * terms. Safe to run repeatedly. Collections not in the guide are untouched.
  */
@@ -22,7 +22,7 @@ export async function POST() {
     for (const e of GUIDE_KEYWORDS) {
       // TEXT[] — pass a JS array, never JSON.stringify
       const rows = (await sql`
-        UPDATE ppw_collections
+        UPDATE gtd_collections
         SET primary_keyword = ${e.primary}, secondary_keywords = ${e.secondaries}
         WHERE slug = ${e.slug} RETURNING slug
       `) as Array<{ slug: string }>;

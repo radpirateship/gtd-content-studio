@@ -147,7 +147,7 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
   const fieldLabel = "text-[10px] font-mono font-medium tracking-[0.6px] uppercase"
   const inputBase = "w-full rounded-md border px-3 py-[9px] text-[13px] font-sans outline-none transition-all"
   const inputStyle = { background: 'var(--bg)', borderColor: 'var(--border)', color: 'var(--text1)' }
-  const focusStyle = "focus:border-[var(--ppw-accent)] focus:shadow-[0_0_0_3px_rgba(26,122,84,0.07)]"
+  const focusStyle = "focus:border-[var(--gtd-accent)] focus:shadow-[0_0_0_3px_rgba(26,122,84,0.07)]"
 
   const runModes: { id: RunMode; icon: React.ReactNode; name: string; desc: string }[] = [
     { id: 'step', icon: <Search className="h-4 w-4" />, name: 'Step-by-Step', desc: 'Review and approve each step before proceeding' },
@@ -200,7 +200,7 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
 
             {/* Run Mode */}
             <div className="flex flex-col gap-2.5">
-              <div className={sectionLabel} style={{ color: 'var(--ppw-accent)', borderBottom: '1px solid var(--surface2)' }}>
+              <div className={sectionLabel} style={{ color: 'var(--gtd-accent)', borderBottom: '1px solid var(--surface2)' }}>
                 Run Mode
               </div>
               <div className="grid grid-cols-3 gap-3">
@@ -219,14 +219,14 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
                       <div
                         className="flex h-[14px] w-[14px] items-center justify-center rounded-full border-[1.5px]"
                         style={{
-                          borderColor: runMode === mode.id ? 'var(--ppw-accent)' : 'var(--border2)',
+                          borderColor: runMode === mode.id ? 'var(--gtd-accent)' : 'var(--border2)',
                         }}
                       >
                         {runMode === mode.id && (
-                          <div className="h-[7px] w-[7px] rounded-full" style={{ background: 'var(--ppw-accent)' }} />
+                          <div className="h-[7px] w-[7px] rounded-full" style={{ background: 'var(--gtd-accent)' }} />
                         )}
                       </div>
-                      <span className="text-[13px] font-medium" style={{ color: runMode === mode.id ? 'var(--ppw-accent)' : 'var(--text1)' }}>
+                      <span className="text-[13px] font-medium" style={{ color: runMode === mode.id ? 'var(--gtd-accent)' : 'var(--text1)' }}>
                         {mode.name}
                       </span>
                       <span className="ml-auto opacity-70">{mode.icon}</span>
@@ -239,7 +239,7 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
 
             {/* Topic */}
             <div className="flex flex-col gap-2.5">
-              <div className={sectionLabel} style={{ color: 'var(--ppw-accent)', borderBottom: '1px solid var(--surface2)' }}>
+              <div className={sectionLabel} style={{ color: 'var(--gtd-accent)', borderBottom: '1px solid var(--surface2)' }}>
                 Topic
               </div>
 
@@ -293,14 +293,14 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
                 <label className={fieldLabel} style={{ color: 'var(--text3)' }}>Product Collection <span style={{ textTransform: 'none', opacity: 0.55 }}>(optional — search; featured products come from here)</span></label>
                 <input
                   type="text"
-                  list="ppw-product-collections"
+                  list="gtd-product-collections"
                   value={formData.secondaryCollection}
                   onChange={(e) => handleChange('secondaryCollection', e.target.value)}
                   placeholder="Search collections, e.g. Auroom Saunas"
                   className={`${inputBase} ${focusStyle}`}
                   style={inputStyle}
                 />
-                <datalist id="ppw-product-collections">
+                <datalist id="gtd-product-collections">
                   {liveCollections.map(c => <option key={c.handle} value={c.handle}>{c.title}</option>)}
                 </datalist>
               </div>
@@ -328,7 +328,7 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
 
             {/* SEO */}
             <div className="flex flex-col gap-2.5">
-              <div className={sectionLabel} style={{ color: 'var(--ppw-accent)', borderBottom: '1px solid var(--surface2)' }}>
+              <div className={sectionLabel} style={{ color: 'var(--gtd-accent)', borderBottom: '1px solid var(--surface2)' }}>
                 SEO Meta Tags
               </div>
 
@@ -343,7 +343,7 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
                   type="text"
                   value={formData.titleTag}
                   onChange={(e) => handleChange('titleTag', e.target.value)}
-                  placeholder="e.g. Best Infrared Saunas for Home Use (2026) | Peak Primal Wellness"
+                  placeholder="e.g. Best Infrared Saunas for Home Use (2026) | Green Thumb Depot"
                   className={`${inputBase} ${focusStyle}`}
                   style={inputStyle}
                 />
@@ -369,7 +369,7 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
 
             {/* Configuration */}
             <div className="flex flex-col gap-2.5">
-              <div className={sectionLabel} style={{ color: 'var(--ppw-accent)', borderBottom: '1px solid var(--surface2)' }}>
+              <div className={sectionLabel} style={{ color: 'var(--gtd-accent)', borderBottom: '1px solid var(--surface2)' }}>
                 Configuration
               </div>
 
@@ -426,7 +426,7 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
 
             {/* Content Modules */}
             <div className="flex flex-col gap-2.5">
-              <div className={sectionLabel} style={{ color: 'var(--ppw-accent)', borderBottom: '1px solid var(--surface2)' }}>
+              <div className={sectionLabel} style={{ color: 'var(--gtd-accent)', borderBottom: '1px solid var(--surface2)' }}>
                 Content Modules
               </div>
 
@@ -453,7 +453,7 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
                       </div>
                       <div
                         className="relative h-5 w-9 shrink-0 rounded-full transition-all"
-                        style={{ background: isOn ? 'var(--ppw-accent)' : 'var(--surface3)' }}
+                        style={{ background: isOn ? 'var(--gtd-accent)' : 'var(--surface3)' }}
                       >
                         <div
                           className="absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform"
@@ -468,7 +468,7 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
 
             {/* Additional Context */}
             <div className="flex flex-col gap-2.5">
-              <div className={sectionLabel} style={{ color: 'var(--ppw-accent)', borderBottom: '1px solid var(--surface2)' }}>
+              <div className={sectionLabel} style={{ color: 'var(--gtd-accent)', borderBottom: '1px solid var(--surface2)' }}>
                 Additional Context <span style={{ color: 'var(--text4)', fontSize: '10px', textTransform: 'none', letterSpacing: 0 }}>(optional)</span>
               </div>
               <div className="flex flex-col gap-1.5">
@@ -507,7 +507,7 @@ export function NewArticleView({ onGenerate, isGenerating }: NewArticleViewProps
             onClick={handleSubmit}
             disabled={isGenerating || !formData.title || !formData.keyword}
             className="rounded-md px-5 py-2.5 text-[14px] font-semibold text-white transition-all disabled:opacity-50"
-            style={{ background: isGenerating ? 'var(--text3)' : 'var(--ppw-accent)' }}
+            style={{ background: isGenerating ? 'var(--text3)' : 'var(--gtd-accent)' }}
           >
             {isGenerating ? 'Generating...' : runMode === 'auto' ? 'Start Auto-Run' : runMode === 'bulk' ? 'Add to Queue' : 'Generate Outline \u2192'}
           </button>

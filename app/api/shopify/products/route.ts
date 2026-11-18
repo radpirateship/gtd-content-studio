@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       handle: p.handle,
       price: p.priceRange?.minVariantPrice?.amount || "0",
       imageUrl: p.images?.edges?.[0]?.node?.url || null,
-      url: `https://peakprimalwellness.com/products/${p.handle}`,
+      url: `https://greenthumbdepot.com/products/${p.handle}`,
       availableForSale: p.availableForSale,
     }));
 

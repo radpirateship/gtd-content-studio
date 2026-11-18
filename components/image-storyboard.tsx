@@ -169,7 +169,7 @@ export function ImageStoryboard({
           const res = await fetch('/api/articles/upload-to-shopify', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ imageUrl: featuredConcept.imageUrl, altText: `${article.title} - Peak Primal Wellness` }),
+            body: JSON.stringify({ imageUrl: featuredConcept.imageUrl, altText: `${article.title} - Green Thumb Depot` }),
           })
           if (res.ok) {
             const data = await res.json()
@@ -215,26 +215,26 @@ export function ImageStoryboard({
 
       // Step 2: Strip any image placeholders that leaked inside product cards
       enrichedHTML = enrichedHTML.replace(
-        /(<div[^>]*class="[^"]*ppw-product-card[^"]*"[^>]*>)([\s\S]*?)(<\/div>\s*<\/div>\s*<\/div>)/gi,
-        (match) => match.replace(/<figure[^>]*class="ppw-content-image"[^>]*>[\s\S]*?<\/figure>/gi, '')
+        /(<div[^>]*class="[^"]*gtd-product-card[^"]*"[^>]*>)([\s\S]*?)(<\/div>\s*<\/div>\s*<\/div>)/gi,
+        (match) => match.replace(/<figure[^>]*class="gtd-content-image"[^>]*>[\s\S]*?<\/figure>/gi, '')
       )
 
       // Step 3: Track which sections already have an image to prevent stacking
       const sectionsWithImages = new Set<string>()
 
-      // v2 articles carry ppwb- classes and are styled by the ppw-blog.css theme
-      // asset. ppw-content-image is a legacy class the theme asset does not
+      // v2 articles carry gtdb- classes and are styled by the gtd-blog.css theme
+      // asset. gtd-content-image is a legacy class the theme asset does not
       // define, so a v2 article given v1 figures renders unstyled images.
-      const isV2 = /class=["'][^"']*ppwb-/.test(enrichedHTML)
-      const figClass = isV2 ? 'ppwb-fig' : 'ppw-content-image'
+      const isV2 = /class=["'][^"']*gtdb-/.test(enrichedHTML)
+      const figClass = isV2 ? 'gtdb-fig' : 'gtd-content-image'
 
-      // Never drop an image inside a product card. ppwb-pick / ppwb-picks are
+      // Never drop an image inside a product card. gtdb-pick / gtdb-picks are
       // the v2 cards; without them the guard passes and an image lands between
       // a product image and its title.
       const isProductContext = (chunk: string) =>
-        chunk.includes('ppw-product-card') ||
+        chunk.includes('gtd-product-card') ||
         chunk.includes('featured-products') ||
-        chunk.includes('ppwb-pick')
+        chunk.includes('gtdb-pick')
 
       // Step 4: Insert ONLY body images (not featured) after their target section H2
       for (const img of bodyImages) {
@@ -473,7 +473,7 @@ export function ImageStoryboard({
 
       {/* -- Sticky Footer: Insert Images / Success -- */}
       {generatedConcepts.length > 0 && insertedCount === null && (
-        <div className="flex-shrink-0 border-t px-6 py-4" style={{ background: 'color-mix(in srgb, var(--ppw-accent) 6%, var(--bg))', borderColor: 'var(--border)' }}>
+        <div className="flex-shrink-0 border-t px-6 py-4" style={{ background: 'color-mix(in srgb, var(--gtd-accent) 6%, var(--bg))', borderColor: 'var(--border)' }}>
           <div className="flex items-center justify-between gap-4">
             <div className="space-y-0.5">
               <p className="text-sm font-medium" style={{ color: 'var(--text1)' }}>
@@ -487,7 +487,7 @@ export function ImageStoryboard({
               onClick={handleInsertAll}
               disabled={isInserting}
               className="gap-1.5"
-              style={{ background: 'var(--ppw-accent)', color: '#fff' }}
+              style={{ background: 'var(--gtd-accent)', color: '#fff' }}
             >
               {isInserting ? (
                 <>
@@ -521,7 +521,7 @@ export function ImageStoryboard({
                 </p>
               </div>
             </div>
-            <Button size="sm" onClick={onSkip} className="gap-1.5" style={{ background: 'var(--ppw-accent)', color: '#fff' }}>
+            <Button size="sm" onClick={onSkip} className="gap-1.5" style={{ background: 'var(--gtd-accent)', color: '#fff' }}>
               <ChevronLeft className="h-4 w-4" />
               Back to Editor
             </Button>

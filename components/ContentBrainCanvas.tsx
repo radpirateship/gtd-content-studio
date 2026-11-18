@@ -1,9 +1,9 @@
 'use client'
 /**
- * ContentBrainCanvas — the mind-map view of PPW's topical authority.
+ * ContentBrainCanvas — the mind-map view of GTD's topical authority.
  *
  * Hierarchy rendered as a horizontal flow:
- *     PPW root → Hub → Cluster → (article count badge)
+ *     GTD root → Hub → Cluster → (article count badge)
  *
  * Click a hub or cluster to open a right-side drawer that lists the
  * underlying articles with title, status, strategic notes, and keyword metrics.
@@ -55,9 +55,9 @@ interface Idea {
 type Lens = 'coverage' | 'opportunity' | 'status'
 
 // ---------------------------------------------------------------------------
-// Palette (PPW brand)
+// Palette (GTD brand)
 // ---------------------------------------------------------------------------
-const PPW = {
+const GTD = {
   blue: '#0066cc',
   navy: '#003366',
   green: 'rgb(26,122,84)',
@@ -69,9 +69,9 @@ const PPW = {
 
 const HUB_COLORS: Record<string, string> = {
   Saunas: '#c05621',
-  Recovery: PPW.blue,
-  Wellness: PPW.green,
-  Cardio: PPW.navy,
+  Recovery: GTD.blue,
+  Wellness: GTD.green,
+  Cardio: GTD.navy,
   'Cross-Topic': '#6b7280', // neutral gray — historical bucket, not being added to
 }
 
@@ -132,7 +132,7 @@ export default function ContentBrainCanvas() {
   }, [])
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: PPW.cream }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: GTD.cream }}>
       {/* Top bar */}
       <div
         style={{
@@ -145,8 +145,8 @@ export default function ContentBrainCanvas() {
         }}
       >
         <div>
-          <div style={{ fontSize: 18, fontWeight: 600, color: PPW.navy }}>PPW Content Brain</div>
-          <div style={{ fontSize: 12, color: PPW.muted }}>
+          <div style={{ fontSize: 18, fontWeight: 600, color: GTD.navy }}>GTD Content Brain</div>
+          <div style={{ fontSize: 12, color: GTD.muted }}>
             {loading ? 'Loading…' : `${ideas.length} ideas • ${graph.clusterCount} clusters • ${graph.hubCount} hubs`}
           </div>
         </div>
@@ -154,7 +154,7 @@ export default function ContentBrainCanvas() {
       </div>
 
       {error && (
-        <div style={{ padding: 12, background: '#fee', color: PPW.red, fontSize: 13 }}>
+        <div style={{ padding: 12, background: '#fee', color: GTD.red, fontSize: 13 }}>
           Error: {error}
         </div>
       )}
@@ -176,7 +176,7 @@ export default function ContentBrainCanvas() {
           >
             <Background color="#d4d4d4" gap={24} />
             <Controls showInteractive={false} />
-            <MiniMap pannable zoomable nodeColor={(n) => (n.style?.background as string) || PPW.blue} />
+            <MiniMap pannable zoomable nodeColor={(n) => (n.style?.background as string) || GTD.blue} />
           </ReactFlow>
           {lens === 'coverage' && <LegendCoverage />}
           {lens === 'opportunity' && <LegendOpportunity />}
@@ -226,12 +226,12 @@ function buildGraph(ideas: Idea[], lens: Lens): BuiltGraph {
   nodes.push({
     id: 'root',
     type: 'default',
-    data: { label: 'PPW', kind: 'root' },
+    data: { label: 'GTD', kind: 'root' },
     position: { x: 0, y: 0 },
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
     style: {
-      background: PPW.navy,
+      background: GTD.navy,
       color: 'white',
       border: 'none',
       borderRadius: 12,
@@ -268,7 +268,7 @@ function buildGraph(ideas: Idea[], lens: Lens): BuiltGraph {
 
     // Hub node
     const hubIdeas = [...clusters.values()].flat()
-    const hubColor = HUB_COLORS[hub] || PPW.blue
+    const hubColor = HUB_COLORS[hub] || GTD.blue
     nodes.push({
       id: `hub:${hub}`,
       type: 'default',
@@ -363,9 +363,9 @@ function colorForLens(
     const total = clusterIdeas.length
     const live = clusterIdeas.filter((i) => i.status === 'live').length
     const ratio = total === 0 ? 0 : live / total
-    if (ratio >= 0.6) return { bg: '#e6f4ea', fg: '#1a5132', border: PPW.green }
-    if (ratio >= 0.2) return { bg: '#fff4d6', fg: '#7a5a00', border: PPW.yellow }
-    return { bg: '#fde7dc', fg: '#7a2a08', border: PPW.red }
+    if (ratio >= 0.6) return { bg: '#e6f4ea', fg: '#1a5132', border: GTD.green }
+    if (ratio >= 0.2) return { bg: '#fff4d6', fg: '#7a5a00', border: GTD.yellow }
+    return { bg: '#fde7dc', fg: '#7a2a08', border: GTD.red }
   }
   if (lens === 'opportunity') {
     const scored = clusterIdeas.filter((i) => typeof i.opportunity_score === 'number')
@@ -373,16 +373,16 @@ function colorForLens(
       scored.length === 0
         ? 0
         : scored.reduce((s, i) => s + (i.opportunity_score || 0), 0) / scored.length
-    if (avg >= 60) return { bg: '#e0f0ff', fg: PPW.navy, border: PPW.blue }
+    if (avg >= 60) return { bg: '#e0f0ff', fg: GTD.navy, border: GTD.blue }
     if (avg >= 30) return { bg: '#f0f4f8', fg: '#3a4a5a', border: '#99aabb' }
-    return { bg: 'white', fg: PPW.muted, border: '#d4d4d4' }
+    return { bg: 'white', fg: GTD.muted, border: '#d4d4d4' }
   }
   // status lens
   const hasPlanned = clusterIdeas.some((i) => i.status === 'planned')
   const hasLive = clusterIdeas.some((i) => i.status === 'live')
-  if (hasLive && hasPlanned) return { bg: '#ecfdf5', fg: '#14532d', border: PPW.green }
-  if (hasLive) return { bg: '#f0f9ff', fg: PPW.navy, border: hubColor }
-  return { bg: 'white', fg: PPW.muted, border: '#d4d4d4' }
+  if (hasLive && hasPlanned) return { bg: '#ecfdf5', fg: '#14532d', border: GTD.green }
+  if (hasLive) return { bg: '#f0f9ff', fg: GTD.navy, border: hubColor }
+  return { bg: 'white', fg: GTD.muted, border: '#d4d4d4' }
 }
 
 // ---------------------------------------------------------------------------
@@ -405,7 +405,7 @@ function LensSwitcher({ lens, onChange }: { lens: Lens; onChange: (l: Lens) => v
             border: 'none',
             borderRadius: 6,
             background: lens === o.id ? 'white' : 'transparent',
-            color: lens === o.id ? PPW.navy : PPW.muted,
+            color: lens === o.id ? GTD.navy : GTD.muted,
             fontWeight: lens === o.id ? 600 : 500,
             fontSize: 13,
             cursor: 'pointer',
@@ -533,11 +533,11 @@ function DetailDrawer({
         }}
       >
         <div>
-          <div style={{ fontSize: 11, color: PPW.muted, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+          <div style={{ fontSize: 11, color: GTD.muted, textTransform: 'uppercase', letterSpacing: 0.5 }}>
             {selected.kind}
           </div>
-          <div style={{ fontSize: 16, fontWeight: 600, color: PPW.navy }}>{title}</div>
-          <div style={{ fontSize: 12, color: PPW.muted, marginTop: 2 }}>{rows.length} articles</div>
+          <div style={{ fontSize: 16, fontWeight: 600, color: GTD.navy }}>{title}</div>
+          <div style={{ fontSize: 12, color: GTD.muted, marginTop: 2 }}>{rows.length} articles</div>
         </div>
         <button
           onClick={onClose}
@@ -546,7 +546,7 @@ function DetailDrawer({
             border: 'none',
             fontSize: 20,
             cursor: 'pointer',
-            color: PPW.muted,
+            color: GTD.muted,
             lineHeight: 1,
           }}
           aria-label="Close"
@@ -557,7 +557,7 @@ function DetailDrawer({
 
       <div style={{ flex: 1, overflowY: 'auto', padding: '8px 0' }}>
         {rows.length === 0 && (
-          <div style={{ padding: 20, color: PPW.muted, fontSize: 13 }}>No articles yet.</div>
+          <div style={{ padding: 20, color: GTD.muted, fontSize: 13 }}>No articles yet.</div>
         )}
         {rows.map((r) => (
           <div
@@ -569,11 +569,11 @@ function DetailDrawer({
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-              <div style={{ fontWeight: 600, color: PPW.navy, flex: 1 }}>{r.title}</div>
+              <div style={{ fontWeight: 600, color: GTD.navy, flex: 1 }}>{r.title}</div>
               <StatusPill status={r.status} />
             </div>
             {r.keyword && (
-              <div style={{ color: PPW.muted, marginTop: 3 }}>
+              <div style={{ color: GTD.muted, marginTop: 3 }}>
                 kw: {r.keyword}
                 {r.kw_volume ? ` • vol ${r.kw_volume}` : ''}
                 {r.kw_difficulty != null ? ` • KD ${r.kw_difficulty}` : ''}
@@ -585,8 +585,8 @@ function DetailDrawer({
                 style={{
                   marginTop: 6,
                   padding: '6px 8px',
-                  background: PPW.cream,
-                  borderLeft: `2px solid ${PPW.blue}`,
+                  background: GTD.cream,
+                  borderLeft: `2px solid ${GTD.blue}`,
                   borderRadius: 3,
                   color: '#3a3a3a',
                   fontSize: 11,
@@ -606,11 +606,11 @@ function DetailDrawer({
 function StatusPill({ status }: { status: string }) {
   const map: Record<string, { bg: string; fg: string }> = {
     live: { bg: '#e6f4ea', fg: '#1a5132' },
-    planned: { bg: '#e0f0ff', fg: PPW.navy },
-    idea: { bg: '#f0f0f0', fg: PPW.muted },
+    planned: { bg: '#e0f0ff', fg: GTD.navy },
+    idea: { bg: '#f0f0f0', fg: GTD.muted },
     draft: { bg: '#fff4d6', fg: '#7a5a00' },
   }
-  const s = map[status] || { bg: '#f0f0f0', fg: PPW.muted }
+  const s = map[status] || { bg: '#f0f0f0', fg: GTD.muted }
   return (
     <span
       style={{

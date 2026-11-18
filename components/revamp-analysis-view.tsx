@@ -221,7 +221,7 @@ export function RevampAnalysisView({
       if (existingCitationUrls.has(href)) continue // already in citations pipeline
 
       const isInternal =
-        href.includes('peakprimalwellness.com') ||
+        href.includes('greenthumbdepot.com') ||
         /^\/(blogs|products|collections)\//.test(href)
       const isResearch = RESEARCH_DOMAINS.some(domain => href.includes(domain))
 
@@ -394,7 +394,7 @@ export function RevampAnalysisView({
         dbId: serverArticle.dbId,
         title: serverArticle.title,
         slug: serverArticle.slug,
-        titleTag: serverArticle.titleTag || `${serverArticle.title} | Peak Primal Wellness`,
+        titleTag: serverArticle.titleTag || `${serverArticle.title} | Green Thumb Depot`,
         metaDescription: serverArticle.metaDescription || analysis.claims?.[0]?.text || serverArticle.title,
         content: serverArticle.content || '',
         htmlContent: serverArticle.htmlContent || '',
@@ -486,7 +486,7 @@ export function RevampAnalysisView({
               <button
                 onClick={handleGenerate}
                 className="px-4 py-2 rounded-lg text-[13px] font-medium text-white"
-                style={{ background: 'var(--ppw-accent)' }}
+                style={{ background: 'var(--gtd-accent)' }}
               >
                 Retry
               </button>
@@ -506,7 +506,7 @@ export function RevampAnalysisView({
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[11px] font-mono break-all hover:underline"
-                  style={{ color: 'var(--ppw-accent)' }}
+                  style={{ color: 'var(--gtd-accent)' }}
                 >
                   {settings.sourceUrl}
                 </a>
@@ -619,7 +619,7 @@ export function RevampAnalysisView({
                   <button
                     onClick={handleGenerate}
                     className="px-5 py-2.5 rounded-lg text-[14px] font-semibold text-white"
-                    style={{ background: 'var(--ppw-accent)', minWidth: '160px' }}
+                    style={{ background: 'var(--gtd-accent)', minWidth: '160px' }}
                     disabled={isGenerating}
                   >
                     Generate Article
@@ -665,7 +665,7 @@ export function RevampAnalysisView({
                       <AlertCircle size={16} className="mt-0.5 shrink-0" style={{ color: '#b8860b' }} />
                       <div>
                         <span className="font-semibold">Default outline generated.</span>{' '}
-                        The AI analysis didn&apos;t return a structured outline for this content, so a standard Peak Primal Wellness template has been applied.
+                        The AI analysis didn&apos;t return a structured outline for this content, so a standard Green Thumb Depot template has been applied.
                         Feel free to edit the headings and key points below before generating.
                       </div>
                     </div>
@@ -735,7 +735,7 @@ export function RevampAnalysisView({
                         <button
                           onClick={() => addKeyPoint(section.id)}
                           className="flex items-center gap-1 text-[12px] px-2 py-1 rounded"
-                          style={{ color: 'var(--ppw-accent)' }}
+                          style={{ color: 'var(--gtd-accent)' }}
                         >
                           <Plus className="h-3.5 w-3.5" />
                           Add point
@@ -748,7 +748,7 @@ export function RevampAnalysisView({
                   <button
                     onClick={addSection}
                     className="mt-6 flex items-center gap-2 px-4 py-2 rounded-lg border-2"
-                    style={{ color: 'var(--ppw-accent)', borderColor: 'var(--ppw-accent)' }}
+                    style={{ color: 'var(--gtd-accent)', borderColor: 'var(--gtd-accent)' }}
                   >
                     <Plus className="h-4 w-4" />
                     Add Section

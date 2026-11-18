@@ -1,5 +1,5 @@
-// PPW brand-voice shim. The revamp generate pipeline expects buildBrandVoicePrompt();
-// PPW's single source of voice truth is lib/brandRules.ts, so we delegate to it.
+// GTD brand-voice shim. The revamp generate pipeline expects buildBrandVoicePrompt();
+// GTD's single source of voice truth is lib/brandRules.ts, so we delegate to it.
 import { WRITING_RULES } from "@/lib/brandRules";
 
 export const DEFAULT_BRAND_VOICE = WRITING_RULES;

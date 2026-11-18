@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     .trim()
     .slice(0, 12000) // cap to keep within token budget
 
-  const systemPrompt = `You are an expert SEO content editor for Peak Primal Wellness, a premium wellness and fitness equipment retailer. Your job is to surgically insert missing keywords into existing collection page content in a way that reads naturally and adds genuine value.
+  const systemPrompt = `You are an expert SEO content editor for Green Thumb Depot, a premium wellness and fitness equipment retailer. Your job is to surgically insert missing keywords into existing collection page content in a way that reads naturally and adds genuine value.
 
 RULES:
 - Never keyword-stuff. Each insertion must read naturally and add meaning.

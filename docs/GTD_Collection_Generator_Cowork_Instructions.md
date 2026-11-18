@@ -1,4 +1,4 @@
-# PPW Collection Page Generator — Cowork Instructions
+# GTD Collection Page Generator — Cowork Instructions
 
 ## Two Modes
 
@@ -20,8 +20,8 @@ GET /admin/api/2024-01/collections/{collection_id}/products.json
 
 Count unique vendors in the result.
 
-- **One vendor:** Use the Brand Collection template rules (PPW_Brand_Collection_Page_Rules.md)
-- **Multiple vendors:** Use the Category Collection template rules (PPW_Collection_Page_Rules.md)
+- **One vendor:** Use the Brand Collection template rules (GTD_Brand_Collection_Page_Rules.md)
+- **Multiple vendors:** Use the Category Collection template rules (GTD_Collection_Page_Rules.md)
 - **Product count under 10:** Flag as too thin and pause. Do not generate until product depth issue is resolved.
 
 ---
@@ -31,7 +31,7 @@ Count unique vendors in the result.
 Before overwriting any existing page, scan the current HTML for two elements that must be carried forward if present.
 
 **Learning Center blog post URLs**
-Look for anchor tags inside `.ppw-cluster-card` elements or any section with id containing "resources" or "learning". Extract each href and its H4 headline text. Store as a list of `{url, title}` pairs.
+Look for anchor tags inside `.gtd-cluster-card` elements or any section with id containing "resources" or "learning". Extract each href and its H4 headline text. Store as a list of `{url, title}` pairs.
 
 If fewer than three blog post URLs are found, note this as a content gap in the output. The Learning Center section will be omitted from generation until content exists.
 
@@ -60,7 +60,7 @@ Call `serp-overview` for the same primary keyword.
 Extract:
 - The top 10 ranking URLs and their domain ratings
 - Any patterns in how competitors phrase their titles and H1s
-- Whether any PPW pages are already ranking
+- Whether any GTD pages are already ranking
 
 **1c — Related and matching terms**
 Call `keywords-explorer-matching-terms` with 2 to 3 seed terms for the collection.
@@ -122,7 +122,7 @@ Generate each section in order. Use the keyword injection map and product data f
 2. Overview (H2 + intro paragraph + six bullets + image)
 3. FAQ (12 to 14 questions, `.faq-modern` accordion format)
 4. Quiz CTA block — inject here if one was found in preserved elements extraction
-5. Featured Products (four `.ppw-type` tiles with prices and CTA buttons)
+5. Featured Products (four `.gtd-type` tiles with prices and CTA buttons)
 6. Learning Center — inject here if three or more blog URLs were found
 7. Buying Guide (three cards, action-verb headings, three bullets each)
 8. Key Benefits (four cards, outcome headings, 3 to 4 sentence paragraphs)
@@ -137,7 +137,7 @@ Generate each section in order. Use the keyword injection map and product data f
 2. Overview (H2 + intro paragraph + six bullets + image)
 3. FAQ (12 to 14 questions, `.faq-modern` accordion format)
 4. Quiz CTA block — inject here if found
-5. Featured Products (four to eight `.ppw-type` tiles with prices and CTA buttons)
+5. Featured Products (four to eight `.gtd-type` tiles with prices and CTA buttons)
 6. Learning Center — inject here if three or more blog URLs were found
 7. Compare Table (keep for brand pages — do not remove)
 8. Key Benefits (four cards)
@@ -183,7 +183,7 @@ Generate a single `<script type="application/ld+json">` block containing one `@g
 
 **BreadcrumbList:** Two items only. Position 1 is Home. Position 2 is the collection name matching the H1 exactly.
 
-**Brand (brand pages only):** Name, URL, and a 2 to 3 sentence description. Do not use the PPW logo as the brand logo.
+**Brand (brand pages only):** Name, URL, and a 2 to 3 sentence description. Do not use the GTD logo as the brand logo.
 
 ---
 
@@ -238,9 +238,9 @@ Not all Ahrefs data belongs on the page. Some of it is strategic context for the
 
 **Goes into a logged output (not the page):**
 - Keyword difficulty score
-- Current PPW ranking position for the primary keyword from the SERP overview
+- Current GTD ranking position for the primary keyword from the SERP overview
 - Top 3 competing domains and their domain ratings
-- Any keywords where PPW is already ranking in positions 11 to 30 (quick win opportunities)
+- Any keywords where GTD is already ranking in positions 11 to 30 (quick win opportunities)
 
 This logged output should be formatted as a brief summary block appended after the generated HTML so it's visible in the Cowork session but does not get written to Shopify.
 

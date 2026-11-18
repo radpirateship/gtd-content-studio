@@ -311,7 +311,7 @@ export function BulkUploadView({
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'ppw-bulk-upload-template.csv'
+    a.download = 'gtd-bulk-upload-template.csv'
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -357,7 +357,7 @@ export function BulkUploadView({
           const liveCheck = await fetch(`/api/shopify/blog-read/fetch?handle=${encodeURIComponent(existingSlug)}`)
           if (liveCheck.ok) {
             throw new Error(
-              `Already live at /blogs/wellness/${existingSlug}. Revamp it from the Revamp tab (Revamp now) so it keeps its images, URL and publish date.`
+              `Already live at /blogs/guides/${existingSlug}. Revamp it from the Revamp tab (Revamp now) so it keeps its images, URL and publish date.`
             )
           }
         } catch (checkErr) {
@@ -429,7 +429,7 @@ export function BulkUploadView({
         const cRes = await fetch(`/api/content-brain/cluster-links?collection=${encodeURIComponent(primarySlug || category)}${item.contentBrainId ? `&exclude=${item.contentBrainId}` : ''}`)
         if (cRes.ok) {
           const c = await cRes.json()
-          const have = new Set(internalLinks.map(l => l.url.replace(/^https?:\/\/(www\.)?peakprimalwellness\.com/i, '').replace(/\/+$/, '').toLowerCase()))
+          const have = new Set(internalLinks.map(l => l.url.replace(/^https?:\/\/(www\.)?greenthumbdepot\.com/i, '').replace(/\/+$/, '').toLowerCase()))
           const mine = item.title.toLowerCase()
           for (const l of (c.links || []) as { title: string; url: string; description?: string; planned?: boolean; cluster?: boolean }[]) {
             const key = l.url.replace(/\/+$/, '').toLowerCase()
@@ -474,7 +474,7 @@ export function BulkUploadView({
           specialInstructions: item.specialInstructions || '',
           products: products.map(p => ({
             title: p.title, description: p.description, price: p.price, imageUrl: p.imageUrl,
-            url: p.handle ? `https://peakprimalwellness.com/products/${p.handle}` : p.url, handle: p.handle,
+            url: p.handle ? `https://greenthumbdepot.com/products/${p.handle}` : p.url, handle: p.handle,
             vendor: p.vendor,
           })),
           relatedArticles,
@@ -504,7 +504,7 @@ export function BulkUploadView({
         shopifySlug: item.shopifySlug || slug,
         content: textContent, htmlContent: content,
         featuredImage: undefined, contentImages: [],
-        products: products.map(p => ({ ...p, tags: typeof (p as any).tags === 'string' ? (p as any).tags.split(',').map((t: string) => t.trim()) : (p as any).tags || [], url: p.handle ? `https://peakprimalwellness.com/products/${p.handle}` : '#', isAvailable: true })),
+        products: products.map(p => ({ ...p, tags: typeof (p as any).tags === 'string' ? (p as any).tags.split(',').map((t: string) => t.trim()) : (p as any).tags || [], url: p.handle ? `https://greenthumbdepot.com/products/${p.handle}` : '#', isAvailable: true })),
         faqs: outline?.faq?.map((f: any) => ({ question: f.question, answer: f.briefAnswer })) || [],
         schemaMarkup: '', category: category as WellnessCategory, keyword: item.keyword,
         shopifyBlogTag: item.collection as any,
@@ -516,7 +516,7 @@ export function BulkUploadView({
       // does not read "0 internal links" when the scan step finds nothing
       // new to add.
       {
-        const hrefs = (content.match(/href=["'](?:https?:\/\/(?:www\.)?peakprimalwellness\.com)?\/(?:blogs|collections)\/[^"'#?]+/gi) || [])
+        const hrefs = (content.match(/href=["'](?:https?:\/\/(?:www\.)?greenthumbdepot\.com)?\/(?:blogs|collections)\/[^"'#?]+/gi) || [])
         const n = new Set(hrefs.map((h: string) => h.toLowerCase().replace(/\/+$/, ''))).size
         article.linkCount = n
         article.hasInternalLinks = n > 0
@@ -670,7 +670,7 @@ export function BulkUploadView({
         {/* Review header */}
         <div className="flex items-center justify-between border-b px-6 py-3" style={{ background: 'var(--bg)', borderColor: 'var(--border)' }}>
           <div className="flex items-center gap-2">
-            <Layers className="h-4 w-4" style={{ color: 'var(--ppw-accent)' }} />
+            <Layers className="h-4 w-4" style={{ color: 'var(--gtd-accent)' }} />
             <h1 className="font-serif text-[17px] font-semibold" style={{ color: 'var(--text1)' }}>Bulk Review</h1>
           </div>
           <button
@@ -686,7 +686,7 @@ export function BulkUploadView({
         {/* Stats bar */}
         <div className="flex items-center gap-6 border-b px-6 py-2.5" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
           <StatItem label="Total" value={String(items.length)} />
-          <StatItem label="Completed" value={String(doneCount)} color="var(--ppw-accent)" />
+          <StatItem label="Completed" value={String(doneCount)} color="var(--gtd-accent)" />
           {errorCount > 0 && <StatItem label="Failed" value={String(errorCount)} color="#c53030" />}
           {queuedCount > 0 && <StatItem label="Queued" value={String(queuedCount)} />}
           {skippedCount > 0 && <StatItem label="Skipped (no title/keyword)" value={String(skippedCount)} color="#b8860b" />}
@@ -726,7 +726,7 @@ export function BulkUploadView({
 
               {/* Status icon */}
               <div className="flex-shrink-0">
-                {item.status === 'done' && <Check className="h-4 w-4" style={{ color: 'var(--ppw-accent)' }} />}
+                {item.status === 'done' && <Check className="h-4 w-4" style={{ color: 'var(--gtd-accent)' }} />}
                 {item.status === 'error' && <AlertCircle className="h-4 w-4" style={{ color: '#c53030' }} />}
                 {item.status === 'queued' && <div className="h-4 w-4 rounded-full border" style={{ borderColor: 'var(--text4)' }} />}
               </div>
@@ -789,7 +789,7 @@ export function BulkUploadView({
             size="sm"
             disabled={selectedForPublish.size === 0}
             className="gap-1.5 text-[12px]"
-            style={{ background: 'var(--ppw-accent)', color: '#fff' }}
+            style={{ background: 'var(--gtd-accent)', color: '#fff' }}
           >
             <Send className="h-3.5 w-3.5" />
             Publish {selectedForPublish.size} Selected to Shopify
@@ -805,7 +805,7 @@ export function BulkUploadView({
       {/* Header bar */}
       <div className="flex items-center justify-between border-b px-6 py-3" style={{ background: 'var(--bg)', borderColor: 'var(--border)' }}>
         <div className="flex items-center gap-2">
-          <Layers className="h-4 w-4" style={{ color: 'var(--ppw-accent)' }} />
+          <Layers className="h-4 w-4" style={{ color: 'var(--gtd-accent)' }} />
           <h1 className="font-serif text-[17px] font-semibold" style={{ color: 'var(--text1)' }}>Bulk Upload</h1>
           {items.length > 0 && (
             <span className="ml-2 text-[11px] font-mono rounded px-1.5 py-0.5" style={{ background: 'var(--surface)', color: 'var(--text3)' }}>
@@ -834,7 +834,7 @@ export function BulkUploadView({
                 disabled={validCount === 0}
                 onClick={runAll}
                 className="gap-1.5 text-[12px]"
-                style={{ background: 'var(--ppw-accent)', color: '#fff' }}
+                style={{ background: 'var(--gtd-accent)', color: '#fff' }}
               >
                 <Play className="h-3.5 w-3.5" />
                 Run All ({validCount})
@@ -854,7 +854,7 @@ export function BulkUploadView({
         <div className="h-1 w-full" style={{ background: 'var(--surface)' }}>
           <div
             className="h-full transition-all duration-500"
-            style={{ background: 'var(--ppw-accent)', width: `${(completedCount / validCount) * 100}%` }}
+            style={{ background: 'var(--gtd-accent)', width: `${(completedCount / validCount) * 100}%` }}
           />
         </div>
       )}
@@ -904,10 +904,10 @@ export function BulkUploadView({
               <span />
             </div>
 
-            <datalist id="ppw-bulk-product-collections">
+            <datalist id="gtd-bulk-product-collections">
               {liveCollections.map(c => <option key={c.handle} value={c.handle}>{c.title}</option>)}
             </datalist>
-            <datalist id="ppw-bulk-main-collections">
+            <datalist id="gtd-bulk-main-collections">
               {liveCollections.map(c => <option key={c.handle} value={c.handle}>{c.title}{c.hub ? ` · ${c.hub}` : ''}</option>)}
             </datalist>
 
@@ -938,7 +938,7 @@ export function BulkUploadView({
                 />
                 <input
                   type="text"
-                  list="ppw-bulk-main-collections"
+                  list="gtd-bulk-main-collections"
                   value={item.collection}
                   onChange={e => updateRow(item.id, 'collection', e.target.value)}
                   onBlur={e => { const h = toHandle(e.target.value); if (h && h !== e.target.value) updateRow(item.id, 'collection', h) }}
@@ -955,7 +955,7 @@ export function BulkUploadView({
                 />
                 <input
                   type="text"
-                  list="ppw-bulk-product-collections"
+                  list="gtd-bulk-product-collections"
                   value={item.secondaryCollection || ''}
                   onChange={e => updateRow(item.id, 'secondaryCollection', e.target.value)}
                   disabled={item.status !== 'queued'}
@@ -981,11 +981,11 @@ export function BulkUploadView({
                 />
                 <div className="flex items-center gap-1.5">
                   {item.status === 'queued' && <Circle className="h-3 w-3" style={{ color: 'var(--text4)' }} />}
-                  {item.status === 'running' && <Loader2 className="h-3 w-3 animate-spin" style={{ color: 'var(--ppw-accent)' }} />}
-                  {item.status === 'done' && <Check className="h-3 w-3" style={{ color: 'var(--ppw-accent)' }} />}
+                  {item.status === 'running' && <Loader2 className="h-3 w-3 animate-spin" style={{ color: 'var(--gtd-accent)' }} />}
+                  {item.status === 'done' && <Check className="h-3 w-3" style={{ color: 'var(--gtd-accent)' }} />}
                   {item.status === 'error' && <AlertCircle className="h-3 w-3" style={{ color: '#c53030' }} />}
                   <span className="text-[11px] truncate" style={{
-                    color: item.status === 'running' ? 'var(--ppw-accent)' : item.status === 'error' ? '#c53030' : 'var(--text3)',
+                    color: item.status === 'running' ? 'var(--gtd-accent)' : item.status === 'error' ? '#c53030' : 'var(--text3)',
                   }}>
                     {item.status === 'queued' ? 'Queued' : item.status === 'running' ? (item.step || 'Running...') : item.status === 'done' ? (item.step || 'Done') : (item.error || 'Error')}
                   </span>
@@ -1031,7 +1031,7 @@ export function BulkUploadView({
         <div className="flex items-center justify-between border-t px-6 py-2.5" style={{ background: 'var(--bg)', borderColor: 'var(--border)' }}>
           <div className="flex items-center gap-4 text-[11px]" style={{ color: 'var(--text3)' }}>
             <span>{validCount} valid</span>
-            {doneCount > 0 && <span style={{ color: 'var(--ppw-accent)' }}>{doneCount} completed</span>}
+            {doneCount > 0 && <span style={{ color: 'var(--gtd-accent)' }}>{doneCount} completed</span>}
             {errorCount > 0 && <span style={{ color: '#c53030' }}>{errorCount} failed</span>}
           </div>
           <span className="text-[10px] font-mono" style={{ color: 'var(--text4)' }}>

@@ -1,7 +1,7 @@
 // POST /api/audit/gsc-queries
 // Returns raw Search Console rows for query plus page dimensions so the
 // audit tooling can compute keyword cannibalization over the full corpus,
-// the same signal the ppw-dashboard app computes but without its top-25 cap.
+// the same signal the gtd-dashboard app computes but without its top-25 cap.
 // Cookie-authed like every non-content-brain route (middleware).
 //
 // Body (all optional): { days: 28, rowLimit: 25000, startRow: 0 }

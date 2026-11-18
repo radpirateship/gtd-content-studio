@@ -595,7 +595,7 @@ export default function ProductBulletsPage() {
               <div key={s.handle} className="rounded-md border p-3">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <a
-                    href={`https://peakprimalwellness.com/products/${s.handle}`}
+                    href={`https://greenthumbdepot.com/products/${s.handle}`}
                     target="_blank"
                     rel="noreferrer"
                     className="font-medium text-blue-600 hover:underline"
@@ -710,7 +710,7 @@ export default function ProductBulletsPage() {
                   <span key={a.articleId}>
                     {i > 0 && ", "}
                     <a
-                      href={`https://peakprimalwellness.com/blogs/${a.blogHandle}/${a.handle}`}
+                      href={`https://greenthumbdepot.com/blogs/${a.blogHandle}/${a.handle}`}
                       target="_blank"
                       rel="noreferrer"
                       className="text-blue-600 hover:underline"

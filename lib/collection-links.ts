@@ -3,8 +3,8 @@
  *
  * Standing rule: every post needs 1-2 contextual /collections/ links in the
  * body, in ADDITION to the bottom "Shop The Collection" button. The bottom
- * button is identifiable as an <a> with class ppw-cta linking to /collections/
- * (product-card ppw-cta links point at /products/ so they never match).
+ * button is identifiable as an <a> with class gtd-cta linking to /collections/
+ * (product-card gtd-cta links point at /products/ so they never match).
  * Everything else linking to /collections/ counts as in-content.
  */
 
@@ -14,9 +14,9 @@ const COLLECTION_HREF = /\/collections\/([a-z0-9_-]+)/i;
 export type CollectionLink = { href: string; text: string; slug: string };
 
 export type CollectionLinkAudit = {
-  /** Contextual in-content collection links (excludes ppw-cta template buttons). */
+  /** Contextual in-content collection links (excludes gtd-cta template buttons). */
   inContent: CollectionLink[];
-  /** Count of template "Shop The Collection" style buttons (ppw-cta -> /collections/). */
+  /** Count of template "Shop The Collection" style buttons (gtd-cta -> /collections/). */
   ctaButtons: number;
   /** Any link (either kind) pointing at a Finnmark collection — must never exist. */
   finnmarkLinks: string[];
@@ -37,7 +37,7 @@ export function auditCollectionLinks(html: string): CollectionLinkAudit {
     if (slug.includes("finnmark")) finnmarkLinks.push(href);
 
     const cls = attrs.match(/class="([^"]*)"/i)?.[1] || "";
-    if (cls.includes("ppw-cta")) {
+    if (cls.includes("gtd-cta")) {
       ctaButtons++;
       continue;
     }

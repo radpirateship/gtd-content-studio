@@ -1,12 +1,12 @@
 # Bot products API (read-only)
 
 Product titles, handles, prices and Shopify CDN image URLs for external agents
-such as Grok Bot (PPW - Email). Same data source as Library > Products in the
+such as Grok Bot (GTD - Email). Same data source as Library > Products in the
 app: the live Shopify Admin API, falling back to the cached products table only
 if Shopify cannot be reached (`source` in the response says which). No orders,
 customers or checkout. No write methods exist on `/api/bot/*`.
 
-Base URL: `https://ppw-content-studio-v2.vercel.app`
+Base URL: `https://gtd-content-studio-v2.vercel.app`
 
 ## Auth
 
@@ -41,7 +41,7 @@ everything else.
       "id": "8123456789012",
       "title": "Auroom Cala Glass 2-Person Indoor Sauna",
       "handle": "auroom-cala-glass-2-person",
-      "url": "https://peakprimalwellness.com/products/auroom-cala-glass-2-person",
+      "url": "https://greenthumbdepot.com/products/auroom-cala-glass-2-person",
       "status": "active",
       "vendor": "Auroom",
       "productType": "Sauna",
@@ -72,27 +72,27 @@ Shopify CDN URLs in the product's image order; `image` is the first one.
 ```bash
 # first 50 active products
 curl -s -H "Authorization: Bearer $BOT_API_TOKEN" \
-  "https://ppw-content-studio-v2.vercel.app/api/bot/products"
+  "https://gtd-content-studio-v2.vercel.app/api/bot/products"
 
 # a collection
 curl -s -H "Authorization: Bearer $BOT_API_TOKEN" \
-  "https://ppw-content-studio-v2.vercel.app/api/bot/products?collection=cold-plunges&limit=20"
+  "https://gtd-content-studio-v2.vercel.app/api/bot/products?collection=cold-plunges&limit=20"
 
 # a brand, searched
 curl -s -H "Authorization: Bearer $BOT_API_TOKEN" \
-  "https://ppw-content-studio-v2.vercel.app/api/bot/products?brand=Auroom&search=glass"
+  "https://gtd-content-studio-v2.vercel.app/api/bot/products?brand=Auroom&search=glass"
 
 # one product
 curl -s -H "Authorization: Bearer $BOT_API_TOKEN" \
-  "https://ppw-content-studio-v2.vercel.app/api/bot/products/auroom-cala-glass-2-person"
+  "https://gtd-content-studio-v2.vercel.app/api/bot/products/auroom-cala-glass-2-person"
 
 # walk the whole catalogue: repeat with since_id=<next_since_id> until it is null
 curl -s -H "Authorization: Bearer $BOT_API_TOKEN" \
-  "https://ppw-content-studio-v2.vercel.app/api/bot/products?limit=250&since_id=0"
+  "https://gtd-content-studio-v2.vercel.app/api/bot/products?limit=250&since_id=0"
 
 # no header -> 401
 curl -s -o /dev/null -w "%{http_code}\n" \
-  "https://ppw-content-studio-v2.vercel.app/api/bot/products"
+  "https://gtd-content-studio-v2.vercel.app/api/bot/products"
 ```
 
 ## Notes

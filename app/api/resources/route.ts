@@ -375,7 +375,7 @@ export async function GET(request: NextRequest) {
           wordCount: null,
           priority: row.priority,
           action: null,
-          existingUrl: `https://peakprimalwellness.com/blogs/${row.shopify_blog_handle || "wellness"}/${row.url_slug}`,
+          existingUrl: `https://greenthumbdepot.com/blogs/${row.shopify_blog_handle || "wellness"}/${row.url_slug}`,
           optimize: null,
           notes: null,
           searchVolume: null,

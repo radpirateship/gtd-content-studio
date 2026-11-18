@@ -27,8 +27,8 @@ export function AppTopbar({ isGenerating, generationMessage, mode = 'articles', 
       }}
     >
       {/* Logo */}
-      <div className="font-serif font-semibold text-[17px] tracking-[-0.3px]" style={{ color: 'var(--ppw-accent)' }}>
-        PPW
+      <div className="font-serif font-semibold text-[17px] tracking-[-0.3px]" style={{ color: 'var(--gtd-accent)' }}>
+        GTD
         <span className="font-normal text-[14px] ml-1" style={{ color: 'var(--text3)' }}>Content Studio</span>
       </div>
 
@@ -40,10 +40,10 @@ export function AppTopbar({ isGenerating, generationMessage, mode = 'articles', 
             onClick={() => onModeChange?.(m)}
             className="rounded-[9px] px-5 py-2 text-[13.5px] transition-all"
             style={{
-              background: mode === m ? 'var(--ppw-accent)' : 'var(--bg)',
+              background: mode === m ? 'var(--gtd-accent)' : 'var(--bg)',
               color: mode === m ? '#fff' : 'var(--text2)',
               fontWeight: mode === m ? 600 : 500,
-              border: mode === m ? '1px solid var(--ppw-accent)' : '1px solid var(--border)',
+              border: mode === m ? '1px solid var(--gtd-accent)' : '1px solid var(--border)',
               boxShadow: mode === m ? '0 2px 6px rgba(0,0,0,0.12)' : '0 1px 2px rgba(0,0,0,0.04)',
             }}
           >
@@ -68,9 +68,9 @@ export function AppTopbar({ isGenerating, generationMessage, mode = 'articles', 
           <div
             className="flex h-7 w-7 items-center justify-center rounded-full font-serif text-[12px] font-semibold"
             style={{
-              background: 'var(--ppw-accent-light)',
-              border: '1.5px solid var(--ppw-accent)',
-              color: 'var(--ppw-accent)',
+              background: 'var(--gtd-accent-light)',
+              border: '1.5px solid var(--gtd-accent)',
+              color: 'var(--gtd-accent)',
             }}
           >
             R

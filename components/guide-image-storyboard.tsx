@@ -202,7 +202,7 @@ export function GuideImageStoryboard({ guide, onSave, onBack }: GuideImageStoryb
       .filter(l => l.url || l.anchor)
       .map(l => ({
         title: l.anchor || l.url,
-        slug: l.url?.replace('/blogs/wellness/', '') || '',
+        slug: l.url?.replace('/blogs/guides/', '') || '',
         url: l.url,
         anchor: l.anchor,
       }))
@@ -221,7 +221,7 @@ export function GuideImageStoryboard({ guide, onSave, onBack }: GuideImageStoryb
             setClusterLinks(data.links.map((l: { title?: string; slug?: string; url?: string; anchor?: string }) => ({
               title: l.title || l.anchor || '',
               slug: l.slug || '',
-              url: l.url || (l.slug ? `/blogs/wellness/${l.slug}` : ''),
+              url: l.url || (l.slug ? `/blogs/guides/${l.slug}` : ''),
               anchor: l.anchor || l.title || '',
             })))
           }
@@ -326,7 +326,7 @@ export function GuideImageStoryboard({ guide, onSave, onBack }: GuideImageStoryb
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           imageUrl: imageData,
-          altText: `${concept.altText || concept.label} - Peak Primal Wellness`,
+          altText: `${concept.altText || concept.label} - Green Thumb Depot`,
         }),
       })
       if (!uploadRes.ok) throw new Error('CDN upload failed')
@@ -589,7 +589,7 @@ export function GuideImageStoryboard({ guide, onSave, onBack }: GuideImageStoryb
                 onClick={handleDraftPrompts}
                 disabled={isDrafting}
                 className="gap-2"
-                style={{ background: 'var(--ppw-accent)', color: '#fff' }}
+                style={{ background: 'var(--gtd-accent)', color: '#fff' }}
               >
                 {isDrafting ? (
                   <><Loader2 className="h-4 w-4 animate-spin" /> Drafting Promptsâ¦</>
@@ -640,7 +640,7 @@ export function GuideImageStoryboard({ guide, onSave, onBack }: GuideImageStoryb
       </div>
 
       {/* Sticky Footer */}
-      <div className="flex-shrink-0 border-t px-6 py-4" style={{ background: 'color-mix(in srgb, var(--ppw-accent) 6%, var(--bg))', borderColor: 'var(--border)' }}>
+      <div className="flex-shrink-0 border-t px-6 py-4" style={{ background: 'color-mix(in srgb, var(--gtd-accent) 6%, var(--bg))', borderColor: 'var(--border)' }}>
         <div className="flex items-center justify-between">
           <Button onClick={onBack} variant="outline" className="gap-2">
             <ChevronLeft className="h-4 w-4" /> Back to Content
@@ -656,7 +656,7 @@ export function GuideImageStoryboard({ guide, onSave, onBack }: GuideImageStoryb
               onClick={handleSave}
               disabled={isSaving || readyCount === 0}
               className="gap-2"
-              style={{ background: 'var(--ppw-accent)', color: '#fff' }}
+              style={{ background: 'var(--gtd-accent)', color: '#fff' }}
             >
               {isSaving ? (
                 <><Loader2 className="h-4 w-4 animate-spin" /> Savingâ¦</>

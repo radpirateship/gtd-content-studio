@@ -36,13 +36,13 @@ export async function POST(request: NextRequest) {
 
     console.log("[revamp/faq] Making dedicated FAQ call...")
 
-    const faqSystemPrompt = `You are a Senior Content Editor at Peak Primal Wellness. Generate ONLY an FAQ section for an article. Output ONLY the HTML below — no explanation, no markdown, no wrapping tags.
+    const faqSystemPrompt = `You are a Senior Content Editor at Green Thumb Depot. Generate ONLY an FAQ section for an article. Output ONLY the HTML below — no explanation, no markdown, no wrapping tags.
 
 FORMAT (use this EXACT structure):
-<section id="faq" class="ppw-section">
+<section id="faq" class="gtd-section">
 <h2>Frequently Asked Questions</h2>
-<div class="ppw-faq-list">
-<details class="ppw-faq-item"><summary class="ppw-faq-question">Question?</summary><div class="ppw-faq-answer"><p>Answer paragraph.</p></div></details>
+<div class="gtd-faq-list">
+<details class="gtd-faq-item"><summary class="gtd-faq-question">Question?</summary><div class="gtd-faq-answer"><p>Answer paragraph.</p></div></details>
 </div>
 </section>
 
@@ -52,7 +52,7 @@ RULES:
 - Questions should cover different aspects (sizing/fit, safety, setup, maintenance, results, cost, warranty, comparisons, etc.)
 - Do NOT use markdown syntax — HTML only
 - Do NOT include any content outside the <section> tags
-- Do NOT include comparison tables, product grids, or any ppw-grid / ppw-card markup. This is an FAQ section ONLY.
+- Do NOT include comparison tables, product grids, or any gtd-grid / gtd-card markup. This is an FAQ section ONLY.
 
 ${WRITING_RULES}`
 
@@ -70,30 +70,30 @@ CATEGORY: ${categoryLabel}`
       .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
       .replace(/__(.+?)__/g, "<em>$1</em>")
       // Strip any comparison table / product grid markup that leaked into FAQ
-      .replace(/<div\s+class="ppw-grid[^"]*">[\s\S]*?<\/div>\s*<\/div>/gi, "")
-      .replace(/<div\s+class="ppw-card[^"]*">[\s\S]*?<\/div>/gi, "")
+      .replace(/<div\s+class="gtd-grid[^"]*">[\s\S]*?<\/div>\s*<\/div>/gi, "")
+      .replace(/<div\s+class="gtd-card[^"]*">[\s\S]*?<\/div>/gi, "")
       .trim()
 
     let cleanFaqSection = ""
     const faqItems: { question: string; answer: string }[] = []
 
-    if (cleanedFaqContent.includes('id="faq"') && cleanedFaqContent.includes("ppw-faq-item")) {
+    if (cleanedFaqContent.includes('id="faq"') && cleanedFaqContent.includes("gtd-faq-item")) {
       // Sanitize FAQ section
       cleanFaqSection = cleanedFaqContent.replace(
-        /(<div class="ppw-faq-answer">)([\s\S]*?)(<\/div>)/gi,
+        /(<div class="gtd-faq-answer">)([\s\S]*?)(<\/div>)/gi,
         (_match: string, open: string, body: string, close: string) => {
           const cleanBody = body
             .replace(/<\/section>/gi, "")
             .replace(/<\/article>/gi, "")
-            .replace(/<div\s+class="ppw-grid[^"]*">[\s\S]*?<\/div>/gi, "")
-            .replace(/<div\s+class="ppw-card[^"]*">[\s\S]*?<\/div>/gi, "")
+            .replace(/<div\s+class="gtd-grid[^"]*">[\s\S]*?<\/div>/gi, "")
+            .replace(/<div\s+class="gtd-card[^"]*">[\s\S]*?<\/div>/gi, "")
           return open + cleanBody + close
         }
       )
 
       // Parse FAQ items for schema
       const questionMatches = Array.from(cleanFaqSection.matchAll(/<summary[^>]*>(.*?)<\/summary>/gi))
-      const answerMatches = Array.from(cleanFaqSection.matchAll(/<div class="ppw-faq-answer">([\s\S]*?)<\/div>/gi))
+      const answerMatches = Array.from(cleanFaqSection.matchAll(/<div class="gtd-faq-answer">([\s\S]*?)<\/div>/gi))
       questionMatches.forEach((qm, i) => {
         const q = qm[1].replace(/<[^>]+>/g, "").trim()
         const a = answerMatches[i] ? answerMatches[i][1].replace(/<[^>]+>/g, "").trim() : ""

@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { callAI } from "@/lib/ai"
 import { CATEGORY_LABELS } from "@/lib/types"
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit"
-import { buildBrandVoicePrompt } from "@/lib/ppw-brand-voice"
+import { buildBrandVoicePrompt } from "@/lib/gtd-brand-voice"
 
 export const maxDuration = 300
 
@@ -143,12 +143,12 @@ export async function POST(request: NextRequest) {
 
     // ── Conversion element instructions ───────────────────────────────────
 
-    // Email capture (NN 15%-off Klaviyo gate) and supplement calculator removed for PPW.
+    // Email capture (NN 15%-off Klaviyo gate) and supplement calculator removed for GTD.
     const emailCaptureHtml = ""
     const calculatorHtml = ""
 
     const comparisonInstruction = includeComparisonTable
-      ? "\n- If appropriate, include a comparison table using NN grid markup: <div class=\"ppw-grid cols-2\"> or cols-3 with ppw-card items. IMPORTANT: The comparison table must NOT be the last content section — always close every ppw-card and ppw-grid div properly and follow it with at least one more prose section before the article ends."
+      ? "\n- If appropriate, include a comparison table using NN grid markup: <div class=\"gtd-grid cols-2\"> or cols-3 with gtd-card items. IMPORTANT: The comparison table must NOT be the last content section — always close every gtd-card and gtd-grid div properly and follow it with at least one more prose section before the article ends."
       : ""
 
     const specialContext = specialInstructions
@@ -159,37 +159,37 @@ export async function POST(request: NextRequest) {
     // Generate body content
     // ══════════════════════════════════════════════════════════════════════════
 
-    const systemPrompt = `You are a Senior Content Editor at Peak Primal Wellness, a premium wellness equipment brand (saunas, cold plunges, red light therapy, massage, hyperbaric, home gym, and recovery equipment). You are rewriting an existing article, not generating from scratch. Your goal is to preserve the author's best insights and unique perspectives while dramatically improving structure, SEO optimization, and conversion elements.
+    const systemPrompt = `You are a Senior Content Editor at Green Thumb Depot, a premium wellness equipment brand (saunas, cold plunges, red light therapy, massage, hyperbaric, home gym, and recovery equipment). You are rewriting an existing article, not generating from scratch. Your goal is to preserve the author's best insights and unique perspectives while dramatically improving structure, SEO optimization, and conversion elements.
 
 OUTPUT FORMAT — You MUST use NN CSS classes (already defined in the page). Do NOT use inline styles. Do NOT use markdown syntax (**, __, *, _, ##, etc.) — use only HTML tags like <strong>, <em>, <h2>, etc.
 
 STRUCTURE YOU MUST FOLLOW:
-1. Start directly with body section content (NO <style>, NO <div class="ppw-wrap">, NO <nav>, NO <h1> — those are added by the template)
+1. Start directly with body section content (NO <style>, NO <div class="gtd-wrap">, NO <nav>, NO <h1> — those are added by the template)
 2. First section: A "Key Takeaways" box:
-   <section class="ppw-section ppw-muted">
+   <section class="gtd-section gtd-muted">
    <h2>Key Takeaways</h2>
    <ul><li><strong>Label:</strong> description</li>...</ul>
    </section>
 3. Body sections, each wrapped in:
-   <section id="SLUG" class="ppw-section">
+   <section id="SLUG" class="gtd-section">
    <h2>Section Title</h2>
    ...paragraphs, lists, callout boxes...
    </section>
-4. Use <div class="ppw-callout"> for important callout blocks
+4. Use <div class="gtd-callout"> for important callout blocks
 5. Weave citations into the text as linked references: "...research shows that [citation 1] claims that..."
 6. Do NOT include any image tags or image placeholders. Images are added separately after content generation.
 7. Do NOT include an FAQ section. The FAQ is generated in a separate step.
 8. If you include a comparison table, it must NEVER be the last section. Always follow it with a prose wrap-up section.
 9. RESEARCH CALLOUT BOXES: For 1-2 of the most important research findings, create a dedicated callout using this structure:
-   <div class="ppw-callout" style="background:#faf7f1;border-left-color:#c8a96e;border-left-width:4px;padding:1.5rem;">
+   <div class="gtd-callout" style="background:#faf7f1;border-left-color:#c8a96e;border-left-width:4px;padding:1.5rem;">
    <p style="font-family:Poppins,sans-serif;font-weight:700;font-size:1.1rem;color:#8a6d2f;margin-bottom:0.5rem;">What Research Says</p>
-   <p class="ppw-body">[Specific finding from the research with the linked citation]</p>
+   <p class="gtd-body">[Specific finding from the research with the linked citation]</p>
    </div>
 10. INFO BOXES WITH ICONS: For 1-2 key concept explanations (e.g., "How Infrared Heat Works", "What Determines Heat-Up Time", "Safety Facts"), create a rich info box using this structure:
-   <div class="ppw-info-box">
-   <div class="ppw-info-box-header">
-   <div class="ppw-info-box-icon"><span>[relevant emoji like 🧬 or 💪 or 🔬 or ⚡]</span></div>
-   <div class="ppw-info-box-title">[Concept Title]</div>
+   <div class="gtd-info-box">
+   <div class="gtd-info-box-header">
+   <div class="gtd-info-box-icon"><span>[relevant emoji like 🧬 or 💪 or 🔬 or ⚡]</span></div>
+   <div class="gtd-info-box-title">[Concept Title]</div>
    </div>
    <ul>
    <li>[Key fact or step 1]</li>
@@ -239,8 +239,8 @@ Requirements:
 - Weave citations into the text naturally as linked references
 - Do NOT include any image tags or image placeholders
 - Do NOT include an FAQ section (it is generated separately)
-- Key Takeaways section first using ppw-muted class
-- All sections use ppw-section class with kebab-case IDs`
+- Key Takeaways section first using gtd-muted class
+- All sections use gtd-section class with kebab-case IDs`
 
     // Token ceiling: NN articles use HTML-heavy callout boxes, info boxes, and structured sections.
     // Plain text is ~0.75 words/token; with NN HTML markup the effective ratio is ~0.5 words/token.

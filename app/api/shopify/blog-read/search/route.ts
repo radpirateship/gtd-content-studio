@@ -31,8 +31,8 @@ export async function GET(request: NextRequest) {
         has_image: !!article.image?.src,
         has_content_images: /<img/i.test(body),
         has_internal_links: /href="\/blogs\//i.test(body),
-        has_products: /ppw-card|ppw-product/i.test(body),
-        has_faq: /<details|ppw-faq/i.test(body),
+        has_products: /gtd-card|gtd-product/i.test(body),
+        has_faq: /<details|gtd-faq/i.test(body),
       };
     });
 

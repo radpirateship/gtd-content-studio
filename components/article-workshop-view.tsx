@@ -144,7 +144,7 @@ export function ArticleWorkshopView({
   const [imageGenerating, setImageGenerating] = useState<Record<string, boolean>>({})
   const [imageProgress, setImageProgress] = useState('')
 
-  // ── Grade & Fix (PPW core-element grader) ──
+  // ── Grade & Fix (GTD core-element grader) ──
   type GradeCheck = { id: string; label: string; pass: boolean; detail: string }
   const [grade, setGrade] = useState<{ score: number; voiceScore?: number; checks: GradeCheck[] } | null>(null)
   const [isGrading, setIsGrading] = useState(false)
@@ -262,20 +262,20 @@ export function ArticleWorkshopView({
       {
         label: 'Internal Links',
         key: 'internal-links',
-        pass: /href=["'](?:https?:\/\/(?:www\.)?peakprimalwellness\.com)?\/blogs\/wellness\//i.test(body),
-        detail: (body.match(/href=["'](?:https?:\/\/(?:www\.)?peakprimalwellness\.com)?\/blogs\/wellness\//gi) || []).length + ' internal links',
+        pass: /href=["'](?:https?:\/\/(?:www\.)?greenthumbdepot\.com)?\/blogs\/wellness\//i.test(body),
+        detail: (body.match(/href=["'](?:https?:\/\/(?:www\.)?greenthumbdepot\.com)?\/blogs\/wellness\//gi) || []).length + ' internal links',
       },
       {
         label: 'Featured Products',
         key: 'products',
-        pass: /ppw-card|ppw-product/i.test(body),
-        detail: /ppw-card|ppw-product/i.test(body) ? 'Product cards found' : 'No product cards',
+        pass: /gtd-card|gtd-product/i.test(body),
+        detail: /gtd-card|gtd-product/i.test(body) ? 'Product cards found' : 'No product cards',
       },
       {
         label: 'FAQ Section',
         key: 'faq',
-        pass: /<details|ppw-faq/i.test(body),
-        detail: /<details|ppw-faq/i.test(body) ? 'FAQ present' : 'No FAQ section',
+        pass: /<details|gtd-faq/i.test(body),
+        detail: /<details|gtd-faq/i.test(body) ? 'FAQ present' : 'No FAQ section',
       },
       {
         label: 'Meta Description',
@@ -345,7 +345,7 @@ export function ArticleWorkshopView({
             newBody = newBody.replace(faqRegex, data.html)
           } else {
             // Insert before the CTA section or at the end
-            const ctaIndex = newBody.lastIndexOf('<section class="ppw-section ppw-center">')
+            const ctaIndex = newBody.lastIndexOf('<section class="gtd-section gtd-center">')
             if (ctaIndex !== -1) {
               newBody = newBody.slice(0, ctaIndex) + '\n' + data.html + '\n' + newBody.slice(ctaIndex)
             } else {
@@ -360,7 +360,7 @@ export function ArticleWorkshopView({
           break
         case 'intro': {
           let newBody = currentBody || ''
-          const introRegex = /<section\s+class="ppw-section ppw-muted">[\s\S]*?<\/section>/i
+          const introRegex = /<section\s+class="gtd-section gtd-muted">[\s\S]*?<\/section>/i
           if (introRegex.test(newBody)) {
             newBody = newBody.replace(introRegex, data.html)
           }
@@ -388,9 +388,9 @@ export function ArticleWorkshopView({
           let prodBody = currentBody || ''
           if (data.html) {
             // Remove existing product cards first
-            prodBody = prodBody.replace(/<div class="ppw-featured-products">[\s\S]*?<\/div>\s*<\/div>/gi, '')
+            prodBody = prodBody.replace(/<div class="gtd-featured-products">[\s\S]*?<\/div>\s*<\/div>/gi, '')
             // Insert before CTA section, or append
-            const ctaIdx = prodBody.lastIndexOf('<section class="ppw-section ppw-center">')
+            const ctaIdx = prodBody.lastIndexOf('<section class="gtd-section gtd-center">')
             if (ctaIdx !== -1) {
               prodBody = prodBody.slice(0, ctaIdx) + '\n' + data.html + '\n' + prodBody.slice(ctaIdx)
             } else {
@@ -532,7 +532,7 @@ export function ArticleWorkshopView({
       if (concepts.length === 0) throw new Error('No content image concepts generated')
 
       // Step 2: Remove existing content images from body
-      currentBody = currentBody.replace(/<figure class="ppw-content-image">[\s\S]*?<\/figure>/gi, '')
+      currentBody = currentBody.replace(/<figure class="gtd-content-image">[\s\S]*?<\/figure>/gi, '')
 
       // Step 3: Track which sections already have an image
       const sectionsWithImages = new Set<string>()
@@ -567,7 +567,7 @@ export function ArticleWorkshopView({
             : imgData.imageUrl
 
           const altText = (concept.altText || concept.label || 'Article illustration').replace(/"/g, '&quot;')
-          const figureTag = `\n<figure class="ppw-content-image"><img src="${cleanUrl}" alt="${altText}" loading="lazy" /></figure>\n`
+          const figureTag = `\n<figure class="gtd-content-image"><img src="${cleanUrl}" alt="${altText}" loading="lazy" /></figure>\n`
 
           // Insert after the target section H2
           const targetId = concept.targetSectionId
@@ -928,8 +928,8 @@ export function ArticleWorkshopView({
       {/* Header */}
       <div className="flex items-center justify-between border-b px-6 py-3" style={{ background: 'var(--bg)', borderColor: 'var(--border)' }}>
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background: 'color-mix(in srgb, var(--ppw-accent) 12%, transparent)' }}>
-            <Wrench className="h-4 w-4" style={{ color: 'var(--ppw-accent)' }} />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background: 'color-mix(in srgb, var(--gtd-accent) 12%, transparent)' }}>
+            <Wrench className="h-4 w-4" style={{ color: 'var(--gtd-accent)' }} />
           </div>
           <div>
             <h2 className="text-[17px] font-semibold" style={{ color: 'var(--text1)' }}>Article Workshop</h2>
@@ -945,7 +945,7 @@ export function ArticleWorkshopView({
             onClick={() => { setMode('single'); setQueueIndex(-1); setLoadedArticle(null) }}
             className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors"
             style={{
-              background: mode === 'single' ? 'var(--ppw-accent)' : 'transparent',
+              background: mode === 'single' ? 'var(--gtd-accent)' : 'transparent',
               color: mode === 'single' ? '#fff' : 'var(--text2)',
             }}
           >
@@ -956,7 +956,7 @@ export function ArticleWorkshopView({
             onClick={() => { setMode('queue'); setLoadedArticle(null) }}
             className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors"
             style={{
-              background: mode === 'queue' ? 'var(--ppw-accent)' : 'transparent',
+              background: mode === 'queue' ? 'var(--gtd-accent)' : 'transparent',
               color: mode === 'queue' ? '#fff' : 'var(--text2)',
             }}
           >
@@ -992,7 +992,7 @@ export function ArticleWorkshopView({
                     </Button>
                   </div>
                   <p className="mt-2 text-[12px]" style={{ color: 'var(--text3)' }}>
-                    Tip: Paste a full URL like peakprimalwellness.com/blogs/wellness/article-handle to load directly
+                    Tip: Paste a full URL like greenthumbdepot.com/blogs/guides/article-handle to load directly
                   </p>
                 </CardContent>
               </Card>
@@ -1136,7 +1136,7 @@ export function ArticleWorkshopView({
           {isLoadingArticle && (
             <Card style={{ borderColor: 'var(--border)' }}>
               <CardContent className="flex flex-col items-center justify-center py-12">
-                <Loader2 className="h-8 w-8 animate-spin mb-3" style={{ color: 'var(--ppw-accent)' }} />
+                <Loader2 className="h-8 w-8 animate-spin mb-3" style={{ color: 'var(--gtd-accent)' }} />
                 <p className="text-[14px] font-medium" style={{ color: 'var(--text2)' }}>Loading article from Shopify...</p>
               </CardContent>
             </Card>
@@ -1156,7 +1156,7 @@ export function ArticleWorkshopView({
                         <button
                           onClick={() => { setQueueIndex(-1); setLoadedArticle(null); setAuditResults([]); setPendingChanges({}) }}
                           className="flex items-center gap-1 mb-2 text-[12px] font-medium"
-                          style={{ color: 'var(--ppw-accent)' }}
+                          style={{ color: 'var(--gtd-accent)' }}
                         >
                           <ArrowLeft className="h-3 w-3" />
                           Back to List
@@ -1222,7 +1222,7 @@ export function ArticleWorkshopView({
                 </CardContent>
               </Card>
 
-              {/* Grade & Fix panel — the real PPW grader with one-click fixes */}
+              {/* Grade & Fix panel — the real GTD grader with one-click fixes */}
               <Card style={{ borderColor: 'var(--border)' }}>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-[15px] flex items-center gap-2">
@@ -1247,7 +1247,7 @@ export function ArticleWorkshopView({
                 </CardHeader>
                 <CardContent>
                   {!grade ? (
-                    <p className="text-[12px]" style={{ color: 'var(--text3)' }}>{isGrading ? 'Grading against the PPW checklist...' : 'No grade yet.'}</p>
+                    <p className="text-[12px]" style={{ color: 'var(--text3)' }}>{isGrading ? 'Grading against the GTD checklist...' : 'No grade yet.'}</p>
                   ) : (
                     <div className="space-y-2">
                       {grade.checks.filter(c => !c.pass).length === 0 && (
@@ -1383,11 +1383,11 @@ export function ArticleWorkshopView({
                         Showing {hasPendingChanges ? 'modified' : 'current Shopify'} version
                       </p>
                       <a
-                        href={`https://peakprimalwellness.com/blogs/wellness/${loadedArticle.handle}`}
+                        href={`https://greenthumbdepot.com/blogs/guides/${loadedArticle.handle}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[11px] font-medium hover:underline"
-                        style={{ color: 'var(--ppw-accent)' }}
+                        style={{ color: 'var(--gtd-accent)' }}
                       >
                         View live on Shopify →
                       </a>
@@ -1451,8 +1451,8 @@ export function ArticleWorkshopView({
                 <SectionCard
                   icon={<Link2 className="h-4 w-4" />}
                   title="Internal Links"
-                  status={/href=["'](?:https?:\/\/(?:www\.)?peakprimalwellness\.com)?\/blogs\/wellness\//i.test(pendingChanges.body_html || loadedArticle.body_html || '') ? 'present' : 'missing'}
-                  detail={`${((pendingChanges.body_html || loadedArticle.body_html || '').match(/href=["'](?:https?:\/\/(?:www\.)?peakprimalwellness\.com)?\/blogs\/wellness\//gi) || []).length} internal links`}
+                  status={/href=["'](?:https?:\/\/(?:www\.)?greenthumbdepot\.com)?\/blogs\/wellness\//i.test(pendingChanges.body_html || loadedArticle.body_html || '') ? 'present' : 'missing'}
+                  detail={`${((pendingChanges.body_html || loadedArticle.body_html || '').match(/href=["'](?:https?:\/\/(?:www\.)?greenthumbdepot\.com)?\/blogs\/wellness\//gi) || []).length} internal links`}
                 >
                   <Button
                     size="sm"
@@ -1470,8 +1470,8 @@ export function ArticleWorkshopView({
                 <SectionCard
                   icon={<ShoppingBag className="h-4 w-4" />}
                   title="Featured Products"
-                  status={/ppw-card|ppw-product/i.test(pendingChanges.body_html || loadedArticle.body_html || '') ? 'present' : 'missing'}
-                  detail={/ppw-card|ppw-product/i.test(pendingChanges.body_html || loadedArticle.body_html || '') ? 'Product cards found' : 'No product cards'}
+                  status={/gtd-card|gtd-product/i.test(pendingChanges.body_html || loadedArticle.body_html || '') ? 'present' : 'missing'}
+                  detail={/gtd-card|gtd-product/i.test(pendingChanges.body_html || loadedArticle.body_html || '') ? 'Product cards found' : 'No product cards'}
                 >
                   <Button
                     size="sm"
@@ -1489,7 +1489,7 @@ export function ArticleWorkshopView({
                 <SectionCard
                   icon={<HelpCircle className="h-4 w-4" />}
                   title="FAQ Section"
-                  status={/<details|ppw-faq/i.test(pendingChanges.body_html || loadedArticle.body_html || '') ? 'present' : 'missing'}
+                  status={/<details|gtd-faq/i.test(pendingChanges.body_html || loadedArticle.body_html || '') ? 'present' : 'missing'}
                   detail={`${((pendingChanges.body_html || loadedArticle.body_html || '').match(/<details/gi) || []).length} questions found`}
                 >
                   <Button
@@ -1609,7 +1609,7 @@ export function ArticleWorkshopView({
               onClick={handlePublish}
               disabled={!hasPendingChanges || isPublishing}
               className="gap-1.5"
-              style={{ background: hasPendingChanges ? 'var(--ppw-accent)' : undefined, color: hasPendingChanges ? '#fff' : undefined }}
+              style={{ background: hasPendingChanges ? 'var(--gtd-accent)' : undefined, color: hasPendingChanges ? '#fff' : undefined }}
             >
               {isPublishing ? (
                 <>

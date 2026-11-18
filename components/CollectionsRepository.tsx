@@ -9,7 +9,7 @@
 //   - Sync from Shopify button (pulls any collection the table doesn't know)
 //   - Click a collection name to open the edit panel (CollectionDetail)
 //
-// This view replaces the PPW_Complete_Collection_Optimization spreadsheet.
+// This view replaces the GTD_Complete_Collection_Optimization spreadsheet.
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { CollectionDetail } from '@/components/CollectionDetail'

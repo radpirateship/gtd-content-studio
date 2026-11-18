@@ -21,10 +21,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'collection_title or keywords are required' }, { status: 400 })
     }
 
-    const system = `You are an SEO specialist for Peak Primal Wellness, a premium wellness and fitness equipment retailer. You write collection-page SEO title tags and meta descriptions that maximize click-through and rank for the target keywords.
+    const system = `You are an SEO specialist for Green Thumb Depot, a premium wellness and fitness equipment retailer. You write collection-page SEO title tags and meta descriptions that maximize click-through and rank for the target keywords.
 
 RULES:
-- Title tags: 50-60 characters. Lead with the most important keyword. Add "Peak Primal Wellness" only if it fits the length.
+- Title tags: 50-60 characters. Lead with the most important keyword. Add "Green Thumb Depot" only if it fits the length.
 - Meta descriptions: 150-160 characters. Benefit-driven and specific, weave the keywords in naturally, end with a soft call to action.
 - Never keyword-stuff; every option must read naturally.
 - The two title options should take genuinely different angles (e.g. one keyword-led, one benefit-led). Same for the descriptions.

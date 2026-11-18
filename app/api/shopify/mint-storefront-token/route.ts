@@ -47,7 +47,7 @@ export async function GET() {
 export async function POST() {
   try {
     const q = `mutation {
-      storefrontAccessTokenCreate(input: { title: "PPW Content Studio Revamp" }) {
+      storefrontAccessTokenCreate(input: { title: "GTD Content Studio Revamp" }) {
         storefrontAccessToken { accessToken title accessScopes { handle } }
         userErrors { field message }
       }

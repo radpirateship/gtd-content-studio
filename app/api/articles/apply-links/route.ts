@@ -45,11 +45,11 @@ export async function POST(request: NextRequest) {
     const skippedDead: string[] = [];
     const skippedDuplicate: string[] = [];
 
-    // v2 articles are styled by the ppw-blog.css theme asset, which defines
-    // .ppwb-a and knows nothing about .ppw-links. A v2 article given v1 link
+    // v2 articles are styled by the gtd-blog.css theme asset, which defines
+    // .gtdb-a and knows nothing about .gtd-links. A v2 article given v1 link
     // classes gets whatever the host theme's .rte a rule says instead.
-    const isV2 = /class=["'][^"']*ppwb-/.test(htmlContent);
-    const linkClass = isV2 ? "ppwb-a" : "ppw-links";
+    const isV2 = /class=["'][^"']*gtdb-/.test(htmlContent);
+    const linkClass = isV2 ? "gtdb-a" : "gtd-links";
 
     // Sort links by anchor text length (longest first) to avoid partial matches
     const sortedLinks = [...approvedLinks].sort(
@@ -110,10 +110,10 @@ export async function POST(request: NextRequest) {
       // v2 uses a whitelist instead: body prose only. Everything else — deck,
       // answer box, takeaways, jump nav, product cards, FAQ, author bio,
       // related tiles, shop CTA — is generated furniture and is off limits.
-      const V2_SLOT = /<p class="ppwb-(?:p|lead|step-body)"[^>]*>[\s\S]*?<\/p>|<li class="ppwb-li"[^>]*>[\s\S]*?<\/li>/gi;
+      const V2_SLOT = /<p class="gtdb-(?:p|lead|step-body)"[^>]*>[\s\S]*?<\/p>|<li class="gtdb-li"[^>]*>[\s\S]*?<\/li>/gi;
       const isProse = (seg: string) =>
         isV2
-          ? /^<(?:p class="ppwb-(?:p|lead|step-body)"|li class="ppwb-li")/i.test(seg)
+          ? /^<(?:p class="gtdb-(?:p|lead|step-body)"|li class="gtdb-li")/i.test(seg)
           : !/^<a\b/i.test(seg) && !/^<h[1-6]\b/i.test(seg);
 
       const segments = isV2
@@ -164,9 +164,9 @@ export async function POST(request: NextRequest) {
     }
     // The generator already carries two collection links; this step adding a
     // third is how an article ended up with three. Body prose only: the shop
-    // CTA button is a ppwb-btn, not an editorial anchor, and is left alone.
+    // CTA button is a gtdb-btn, not an editorial anchor, and is left alone.
     if (isV2) {
-      const shielded = enrichedHTML.replace(/<section class="ppwb-shop">[\s\S]*?<\/section>/i, (m: string) => m.replace(/href="\/collections\//g, 'href="/__keep__/collections/'));
+      const shielded = enrichedHTML.replace(/<section class="gtdb-shop">[\s\S]*?<\/section>/i, (m: string) => m.replace(/href="\/collections\//g, 'href="/__keep__/collections/'));
       const capped = capCollectionLinks(shielded, 2);
       enrichedHTML = capped.html.replace(/\/__keep__\/collections\//g, "/collections/");
       if (capped.unwrapped.length) {

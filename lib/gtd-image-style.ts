@@ -1,9 +1,9 @@
 /**
- * Peak Primal Wellness — Global Brand Visual Style Suffix
+ * Green Thumb Depot — Global Brand Visual Style Suffix
  * Appended to every image generation prompt for visual consistency.
  *
- * Palette is pinned to the blog/collection design system (ppw-blog.css,
- * ppw-collections.css). Every value here is a real token, not a description:
+ * Palette is pinned to the blog/collection design system (gtd-blog.css,
+ * gtd-collections.css). Every value here is a real token, not a description:
  * "soft gold" and "bright blue" drift, hex codes do not. If the design system
  * palette changes, change it here in the same commit.
  *
@@ -11,7 +11,7 @@
  * actually uses. Red is not a brand colour but a diagram showing heat needs one,
  * so it is pinned and scoped to that single semantic job.
  */
-export const PPW_GLOBAL_STYLE = `
+export const GTD_GLOBAL_STYLE = `
 ---
 VISUAL STYLE SETTINGS (STRICT ADHERENCE REQUIRED):
 1.  **Overall Aesthetic:** Clean, modern, professional, technical illustration or high-end editorial photograph. Minimalist composition. No clutter.
@@ -24,6 +24,6 @@ VISUAL STYLE SETTINGS (STRICT ADHERENCE REQUIRED):
     * **Flow/Cool/Air:** Bright Blue (#0A86CB) arrows or highlights, e.g. air circulation, water flow.
     * **Action/Heat/Warning:** Red (#C0392B) arrows or highlights, e.g. heat rising. Heat and hazard only, never decoration.
 5.  **Typography (If Text is Present):** Poppins, or a clean geometric sans-serif of the same character. Semibold or bold for labels. No decorative fonts.
-6.  **Forbidden Styles:** Do not use painterly, abstract, watercolor, messy sketch, or overly complex CGI styles. Keep it clean and clinical. Do not use dark backgrounds. Do not use neon or saturated tech colours (electric blue, lime green) — they are not PPW colours.
+6.  **Forbidden Styles:** Do not use painterly, abstract, watercolor, messy sketch, or overly complex CGI styles. Keep it clean and clinical. Do not use dark backgrounds. Do not use neon or saturated tech colours (electric blue, lime green) — they are not GTD colours.
 ---
 `;

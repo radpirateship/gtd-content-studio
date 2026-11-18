@@ -29,7 +29,7 @@ interface ProductCandidate {
   imageUrl: string
 }
 
-const SYSTEM_PROMPT = `You are a product curator for Peak Primal Wellness (peakprimalwellness.com), a premium e-commerce wellness brand.
+const SYSTEM_PROMPT = `You are a product curator for Green Thumb Depot (greenthumbdepot.com), a premium e-commerce wellness brand.
 
 Your job: Given the full content of an Ultimate Guide and a catalog of available products, select the BEST products to feature. The number to select depends on catalog size — you'll be told the range.
 

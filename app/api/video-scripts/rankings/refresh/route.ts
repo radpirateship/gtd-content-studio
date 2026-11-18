@@ -1,5 +1,5 @@
 // POST /api/video-scripts/rankings/refresh  { days?: number }
-// Pulls sales from the PPW Dashboard, matches them to the live catalogue,
+// Pulls sales from the GTD Dashboard, matches them to the live catalogue,
 // maps products to collections and rebuilds the ranking snapshot.
 import { NextRequest, NextResponse } from "next/server";
 import { refreshRankings } from "@/lib/video-scripts/rankings";

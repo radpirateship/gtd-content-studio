@@ -91,8 +91,8 @@ export function computeSeoGrade(input: SeoGradeInput): SeoGradeResult {
   const contentOk = wordCount >= 350
   const technicalScore = (titleOk ? 5 : titleLen > 0 ? 2 : 0) + (metaOk ? 5 : metaLen > 0 ? 2 : 0) + (contentOk ? 5 : wordCount > 150 ? 2 : 0)
 
-  const ppwDomain = 'peakprimalwellness.com'
-  const hasAnyArticleLink = links.some((l) => l.includes(`${ppwDomain}/blogs/`) || l.startsWith('/blogs/'))
+  const gtdDomain = 'greenthumbdepot.com'
+  const hasAnyArticleLink = links.some((l) => l.includes(`${gtdDomain}/blogs/`) || l.startsWith('/blogs/'))
   const hasHubArticleLink = article_urls.length > 0
     ? article_urls.some((u) => links.some((l) => l.includes(u.toLowerCase().replace(/^https?:\/\//, ''))))
     : false

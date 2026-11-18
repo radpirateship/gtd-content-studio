@@ -23,13 +23,13 @@ function gradeArticle(a: AdminArticleResult) {
   const body = a.body_html || "";
   const brand = validateBrandRules(body);
 
-  const internalLinkCount = (body.match(/href=["'](?:https?:\/\/(?:www\.)?peakprimalwellness\.com)?\/blogs\/[^"']+/gi) || []).length;
+  const internalLinkCount = (body.match(/href=["'](?:https?:\/\/(?:www\.)?greenthumbdepot\.com)?\/blogs\/[^"']+/gi) || []).length;
   const missing = {
     featuredImage: !a.image?.src,
     contentImages: !/<img/i.test(body),
     internalLinks: internalLinkCount === 0,
-    products: !/ppw-card|ppw-product|ppw-featured-products/i.test(body),
-    faq: !/<details|ppw-faq/i.test(body),
+    products: !/gtd-card|gtd-product|gtd-featured-products/i.test(body),
+    faq: !/<details|gtd-faq/i.test(body),
     meta: !(a.summary_html && a.summary_html.trim().length > 0),
   };
   const missingCount = Object.values(missing).filter(Boolean).length;

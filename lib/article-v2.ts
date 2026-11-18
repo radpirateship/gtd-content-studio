@@ -1,13 +1,13 @@
 // ============================================================================
 // lib/article-v2.ts — template_version 2 article emitter.
 //
-// Everything here emits the ppwb- namespace defined in the ppw-blog.css theme
-// asset. Version 1 (lib/ppw-template.ts + the old ppw- markup) is frozen and
+// Everything here emits the gtdb- namespace defined in the gtd-blog.css theme
+// asset. Version 1 (lib/gtd-template.ts + the old gtd- markup) is frozen and
 // still serves every existing article; the two coexist and never share a class
-// name. See docs: PPW-Blog-Phase0-Implementation-Spec.
+// name. See docs: GTD-Blog-Phase0-Implementation-Spec.
 //
 // The only deliberate reuse is .faq-modern, which comes from
-// ppw-collections.css and is not redefined in ppw-blog.css.
+// gtd-collections.css and is not redefined in gtd-blog.css.
 //
 // House rules baked in here rather than left to the model:
 //   - no citations block at the foot; citations go inline
@@ -18,12 +18,12 @@
 
 import { AUTHORS, authorForArticle, type Author } from "./authors";
 
-export const V2_MARKER = "ppwb-article";
+export const V2_MARKER = "gtdb-article";
 
 /** True when the HTML is version 2 markup. Content-sniffed, so no DB column. */
 export function isV2ArticleHtml(html: string | null | undefined): boolean {
   if (!html) return false;
-  return /class=["'][^"']*ppwb-/i.test(html);
+  return /class=["'][^"']*gtdb-/i.test(html);
 }
 
 export function esc(s: unknown): string {
@@ -55,19 +55,19 @@ export function buildV2Header(o: {
 }): string {
   const d = o.publishedAt ?? new Date();
   const crumb = o.hubLabel
-    ? `<a href="/">Home</a><span>›</span><a href="/blogs/wellness">Wellness</a><span>›</span><a href="${esc(o.hubUrl || "/blogs/wellness")}">${esc(o.hubLabel)}</a>`
-    : `<a href="/">Home</a><span>›</span><a href="/blogs/wellness">Wellness</a>`;
+    ? `<a href="/">Home</a><span>›</span><a href="/blogs/guides">Wellness</a><span>›</span><a href="${esc(o.hubUrl || "/blogs/guides")}">${esc(o.hubLabel)}</a>`
+    : `<a href="/">Home</a><span>›</span><a href="/blogs/guides">Wellness</a>`;
 
-  return `<header class="ppwb-head">
-<nav class="ppwb-crumb" aria-label="Breadcrumb">${crumb}</nav>
-<div class="ppwb-kicker">${esc(o.kicker)}</div>
-<h1 class="ppwb-h1">${esc(o.title)}</h1>
-<p class="ppwb-deck">${esc(o.deck)}</p>
-<div class="ppwb-meta">
+  return `<header class="gtdb-head">
+<nav class="gtdb-crumb" aria-label="Breadcrumb">${crumb}</nav>
+<div class="gtdb-kicker">${esc(o.kicker)}</div>
+<h1 class="gtdb-h1">${esc(o.title)}</h1>
+<p class="gtdb-deck">${esc(o.deck)}</p>
+<div class="gtdb-meta">
 <span>By <strong>${esc(o.author.name)}</strong></span>
-<i class="ppwb-meta-dot"></i>
+<i class="gtdb-meta-dot"></i>
 <span>${o.readTime} min read</span>
-<i class="ppwb-meta-dot"></i>
+<i class="gtdb-meta-dot"></i>
 <span>Published ${fmtDate(d)}</span>
 </div>
 </header>`;
@@ -77,10 +77,10 @@ export function buildV2Header(o: {
 
 export function buildV2Answer(text: string, source?: string): string {
   if (!text?.trim()) return "";
-  return `<section class="ppwb-answer">
-<span class="ppwb-answer-label">The short answer</span>
-<p class="ppwb-answer-text">${text.trim()}</p>${
-    source?.trim() ? `\n<p class="ppwb-answer-src">${source.trim()}</p>` : ""
+  return `<section class="gtdb-answer">
+<span class="gtdb-answer-label">The short answer</span>
+<p class="gtdb-answer-text">${text.trim()}</p>${
+    source?.trim() ? `\n<p class="gtdb-answer-src">${source.trim()}</p>` : ""
   }
 </section>`;
 }
@@ -171,13 +171,13 @@ export function buildV2Takeaways(items: { label: string; text: string }[]): stri
         ? labelFromText(body)
         : raw;
       return label
-        ? `<li class="ppwb-glance-item"><strong>${esc(label)}:</strong> ${esc(t.text)}</li>`
-        : `<li class="ppwb-glance-item">${esc(t.text)}</li>`;
+        ? `<li class="gtdb-glance-item"><strong>${esc(label)}:</strong> ${esc(t.text)}</li>`
+        : `<li class="gtdb-glance-item">${esc(t.text)}</li>`;
     },
   ).join("\n");
-  return `<section class="ppwb-glance">
-<div class="ppwb-glance-label">Key takeaways</div>
-<ul class="ppwb-glance-list">
+  return `<section class="gtdb-glance">
+<div class="gtdb-glance-label">Key takeaways</div>
+<ul class="gtdb-glance-list">
 ${li}
 </ul>
 </section>`;
@@ -213,7 +213,7 @@ const TOC_LABEL_ONE_LINE = 38;
  * Shorten a full heading into a nav label, for when the model did not supply a
  * data-nav attribute.
  *
- * It cuts at a colon and nowhere else. Most PPW headings carry a natural short
+ * It cuts at a colon and nowhere else. Most GTD headings carry a natural short
  * form there: "Temperature Reliability: The Biggest Gap Between the Two" gives
  * "Temperature Reliability". Word-count truncation was tried and rejected, since
  * it produced "Where Cold Showers Actually Hold" and "Which One Is Actually
@@ -240,7 +240,7 @@ export function buildV2Toc(items: { id: string; text: string; navLabel?: string 
   const li = trimmed
     .map((i) => {
       const label = (i.navLabel?.trim() || navLabelFrom(i.text));
-      return `<li><a class="ppwb-toc-link" href="#${esc(i.id)}">${esc(label)}</a></li>`;
+      return `<li><a class="gtdb-toc-link" href="#${esc(i.id)}">${esc(label)}</a></li>`;
     })
     .join("\n");
   // The toggle is a checkbox rather than <details> because a closed <details>
@@ -249,10 +249,10 @@ export function buildV2Toc(items: { id: string; text: string; navLabel?: string 
   // nav would stay collapsed on desktop. Verified in headless Chromium at 360
   // and 1200px. The input is visually hidden but focusable, so the control stays
   // keyboard operable, and no script travels inside body_html.
-  return `<nav class="ppwb-toc" aria-label="In this article">
-<input class="ppwb-toc-tgl" type="checkbox" id="ppwb-toc-tgl">
-<label class="ppwb-toc-label" for="ppwb-toc-tgl">In this article<span class="ppwb-toc-chev" aria-hidden="true">&#9662;</span></label>
-<ol class="ppwb-toc-list">
+  return `<nav class="gtdb-toc" aria-label="In this article">
+<input class="gtdb-toc-tgl" type="checkbox" id="gtdb-toc-tgl">
+<label class="gtdb-toc-label" for="gtdb-toc-tgl">In this article<span class="gtdb-toc-chev" aria-hidden="true">&#9662;</span></label>
+<ol class="gtdb-toc-list">
 ${li}
 </ol>
 </nav>`;
@@ -315,22 +315,22 @@ export function buildV2Picks(
   const cards = products.map((p) => {
     const url = p.handle ? `/products/${p.handle}` : p.url || "#";
     const img = p.imageUrl
-      ? `<div class="ppwb-pick-img"><img src="${esc(p.imageUrl)}" alt="${esc(cleanProductTitle(p.title))}" /></div>`
-      : `<div class="ppwb-pick-img" data-ppwb-state="empty" data-ppwb-fallback="${esc([p.vendor, p.title].filter(Boolean).join(" · "))}"></div>`;
+      ? `<div class="gtdb-pick-img"><img src="${esc(p.imageUrl)}" alt="${esc(cleanProductTitle(p.title))}" /></div>`
+      : `<div class="gtdb-pick-img" data-gtdb-state="empty" data-gtdb-fallback="${esc([p.vendor, p.title].filter(Boolean).join(" · "))}"></div>`;
     const specs = specsFor(p).slice(0, 3).map((s) => `<span>${esc(s)}</span>`).join("");
     const price = money(p.price);
-    return `<a class="ppwb-pick" href="${esc(url)}">
+    return `<a class="gtdb-pick" href="${esc(url)}">
 ${img}
-<div class="ppwb-pick-body">${p.vendor ? `\n<div class="ppwb-pick-vendor">${esc(p.vendor)}</div>` : ""}
-<h3 class="ppwb-pick-title">${esc(cleanProductTitle(p.title))}</h3>
-<div class="ppwb-pick-specs">${specs}</div>${price ? `\n<div class="ppwb-pick-price">${price}</div>` : ""}
-<div class="ppwb-pick-cta">View model ›</div>
+<div class="gtdb-pick-body">${p.vendor ? `\n<div class="gtdb-pick-vendor">${esc(p.vendor)}</div>` : ""}
+<h3 class="gtdb-pick-title">${esc(cleanProductTitle(p.title))}</h3>
+<div class="gtdb-pick-specs">${specs}</div>${price ? `\n<div class="gtdb-pick-price">${price}</div>` : ""}
+<div class="gtdb-pick-cta">View model ›</div>
 </div>
 </a>`;
   }).join("\n");
 
-  return `<h2 class="ppwb-h2" id="${esc(opts?.anchor ?? "picks")}">${esc(heading)}</h2>
-<div class="ppwb-picks">
+  return `<h2 class="gtdb-h2" id="${esc(opts?.anchor ?? "picks")}">${esc(heading)}</h2>
+<div class="gtdb-picks">
 ${cards}
 </div>`;
 }
@@ -339,24 +339,24 @@ ${cards}
 
 export function buildV2GuideLink(guide?: { title: string; url: string } | null): string {
   if (!guide?.url) return "";
-  return `<a class="ppwb-guide" href="${esc(guide.url)}">
+  return `<a class="gtdb-guide" href="${esc(guide.url)}">
 <div>
-<div class="ppwb-guide-label">Go deeper</div>
-<div class="ppwb-guide-title">${esc(guide.title)}</div>
+<div class="gtdb-guide-label">Go deeper</div>
+<div class="gtdb-guide-title">${esc(guide.title)}</div>
 </div>
-<div class="ppwb-guide-go">Read the guide ›</div>
+<div class="gtdb-guide-go">Read the guide ›</div>
 </a>`;
 }
 
-// ── FAQ, .faq-modern reused from ppw-collections.css ────────────────────────
+// ── FAQ, .faq-modern reused from gtd-collections.css ────────────────────────
 
 export function buildV2Faq(items: { q: string; a: string }[]): string {
   if (!items?.length) return "";
   const rows = items.map((f, i) =>
     `<div class="item"><details${i === 0 ? " open" : ""}><summary>${esc(f.q)}<span class="chev">▾</span></summary><div class="body"><p>${f.a}</p></div></details></div>`
   ).join("\n");
-  return `<h2 class="ppwb-h2" id="faq">Frequently asked questions</h2>
-<div class="faq-modern ppwb-faq">
+  return `<h2 class="gtdb-h2" id="faq">Frequently asked questions</h2>
+<div class="faq-modern gtdb-faq">
 ${rows}
 </div>`;
 }
@@ -382,15 +382,15 @@ export function buildV2ShopCta(o: {
     "Expert US-based support",
   ].filter(Boolean).join(" · ");
 
-  return `<section class="ppwb-shop">
-<div class="ppwb-shop-label">${esc(o.kicker)}</div>
-<h2 class="ppwb-shop-title">Shop ${esc(o.collectionLabel.toLowerCase())}</h2>
-<p class="ppwb-shop-sub">Quality inspected before shipping, with expert US-based phone support before and after purchase.</p>
-<div class="ppwb-shop-row">
-<a class="ppwb-btn" href="/collections/${esc(o.collectionSlug)}">Shop ${esc(o.collectionLabel.toLowerCase())} ›</a>
-<a class="ppwb-btn ppwb-btn-ghost" href="/pages/contact">Talk to an expert ›</a>
+  return `<section class="gtdb-shop">
+<div class="gtdb-shop-label">${esc(o.kicker)}</div>
+<h2 class="gtdb-shop-title">Shop ${esc(o.collectionLabel.toLowerCase())}</h2>
+<p class="gtdb-shop-sub">Quality inspected before shipping, with expert US-based phone support before and after purchase.</p>
+<div class="gtdb-shop-row">
+<a class="gtdb-btn" href="/collections/${esc(o.collectionSlug)}">Shop ${esc(o.collectionLabel.toLowerCase())} ›</a>
+<a class="gtdb-btn gtdb-btn-ghost" href="/pages/contact">Talk to an expert ›</a>
 </div>
-<div class="ppwb-shop-trust">${trust}</div>
+<div class="gtdb-shop-trust">${trust}</div>
 </section>`;
 }
 
@@ -399,14 +399,14 @@ export function buildV2ShopCta(o: {
 export function buildV2Author(author: Author, verifiedAt?: Date): string {
   const d = verifiedAt ?? new Date();
   const role = author.role?.trim()
-    ? `\n<p class="ppwb-author-cred">${esc(author.role)}</p>`
+    ? `\n<p class="gtdb-author-cred">${esc(author.role)}</p>`
     : "";
-  return `<section class="ppwb-author">
-<div class="ppwb-author-photo" data-ppwb-state="empty" aria-hidden="true">${esc(author.initials)}</div>
+  return `<section class="gtdb-author">
+<div class="gtdb-author-photo" data-gtdb-state="empty" aria-hidden="true">${esc(author.initials)}</div>
 <div>
-<p class="ppwb-author-name">${esc(author.name)}</p>${role}
-<p class="ppwb-author-bio">${esc(author.bio)}</p>
-<p class="ppwb-review">Specifications drawn from manufacturer documentation. Prices and availability checked ${fmtDate(d)}.</p>
+<p class="gtdb-author-name">${esc(author.name)}</p>${role}
+<p class="gtdb-author-bio">${esc(author.bio)}</p>
+<p class="gtdb-review">Specifications drawn from manufacturer documentation. Prices and availability checked ${fmtDate(d)}.</p>
 </div>
 </section>`;
 }
@@ -418,13 +418,13 @@ export function buildV2Related(
 ): string {
   if (!articles?.length) return "";
   const tiles = articles.slice(0, 3).map((a) =>
-    `<a class="ppwb-tile" href="${esc(a.url)}">${a.hub ? `\n<div class="ppwb-tile-hub">${esc(a.hub)}</div>` : ""}
-<div class="ppwb-tile-title">${esc(a.title)}</div>${a.readTime ? `\n<div class="ppwb-tile-meta">${a.readTime} min read</div>` : ""}
+    `<a class="gtdb-tile" href="${esc(a.url)}">${a.hub ? `\n<div class="gtdb-tile-hub">${esc(a.hub)}</div>` : ""}
+<div class="gtdb-tile-title">${esc(a.title)}</div>${a.readTime ? `\n<div class="gtdb-tile-meta">${a.readTime} min read</div>` : ""}
 </a>`
   ).join("\n");
-  return `<section class="ppwb-related">
-<h2 class="ppwb-h2" style="margin-top:0">Keep reading</h2>
-<div class="ppwb-related-grid">
+  return `<section class="gtdb-related">
+<h2 class="gtdb-h2" style="margin-top:0">Keep reading</h2>
+<div class="gtdb-related-grid">
 ${tiles}
 </div>
 </section>`;
@@ -433,8 +433,8 @@ ${tiles}
 // ── DOCUMENT SHELL ──────────────────────────────────────────────────────────
 
 /**
- * The whole article. No <style> block: ppw-blog.css is a theme asset. No
- * ppw-wrap div either, .ppwb-article is the single wrapper and its grid places
+ * The whole article. No <style> block: gtd-blog.css is a theme asset. No
+ * gtd-wrap div either, .gtdb-article is the single wrapper and its grid places
  * children on the 720px column.
  */
 export function buildV2Document(parts: string[]): string {
@@ -444,7 +444,7 @@ export function buildV2Document(parts: string[]): string {
   // Article declaration carrying zero itemprops, which is noise at best.
   // The FAQPage JSON-LD is a different matter and stays: the theme emits none,
   // so ours is the only one on the page.
-  return `<article class="ppwb-article">
+  return `<article class="gtdb-article">
 
 ${parts.filter((p) => p && p.trim()).join("\n\n")}
 
@@ -462,7 +462,7 @@ export { AUTHORS };
 // CTA, author and related are all built deterministically above.
 
 export const V2_BODY_SPEC = `
-OUTPUT FORMAT — use the PPW blog classes below. They are defined in the theme.
+OUTPUT FORMAT — use the GTD blog classes below. They are defined in the theme.
 Do NOT use inline styles. Do NOT use markdown (**, __, ##). HTML tags only.
 
 STRUCTURE:
@@ -470,8 +470,8 @@ STRUCTURE:
    a table of contents, a key-takeaways box, an FAQ, a shop CTA, an author box
    or a related-articles list. All of those are assembled separately.
 2. Every section is:
-   <h2 class="ppwb-h2" id="kebab-case-id" data-nav="Short nav label">Section Title</h2>
-   <p class="ppwb-p">...</p>
+   <h2 class="gtdb-h2" id="kebab-case-id" data-nav="Short nav label">Section Title</h2>
+   <p class="gtdb-p">...</p>
 
    data-nav is the label that appears in the jump nav at the top of the article.
    Write the full, specific heading as the heading text, then a SHORT form in
@@ -484,32 +484,32 @@ STRUCTURE:
      data-nav:      "Home versus commercial units"
    The nav is two narrow columns. Over 40 characters a label wraps to a second
    line, and past two lines it is cut off, so keep them tight.
-3. Sub-headings: <h3 class="ppwb-h3">Title</h3>
-4. Lists: <ul class="ppwb-ul"><li class="ppwb-li">...</li></ul>
-5. Lead paragraph directly under an h2 may use <p class="ppwb-lead">.
+3. Sub-headings: <h3 class="gtdb-h3">Title</h3>
+4. Lists: <ul class="gtdb-ul"><li class="gtdb-li">...</li></ul>
+5. Lead paragraph directly under an h2 may use <p class="gtdb-lead">.
 
 OPTIONAL BLOCKS — use only where they genuinely help, at most one of each:
   Callout (tip, or a warning with the -warn variant):
-    <aside class="ppwb-call"><span class="ppwb-call-label">Pro tip</span><p>...</p></aside>
-    <aside class="ppwb-call ppwb-call-warn"><span class="ppwb-call-label">Before you start</span><p>...</p></aside>
+    <aside class="gtdb-call"><span class="gtdb-call-label">Pro tip</span><p>...</p></aside>
+    <aside class="gtdb-call gtdb-call-warn"><span class="gtdb-call-label">Before you start</span><p>...</p></aside>
   Numbered steps, for how-to content:
-    <ol class="ppwb-steps">
-    <li class="ppwb-step"><div><h3 class="ppwb-step-title">Step title</h3><p class="ppwb-step-body">...</p></div></li>
+    <ol class="gtdb-steps">
+    <li class="gtdb-step"><div><h3 class="gtdb-step-title">Step title</h3><p class="gtdb-step-body">...</p></div></li>
     </ol>
   Spec strip, three short data facts:
-    <div class="ppwb-specs">
-    <div class="ppwb-spec"><div class="ppwb-spec-num">1.3–1.5</div><div class="ppwb-spec-label">ATA</div><p class="ppwb-spec-note">...</p></div>
+    <div class="gtdb-specs">
+    <div class="gtdb-spec"><div class="gtdb-spec-num">1.3–1.5</div><div class="gtdb-spec-label">ATA</div><p class="gtdb-spec-note">...</p></div>
     </div>
   Comparison table. SIX product rows maximum, four to six is the target. A
   longer table is trimmed to six automatically, so writing more only means
   losing the ones you put last. Name each model exactly as the product data
   spells it, no abbreviations, so the row can be linked to the product.
-  EVERY cell except the first in a row needs data-ppwb-col, which drives the
+  EVERY cell except the first in a row needs data-gtdb-col, which drives the
   mobile card layout:
-    <div class="ppwb-cmp-wrap"><table class="ppwb-cmp">
+    <div class="gtdb-cmp-wrap"><table class="gtdb-cmp">
     <thead><tr><th>Model</th><th>Heat-up</th><th>Price</th></tr></thead>
     <tbody>
-    <tr><td class="ppwb-cmp-model">Name</td><td data-ppwb-col="Heat-up">35 min</td><td data-ppwb-col="Price">$5,990</td></tr>
+    <tr><td class="gtdb-cmp-model">Name</td><td data-gtdb-col="Heat-up">35 min</td><td data-gtdb-col="Price">$5,990</td></tr>
     </tbody>
     </table></div>
   Pull quote. ONLY for a real quotation from a named, identifiable source you
@@ -517,16 +517,16 @@ OPTIONAL BLOCKS — use only where they genuinely help, at most one of each:
   invent an attribution, and never attribute to a body of literature, a field,
   or "synthesized from" anything. A restatement of your own prose in a box is
   not a quote:
-    <blockquote class="ppwb-quote"><p class="ppwb-quote-text">...</p><cite class="ppwb-quote-by">Name, role or publication</cite></blockquote>
+    <blockquote class="gtdb-quote"><p class="gtdb-quote-text">...</p><cite class="gtdb-quote-by">Name, role or publication</cite></blockquote>
 
 LINKING — a budget, not a suggestion. Count them before you finish.
 
-  Every link in body prose uses class="ppwb-a", e.g.
-    <a class="ppwb-a" href="/blogs/wellness/slug">descriptive anchor text</a>.
-    Use ROOT-RELATIVE paths for anything on peakprimalwellness.com. Never paste
-    the full https://peakprimalwellness.com/... URL.
+  Every link in body prose uses class="gtdb-a", e.g.
+    <a class="gtdb-a" href="/blogs/guides/slug">descriptive anchor text</a>.
+    Use ROOT-RELATIVE paths for anything on greenthumbdepot.com. Never paste
+    the full https://greenthumbdepot.com/... URL.
 
-  INTERNAL PPW LINKS: 4 to 6, and every href COPIED CHARACTER FOR CHARACTER from
+  INTERNAL GTD LINKS: 4 to 6, and every href COPIED CHARACTER FOR CHARACTER from
     the LINK INVENTORY printed below. That inventory is the site's real published
     URL list, pulled from the database for this article's topic cluster.
     You cannot guess a slug and you must not try. Do not shorten an inventory URL,
@@ -548,7 +548,7 @@ LINKING — a budget, not a suggestion. Count them before you finish.
     something useful about the TOPIC, the link is placed correctly. If it now
     reads as a sentence about an article, you have written a signpost, not a link.
 
-    The examples below are from an article about ESPRESSO MACHINES, which PPW does
+    The examples below are from an article about ESPRESSO MACHINES, which GTD does
     not sell. They show the shape of the rule. Do not reuse the words.
 
       Wrong:
@@ -601,7 +601,7 @@ LINKING — a budget, not a suggestion. Count them before you finish.
     it, you have picked the wrong collection.
 
   EXTERNAL LINKS: none. Zero. Not to PubMed, not to NIH, not to a journal, not
-    to a professional body, not to anything off peakprimalwellness.com.
+    to a professional body, not to anything off greenthumbdepot.com.
     You cannot verify a DOI, a PMID or a URL you have not fetched, and a citation
     that points at the wrong study is worse than no citation. Every outbound href
     is stripped before publication.
@@ -633,11 +633,11 @@ NEVER REFER TO YOUR SOURCES AS SOURCES. The reader does not know about "the
   or simply leave it out. Write as the dealer who handles the equipment, not as
   someone reading a brief.
 
-BRANDS: name only what PPW sells.
+BRANDS: name only what GTD sells.
   The product data you were given lists the real brands. Those, plus brands named
   in the article brief, are the only ones you may mention by name.
   Do NOT reach for the brands in this category you have seen most often online.
-  They are competitors, PPW does not stock them, and naming one turns a PPW
+  They are competitors, GTD does not stock them, and naming one turns a GTD
   article into an advertisement for someone else. Never write "brands like X, Y
   or Z". If you want to talk about price or quality tiers, describe the tier
   ("an entry-level model", "a commercial-grade unit"), never a brand you cannot
@@ -650,7 +650,7 @@ HARD RULES:
 - A comparison table must never be the last thing. Follow it with prose.
 - Do not claim years of experience, certifications, licences, medical review,
   "clinically proven", "doctor recommended" or in-house experts. None are
-  evidenced. PPW is an authorized dealer that sells and ships this equipment.
+  evidenced. GTD is an authorized dealer that sells and ships this equipment.
 - Never write "free shipping" (conditional on product class) or "white-glove
   delivery" / "assembly included" (not offered).
 `;
@@ -671,8 +671,8 @@ Never mention "the product listing", "the product data" or "the specifications
 provided". If a figure is not available, say the manufacturer does not publish
 it, or leave it out.
 
-NAME ONLY BRANDS PPW SELLS. The product data lists them. Never write "a brand
-like X, Y or Z" using brands you have seen online; those are competitors and PPW
+NAME ONLY BRANDS GTD SELLS. The product data lists them. Never write "a brand
+like X, Y or Z" using brands you have seen online; those are competitors and GTD
 does not stock them. Describe the tier instead ("an entry-level model", "a
 commercial-grade unit"). Never name a price range you cannot support from the
 product data you were given, and never argue the reader out of the purchase.`;
@@ -706,7 +706,7 @@ advertisement.
 number, a range, a rule, a constraint, a step. It must be SUPPORTED BY ITS OWN
 SENTENCE: every word in it has to appear in, or obviously restate, the text
 beside it.
-  Examples below are from an article about ESPRESSO MACHINES, which PPW does
+  Examples below are from an article about ESPRESSO MACHINES, which GTD does
   not sell. They show the SHAPE of a good label. Do not reuse the words:
         "Budget 600 to 900" / "Nine bars, not fifteen" / "Descale every 200 shots"
   Bad, and never acceptable: any label that describes the ROLE of the bullet
@@ -800,7 +800,7 @@ const BLOCKED_EXTERNAL = [
 ];
 
 /**
- * Formerly the approved-citation list. PPW stopped linking off-site in Aug 2026,
+ * Formerly the approved-citation list. GTD stopped linking off-site in Aug 2026,
  * so nothing here is allowed any more. Kept only to classify what got stripped:
  * a stray link to a journal is a different problem from a stray link to Amazon.
  */
@@ -826,11 +826,11 @@ export type LinkAudit = {
 /**
  * Normalise an href to a comparison key: origin dropped, query and hash dropped,
  * trailing slash dropped, lowercased. /collections/Cold-Plunges/ and
- * https://peakprimalwellness.com/collections/cold-plunges?x=1 collapse to the same key.
+ * https://greenthumbdepot.com/collections/cold-plunges?x=1 collapse to the same key.
  */
 export function linkKey(href: string): string {
   let h = href.trim();
-  h = h.replace(/^https?:\/\/(www\.)?peakprimalwellness\.com/i, "");
+  h = h.replace(/^https?:\/\/(www\.)?greenthumbdepot\.com/i, "");
   h = h.split("#")[0].split("?")[0];
   h = h.replace(/\/+$/, "");
   return h.toLowerCase();
@@ -898,8 +898,8 @@ Any href you write that is not in this list will be stripped before publication.
 /**
  * Count the editorial links in a body of article HTML.
  *
- * The old counter was `/<a\s+href="[^"]*"\s+class="(?:ppw-links|ppwb-a)"/g`, which
- * demanded href BEFORE class. v2 bodies write `<a class="ppwb-a" href="...">`, so
+ * The old counter was `/<a\s+href="[^"]*"\s+class="(?:gtd-links|gtdb-a)"/g`, which
+ * demanded href BEFORE class. v2 bodies write `<a class="gtdb-a" href="...">`, so
  * the only links it ever matched were the href-first ones add-links inserted
  * itself. An article with eight real links reported one. Counting the raw <a>
  * tags in the whole document instead over-counts, because it picks up the
@@ -912,7 +912,7 @@ Any href you write that is not in this list will be stripped before publication.
  */
 export function countEditorialLinks(html: string): number {
   const anchors = html.match(
-    /<a\b(?=[^>]*\bhref=)[^>]*\bclass=["'][^"']*\b(?:ppwb-a|ppw-links)\b[^"']*["'][^>]*>/gi,
+    /<a\b(?=[^>]*\bhref=)[^>]*\bclass=["'][^"']*\b(?:gtdb-a|gtd-links)\b[^"']*["'][^>]*>/gi,
   );
   if (!anchors) return 0;
   const seen = new Set<string>();
@@ -956,7 +956,7 @@ export function splitAdjacentLinks(html: string): { html: string; unwrapped: str
   // unwrapped the second product card, the second related tile and the ghost
   // CTA button, because those block anchors sit beside each other with only
   // whitespace between them. A card with no <a> is a card nobody can click.
-  const pair = /(<\/a>)((?:\s|&nbsp;|&#160;)*)<a\b(?=[^>]*\bclass=["'][^"']*\b(?:ppwb-a|ppw-links)\b)[^>]*href=(["'])([\s\S]*?)\3[^>]*>((?:(?!<\/a>)[^<]|<(?!\/a>)(?!div|section|h[1-6]|p\b|img))*?)<\/a>/gi;
+  const pair = /(<\/a>)((?:\s|&nbsp;|&#160;)*)<a\b(?=[^>]*\bclass=["'][^"']*\b(?:gtdb-a|gtd-links)\b)[^>]*href=(["'])([\s\S]*?)\3[^>]*>((?:(?!<\/a>)[^<]|<(?!\/a>)(?!div|section|h[1-6]|p\b|img))*?)<\/a>/gi;
   let out = html;
   // Loop: a run of three adjacent anchors needs two passes, since each pass
   // consumes the closing tag it matched on.
@@ -1000,7 +1000,7 @@ export function capCollectionLinks(html: string, max = 2): { html: string; unwra
  * The rule is exactly two collection links and the cap above only removes
  * extras. When the writer carries one, find the first plain prose mention of
  * another candidate collection's subject and link it there. Only whole-word
- * matches inside ppwb-p / ppwb-li blocks that hold no anchor yet, so the
+ * matches inside gtdb-p / gtdb-li blocks that hold no anchor yet, so the
  * added link never lands beside or inside an existing one. Pass candidates
  * in rank order.
  */
@@ -1042,7 +1042,7 @@ export function fillCollectionLinks(
     );
     let done = false;
     out = out.replace(
-      /(<(p|li) class="ppwb-(?:p|li)"[^>]*>)([\s\S]*?)(<\/\2>)/gi,
+      /(<(p|li) class="gtdb-(?:p|li)"[^>]*>)([\s\S]*?)(<\/\2>)/gi,
       (whole, open: string, _tag: string, inner: string, close: string) => {
         if (done || /<a\b/i.test(inner)) return whole;
         const m = inner.match(pattern);
@@ -1050,7 +1050,7 @@ export function fillCollectionLinks(
         done = true;
         const before = inner.slice(0, m.index);
         const after = inner.slice(m.index + m[0].length);
-        return `${open}${before}<a class="ppwb-a" href="${esc(c.url)}">${m[0]}</a>${after}${close}`;
+        return `${open}${before}<a class="gtdb-a" href="${esc(c.url)}">${m[0]}</a>${after}${close}`;
       },
     );
     if (done) { present.add(key); added.push(`${subject} -> ${c.url}`); }
@@ -1105,7 +1105,7 @@ export function buildV2ProductBrief(
 Write about the category in general terms.`;
   }
   return `PRODUCT DATA: the products that will appear on this page, with each one's listing
-copied from the manufacturer's product page in PPW's catalogue.
+copied from the manufacturer's product page in GTD's catalogue.
 
 This is the article's main advantage over anything else on the subject. Use it.
   - Specifications, dimensions, pressures, capacities, materials, heater and
@@ -1116,7 +1116,7 @@ This is the article's main advantage over anything else on the subject. Use it.
   - If the title names one of these models, everything you say about it must
     agree with its listing. Where the listing is silent, say so or describe the
     category; never fill the gap from memory.
-  - Brands named here are the brands PPW sells. Name no others.
+  - Brands named here are the brands GTD sells. Name no others.
   - Do not turn the article into a sales page. Details serve the reader's
     decision; the cards beside the article do the selling.
   - A product that does not fit the article's subject stays OUT of the prose.
@@ -1129,7 +1129,7 @@ ${rows.join("\n\n")}`;
 
 // ── CATALOGUE RESEARCH ──────────────────────────────────────────────────────
 // The four featured products are not the point of product data. An article
-// about sauna installation should be able to read every sauna listing PPW
+// about sauna installation should be able to read every sauna listing GTD
 // carries and pull out what the manufacturers actually say about electrical
 // requirements, clearances, foundations and assembly. This scans a whole
 // collection's listings for the passages that match the article's topic and
@@ -1253,7 +1253,7 @@ export function buildV2CatalogueResearch(
   });
 
   const text = `CATALOGUE RESEARCH: what the manufacturers' own listings say about this topic,
-gathered from ${byProduct.size} of the ${scanned} products PPW carries in this category.
+gathered from ${byProduct.size} of the ${scanned} products GTD carries in this category.
 This is the material that makes the article more useful than a generic one. Use it:
   - When the article makes a claim about how these products are built, installed,
     sized, powered, maintained or specified, ground it in a passage below and name
@@ -1271,7 +1271,7 @@ ${blocks.join("\n\n")}`;
 
 // ── COMPARISON TABLE PRODUCT LINKS ──────────────────────────────────────────
 /**
- * A comparison table that names products PPW sells should link to them, with a
+ * A comparison table that names products GTD sells should link to them, with a
  * thumbnail, the way the collection pages do. The model writes plain model
  * names in the first column; this matches each one against the products on the
  * page and in the collection pool, and rewrites the cell. Unmatched cells are
@@ -1301,7 +1301,7 @@ const SEAL_VOID = new Set(["img", "br", "hr", "input", "meta", "link", "source",
  * Close any block the written body left open, at the end of the body.
  *
  * Why this exists, and why sealTruncatedBody does not cover it: that guard
- * compares TAG COUNTS. An article shipped with its fourth <li class="ppwb-step">
+ * compares TAG COUNTS. An article shipped with its fourth <li class="gtdb-step">
  * never closed, and still counted 23 <li> against 23 </li>, because the closers
  * turned up at the very end of the document. The counts balanced, the guard
  * passed, and every block appended after the body — FAQ, shop card, author,
@@ -1342,7 +1342,7 @@ export function closeUnclosedBlocks(html: string): { html: string; closed: strin
  */
 export function dropEmptyComparisonColumns(html: string, threshold = 0.6): { html: string; dropped: string[] } {
   const dropped: string[] = [];
-  const out = (html || "").replace(/<table class="ppwb-cmp">([\s\S]*?)<\/table>/gi, (whole: string, inner: string) => {
+  const out = (html || "").replace(/<table class="gtdb-cmp">([\s\S]*?)<\/table>/gi, (whole: string, inner: string) => {
     const headers = Array.from(inner.matchAll(/<th[^>]*>([\s\S]*?)<\/th>/gi)).map((m: RegExpMatchArray) => m[1].replace(/<[^>]+>/g, "").trim());
     const rows = Array.from(inner.matchAll(/<tr[\s\S]*?<\/tr>/gi)).map((m: RegExpMatchArray) => m[0]).filter((r: string) => /<td/i.test(r));
     if (headers.length < 3 || rows.length < 2) return whole;
@@ -1369,7 +1369,7 @@ export function dropEmptyComparisonColumns(html: string, threshold = 0.6): { htm
     const next = inner
       .replace(/<tr[\s\S]*?<\/tr>/gi, (r: string) => stripCells(r, /<th/i.test(r) ? "th" : "td"))
       .replace(/\n{2,}/g, "\n");
-    return '<table class="ppwb-cmp">' + next + '</table>';
+    return '<table class="gtdb-cmp">' + next + '</table>';
   });
   return { html: out, dropped };
 }
@@ -1377,7 +1377,7 @@ export function dropEmptyComparisonColumns(html: string, threshold = 0.6): { htm
 /**
  * Hold a comparison table to `max` product rows. Ryan's rule: six.
  *
- * Rows that link to a product PPW carries are kept first, then the rest in
+ * Rows that link to a product GTD carries are kept first, then the rest in
  * document order, so a trimmed table shows what is actually for sale rather
  * than whichever models the model happened to list first. Run this AFTER
  * linkComparisonTable so the linked rows are known.
@@ -1394,7 +1394,7 @@ export function capComparisonRows(html: string, max = 6): { html: string; droppe
     rows.forEach((r, i) => {
       if (keep.has(i)) return;
       const name = decodeEntities(
-        (r.match(/<td class="ppwb-cmp-model">([\s\S]*?)<\/td>/i)?.[1] || "").replace(/<[^>]+>/g, "")
+        (r.match(/<td class="gtdb-cmp-model">([\s\S]*?)<\/td>/i)?.[1] || "").replace(/<[^>]+>/g, "")
       ).trim();
       dropped.push(name || `row ${i + 1}`);
     });
@@ -1426,7 +1426,7 @@ export function linkComparisonTable(
   if (!cands.length) return { html, linked };
 
   const out = html.replace(
-    /<td class="ppwb-cmp-model">([\s\S]*?)<\/td>/gi,
+    /<td class="gtdb-cmp-model">([\s\S]*?)<\/td>/gi,
     (whole, inner: string) => {
       if (/<a\b/i.test(inner)) return whole;
       // Decode entities BEFORE matching. "&amp;" survived the tag strip and
@@ -1503,10 +1503,10 @@ export function linkComparisonTable(
       if (!best) return whole;
       const href = `/products/${best.p.handle}`;
       const img = best.p.imageUrl
-        ? `<img class="ppwb-cmp-thumb" src="${esc(best.p.imageUrl)}" alt="" loading="lazy" />`
+        ? `<img class="gtdb-cmp-thumb" src="${esc(best.p.imageUrl)}" alt="" loading="lazy" />`
         : "";
       linked.push(`${text} -> ${href}`);
-      return `<td class="ppwb-cmp-model"><a class="ppwb-cmp-link" href="${esc(href)}">${img}<span>${esc(text)}</span></a></td>`;
+      return `<td class="gtdb-cmp-model"><a class="gtdb-cmp-link" href="${esc(href)}">${img}<span>${esc(text)}</span></a></td>`;
     },
   );
   return { html: out, linked };
@@ -1534,27 +1534,27 @@ export function linkComparisonRowsByAnyCell(
   if (!products?.length) return { html, linked };
 
   const out = html.replace(/<tr\b[^>]*>[\s\S]*?<\/tr>/gi, (row) => {
-    const modelCell = row.match(/<td class="ppwb-cmp-model">([\s\S]*?)<\/td>/i);
+    const modelCell = row.match(/<td class="gtdb-cmp-model">([\s\S]*?)<\/td>/i);
     if (!modelCell || /<a\b/i.test(modelCell[1])) return row;
 
-    const others = Array.from(row.matchAll(/<td(?! class="ppwb-cmp-model")[^>]*>([\s\S]*?)<\/td>/gi))
+    const others = Array.from(row.matchAll(/<td(?! class="gtdb-cmp-model")[^>]*>([\s\S]*?)<\/td>/gi))
       .map((m) => decodeEntities(m[1].replace(/<[^>]+>/g, "")).trim())
       .filter((t) => t && t.length < 120);
 
     for (const cellText of others) {
       const probe = linkComparisonTable(
-        `<td class="ppwb-cmp-model">${cellText}</td>`,
+        `<td class="gtdb-cmp-model">${cellText}</td>`,
         products,
         products.length,
       );
       const href = probe.html.match(/href="([^"]+)"/)?.[1];
       if (!href) continue;
-      const img = probe.html.match(/<img class="ppwb-cmp-thumb"[^>]*>/i)?.[0] || "";
+      const img = probe.html.match(/<img class="gtdb-cmp-thumb"[^>]*>/i)?.[0] || "";
       const inner = modelCell[1];
       linked.push(`${cellText} -> ${href}`);
       return row.replace(
         modelCell[0],
-        `<td class="ppwb-cmp-model"><a class="ppwb-cmp-link" href="${href}">${img}<span>${inner}</span></a></td>`,
+        `<td class="gtdb-cmp-model"><a class="gtdb-cmp-link" href="${href}">${img}<span>${inner}</span></a></td>`,
       );
     }
     return row;
@@ -1579,13 +1579,13 @@ export function sealV2Links(
         key.startsWith("/collections/") ||
         key.startsWith("/pages/") ||
         key.startsWith("/products/");
-      // Outbound links are dropped wholesale. PPW does not cite off-site, and an
+      // Outbound links are dropped wholesale. GTD does not cite off-site, and an
       // unverifiable PMID is the same failure as an invented slug.
       if (!isSiteLink) { stripped.push(h); return text; }
       if (inventory.has(key)) {
         // Supplied, keep it, but as a root-relative path. The prompt asks for
         // root-relative and the model writes the full origin about half the time.
-        const rel = h.replace(/^https?:\/\/(www\.)?peakprimalwellness\.com/i, "");
+        const rel = h.replace(/^https?:\/\/(www\.)?greenthumbdepot\.com/i, "");
         return rel === h ? whole : whole.replace(href, rel);
       }
 
@@ -1661,7 +1661,7 @@ export function auditV2Links(html: string, inventory?: Set<string>): LinkAudit {
     if (h.startsWith("/collections/")) { collections.push(h); continue; }
     if (h.startsWith("/blogs/")) { internal.push(h); continue; }
     if (h.startsWith("/")) continue;           // /pages/, /products/, home
-    if (/^https?:\/\/(www\.)?peakprimalwellness\.com/i.test(h)) {
+    if (/^https?:\/\/(www\.)?greenthumbdepot\.com/i.test(h)) {
       if (/\/collections\//.test(h)) collections.push(h);
       else if (/\/blogs\//.test(h)) internal.push(h);
       continue;
@@ -1691,7 +1691,7 @@ export function auditV2Links(html: string, inventory?: Set<string>): LinkAudit {
       );
     }
   }
-  // House rule as of Aug 2026: PPW does not link off-site from article bodies.
+  // House rule as of Aug 2026: GTD does not link off-site from article bodies.
   if (external.length) {
     warnings.push(
       `${external.length} external link(s), the rule is zero: ${[...new Set(extDomains)].join(", ")}`,

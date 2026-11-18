@@ -174,9 +174,9 @@ export function AppSidebar({
             : 'border-transparent font-normal hover:bg-[var(--surface)]'
         )}
         style={{
-          color: isActive ? 'var(--ppw-accent)' : 'var(--text2)',
-          background: isActive ? 'var(--ppw-accent-light)' : undefined,
-          borderLeftColor: isActive ? 'var(--ppw-accent)' : 'transparent',
+          color: isActive ? 'var(--gtd-accent)' : 'var(--text2)',
+          background: isActive ? 'var(--gtd-accent-light)' : undefined,
+          borderLeftColor: isActive ? 'var(--gtd-accent)' : 'transparent',
         }}
       >
         <span className={cn('w-[18px] text-center flex-shrink-0', isActive ? 'opacity-100' : 'opacity-75')}>
@@ -187,8 +187,8 @@ export function AppSidebar({
           <span
             className="ml-auto rounded-[10px] px-[7px] py-px text-[10px] font-mono font-medium"
             style={{
-              background: item.badgeVariant === 'green' ? 'var(--ppw-accent-light)' : item.badgeVariant === 'amber' ? 'rgba(212,147,10,0.1)' : 'var(--surface2)',
-              color: item.badgeVariant === 'green' ? 'var(--ppw-accent)' : item.badgeVariant === 'amber' ? '#d4930a' : 'var(--text4)',
+              background: item.badgeVariant === 'green' ? 'var(--gtd-accent-light)' : item.badgeVariant === 'amber' ? 'rgba(212,147,10,0.1)' : 'var(--surface2)',
+              color: item.badgeVariant === 'green' ? 'var(--gtd-accent)' : item.badgeVariant === 'amber' ? '#d4930a' : 'var(--text4)',
             }}
           >
             {item.badge}
@@ -272,16 +272,16 @@ export function AppSidebar({
               {workflowSteps.map((step, i) => (
                 <div key={i}>
                   <div className="flex items-center gap-2 py-1 text-[12px]" style={{
-                    color: step.status === 'done' ? 'var(--ppw-accent)' : step.status === 'current' ? 'var(--text1)' : 'var(--text4)',
+                    color: step.status === 'done' ? 'var(--gtd-accent)' : step.status === 'current' ? 'var(--text1)' : 'var(--text4)',
                     fontWeight: step.status === 'current' ? 500 : 400,
                   }}>
                     <div
                       className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full text-[9px] font-mono"
                       style={{
                         border: '1.5px solid',
-                        borderColor: step.status === 'done' ? 'var(--ppw-accent)' : step.status === 'current' ? 'var(--text2)' : 'var(--border)',
-                        background: step.status === 'done' ? 'var(--ppw-accent-light)' : step.status === 'current' ? 'var(--surface)' : 'transparent',
-                        color: step.status === 'done' ? 'var(--ppw-accent)' : step.status === 'current' ? 'var(--text1)' : 'var(--text4)',
+                        borderColor: step.status === 'done' ? 'var(--gtd-accent)' : step.status === 'current' ? 'var(--text2)' : 'var(--border)',
+                        background: step.status === 'done' ? 'var(--gtd-accent-light)' : step.status === 'current' ? 'var(--surface)' : 'transparent',
+                        color: step.status === 'done' ? 'var(--gtd-accent)' : step.status === 'current' ? 'var(--text1)' : 'var(--text4)',
                       }}
                     >
                       {step.status === 'done' ? <Check className="h-2.5 w-2.5" /> : i + 1}
@@ -292,7 +292,7 @@ export function AppSidebar({
                     <div
                       className="ml-[8px] h-2 w-[1.5px]"
                       style={{
-                        background: step.status === 'done' ? 'var(--ppw-accent)' : 'var(--border)',
+                        background: step.status === 'done' ? 'var(--gtd-accent)' : 'var(--border)',
                         opacity: step.status === 'done' ? 0.35 : 1,
                       }}
                     />

@@ -32,7 +32,7 @@ export async function GET() {
              r.research->'gsc'->>'clicks' AS gsc_clicks,
              c.category, c.primary_keyword, c.title_tag, c.meta_description, c.product_count, c.is_hidden
       FROM collection_keyword_research r
-      LEFT JOIN ppw_collections c ON c.slug = r.slug
+      LEFT JOIN gtd_collections c ON c.slug = r.slug
       ORDER BY c.category NULLS LAST, r.slug
     `) as Array<Record<string, unknown>>;
     for (const row of rows) {

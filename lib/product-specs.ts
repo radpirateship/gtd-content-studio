@@ -2,7 +2,7 @@
 // Pull card bullets from the product's OWN description before falling back to
 // keyword matching.
 //
-// Roughly half of PPW products carry a <ul> in the Shopify description, and
+// Roughly half of GTD products carry a <ul> in the Shopify description, and
 // those bullets are frequently better than anything a regex can synthesise:
 // "Thermowood + fiberglass build", "3C to 38C control range", "Canadian cedar
 // exterior housing". Nothing here is invented: every bullet returned is text

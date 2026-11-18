@@ -25,7 +25,7 @@ import { enforceTasks, buildSchemaForTasks } from "@/lib/collection-task-enforce
  * POST /api/collections/improve   Body: { slug }
  *
  * EXPAND, don't scrap: grades the live collection against
- * docs/PPW_Collection_Page_Rules.md, then generates ONLY the missing or
+ * docs/GTD_Collection_Page_Rules.md, then generates ONLY the missing or
  * broken pieces (sections, meta, FAQ top-up, schema sync) using live product
  * data. Existing copy is preserved untouched apart from a deterministic
  * em-dash cleanup. Returns a preview; the UI publishes via the existing
@@ -84,7 +84,7 @@ export async function DELETE(request: NextRequest) {
     if (params.get("all")) {
       const rows = (await sql`DELETE FROM collection_improve_drafts RETURNING slug`) as Array<{ slug: string }>;
       // leftover-notes banners describe the drafts we just deleted — clear them too
-      try { await sql`UPDATE ppw_collections SET improve_notes = NULL WHERE improve_notes IS NOT NULL`; } catch { /* non-fatal */ }
+      try { await sql`UPDATE gtd_collections SET improve_notes = NULL WHERE improve_notes IS NOT NULL`; } catch { /* non-fatal */ }
       return NextResponse.json({ ok: true, deleted: rows.length });
     }
     const slug = params.get("slug");
@@ -124,7 +124,7 @@ function extractFaqPairs(html: string): { q: string; a: string }[] {
   for (const m of html.matchAll(/<details[^>]*>[\s\S]*?<summary[^>]*>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/gi)) {
     pairs.push({ q: toText(m[1]), a: toText(m[2]) });
   }
-  for (const m of html.matchAll(/<button[^>]*ppw-acc-btn[^>]*>([\s\S]*?)<\/button>\s*<div[^>]*ppw-acc-panel[^>]*>([\s\S]*?)<\/div>/gi)) {
+  for (const m of html.matchAll(/<button[^>]*gtd-acc-btn[^>]*>([\s\S]*?)<\/button>\s*<div[^>]*gtd-acc-panel[^>]*>([\s\S]*?)<\/div>/gi)) {
     pairs.push({ q: toText(m[1]).replace(/[+−]\s*$/, "").trim(), a: toText(m[2]) });
   }
   return pairs.filter((p) => p.q);
@@ -166,7 +166,7 @@ export async function POST(request: NextRequest) {
     const seoTitle = metafields.find((m) => m.namespace === "global" && m.key === "title_tag")?.value || collection.title || "";
     const seoDescription = metafields.find((m) => m.namespace === "global" && m.key === "description_tag")?.value || "";
 
-    const kwRow = (await sql`SELECT primary_keyword, secondary_keywords, collection_type, category FROM ppw_collections WHERE slug = ${slug}`) as Array<{ primary_keyword: string | null; secondary_keywords: unknown; collection_type: string | null; category?: string | null }>;
+    const kwRow = (await sql`SELECT primary_keyword, secondary_keywords, collection_type, category FROM gtd_collections WHERE slug = ${slug}`) as Array<{ primary_keyword: string | null; secondary_keywords: unknown; collection_type: string | null; category?: string | null }>;
     const hubCategory: string | null = kwRow[0]?.category ?? null;
     const isBrand = (kwRow[0]?.collection_type || "").toLowerCase() === "brand" || BRAND_COLLECTIONS.some((b) => b.handle === slug);
     const brandEntry = BRAND_COLLECTIONS.find((b) => b.handle === slug);
@@ -271,7 +271,7 @@ export async function POST(request: NextRequest) {
 
     let gen: any = {};
     if (wants.length > 0) {
-      const system = `You are the senior SEO copywriter at Peak Primal Wellness, a premium wellness equipment retailer. You rewrite collection-page sections following the PPW Collection Page Rules exactly.
+      const system = `You are the senior SEO copywriter at Green Thumb Depot, a premium wellness equipment retailer. You rewrite collection-page sections following the GTD Collection Page Rules exactly.
 ${WRITING_RULES}
 NON-NEGOTIABLE OUTPUT RULES:
 - When given ORIGINAL HTML for a section, return the COMPLETE replacement using the SAME outer wrapper tag and EVERY class name from the original. Change text and inner structure only as the spec requires. Never invent new class names.
@@ -418,9 +418,9 @@ ${specs.join("\n\n")}`;
       const cluster = rest.slice(0, 3);
       const wrapperClass = (blocksOf(body)[0]?.html.match(/<section\b[^>]*class="([^"]*)"/i)?.[1]) || "";
       const lc = `<section${wrapperClass ? ` class="${wrapperClass}"` : ""}><h2>Complete ${catLabel} Learning Center</h2>
-<p><a href="/blogs/wellness/${pillar.slug}"><strong>${pillar.title}</strong></a></p>
+<p><a href="/blogs/guides/${pillar.slug}"><strong>${pillar.title}</strong></a></p>
 <ul>
-${cluster.map((a) => `<li><a href="/blogs/wellness/${a.slug}">${a.title}</a></li>`).join("\n")}
+${cluster.map((a) => `<li><a href="/blogs/guides/${a.slug}">${a.title}</a></li>`).join("\n")}
 </ul></section>`;
       const anchor = findBlock(blocksOf(body), /featured|types|picks/i) || findBlock(blocksOf(body), /frequently asked|faq/i);
       body = anchor ? insertAfterBlock(body, anchor, lc) : body + "\n" + lc;
@@ -448,11 +448,11 @@ ${cluster.map((a) => `<li><a href="/blogs/wellness/${a.slug}">${a.title}</a></li
 
     // ── Featured Products: BUILD from live products when the page has none ──
     // Root cause of T6/T11 failures on sparse pages: nothing to sync or add
-    // CTAs to. Four .ppw-type tiles spanning entry -> premium, inserted
+    // CTAs to. Four .gtd-type tiles spanning entry -> premium, inserted
     // between the overview and the FAQ.
     {
       const blksNow = blocksOf(body);
-      const hasTiles = /class="[^"]*ppw-type/i.test(body) || blksNow.some((b) => /featured|types|picks/i.test(b.heading) && /\/products\//.test(b.html));
+      const hasTiles = /class="[^"]*gtd-type/i.test(body) || blksNow.some((b) => /featured|types|picks/i.test(b.heading) && /\/products\//.test(b.html));
       const priced = products
         .map((pr) => ({ ...pr, priceNum: parseFloat(pr.price) }))
         .filter((pr) => Number.isFinite(pr.priceNum) && pr.priceNum > 0)
@@ -463,8 +463,8 @@ ${cluster.map((a) => `<li><a href="/blogs/wellness/${a.slug}">${a.title}</a></li
         const tiers = [pickAt(0), pickAt(0.4), pickAt(0.72), pickAt(1)].filter((t) => !seen.has(t.handle) && seen.add(t.handle));
         const CTA = `<span style="display:block;margin-top:.75rem;padding:.6rem 1rem;background:#1E40AF;color:#fff;border-radius:8px;text-align:center;font-weight:700;font-size:.9rem;">View Product Details &rarr;</span>`;
         const shortDesc = (d: string) => d.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().split(/\s+/).slice(0, 18).join(" ");
-        const tiles = tiers.map((t) => `<a class="ppw-type" href="/products/${t.handle}" style="display:block;text-decoration:none;color:inherit;border:1px solid #e2e2e2;border-radius:10px;padding:14px;background:#fff">
-<div class="ppw-type__img">${t.imageUrl ? `<img src="${t.imageUrl}" alt="${t.title}" style="width:100%;border-radius:8px" loading="lazy" />` : ""}</div>
+        const tiles = tiers.map((t) => `<a class="gtd-type" href="/products/${t.handle}" style="display:block;text-decoration:none;color:inherit;border:1px solid #e2e2e2;border-radius:10px;padding:14px;background:#fff">
+<div class="gtd-type__img">${t.imageUrl ? `<img src="${t.imageUrl}" alt="${t.title}" style="width:100%;border-radius:8px" loading="lazy" />` : ""}</div>
 <strong style="display:block;margin-top:8px">${t.title}</strong>
 <span style="display:block;margin-top:4px;font-weight:600">${fmt(t.priceNum)}</span>
 <p style="font-size:.9rem;margin:.5rem 0 0;color:#444">${shortDesc(t.description || "")}</p>
@@ -483,7 +483,7 @@ ${tiles}
       }
     }
 
-    // ── 14-task deterministic enforcement pass (docs/PPW_Collection_14_Tasks.md) ──
+    // ── 14-task deterministic enforcement pass (docs/GTD_Collection_14_Tasks.md) ──
     // Verifies every rule on the FINAL html and fixes what it can; the AI is
     // never trusted to have complied.
     {
@@ -495,7 +495,7 @@ ${tiles}
         isBrand,
         brandName: brandName || undefined,
         allBrandNames,
-        collectionUrl: `https://peakprimalwellness.com/collections/${slug}`,
+        collectionUrl: `https://greenthumbdepot.com/collections/${slug}`,
         collectionTitle: collection.title,
         products: products.map((p) => ({ title: p.title, handle: p.handle, price: p.price, imageUrl: p.imageUrl })),
         gen: {
@@ -553,7 +553,7 @@ ${tiles}
       const finalBlk = findBlock(blocksOf(body), /frequently asked|faq/i);
       const finalPairs = finalBlk ? extractFaqItems(finalBlk.html).items.map((i) => ({ q: i.q, a: i.a })) : [];
       const schemaRes = buildSchemaForTasks(body, finalPairs, {
-        collectionUrl: `https://peakprimalwellness.com/collections/${slug}`,
+        collectionUrl: `https://greenthumbdepot.com/collections/${slug}`,
         collectionTitle: collection.title,
         catLabel,
         isBrand,
@@ -585,7 +585,7 @@ ${tiles}
     const seoAfter = computeSeoGrade({ body_html: body, seo_title: newSeoTitle, seo_description: newSeoDescription, primary_keyword: pk, keywords: [pk, ...secondaries] });
     const scoreAfter = Math.round(seoAfter.total * 0.5 + sgAfter.score * 0.5);
 
-    // Persist leftover work to ppw_collections so the Revamp Tool shows it
+    // Persist leftover work to gtd_collections so the Revamp Tool shows it
     // even after the draft is published and deleted.
     try {
       await ensureCollectionColumns(sql);
@@ -594,7 +594,7 @@ ${tiles}
         manual,
         at: new Date().toISOString(),
       };
-      await sql`UPDATE ppw_collections SET improve_notes = ${JSON.stringify(leftovers)} WHERE slug = ${slug}`;
+      await sql`UPDATE gtd_collections SET improve_notes = ${JSON.stringify(leftovers)} WHERE slug = ${slug}`;
     } catch (nErr) {
       console.error("[collections/improve] notes save failed:", nErr);
     }

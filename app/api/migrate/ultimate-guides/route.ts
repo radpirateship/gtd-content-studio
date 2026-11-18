@@ -1,6 +1,6 @@
 // app/api/migrate/ultimate-guides/route.ts
 // One-time migration: adds ultimate_guide_title + ultimate_guide_url columns
-// to ppw_collections and seeds the existing hardcoded values.
+// to gtd_collections and seeds the existing hardcoded values.
 // Hit POST /api/migrate/ultimate-guides once after deploying.
 import { NextResponse } from 'next/server'
 import { getSQL } from '@/lib/db'
@@ -49,7 +49,7 @@ export async function POST() {
 
   // 1. Add columns if they don't exist
   await sql`
-    ALTER TABLE ppw_collections
+    ALTER TABLE gtd_collections
       ADD COLUMN IF NOT EXISTS ultimate_guide_title TEXT,
       ADD COLUMN IF NOT EXISTS ultimate_guide_url   TEXT
   `
@@ -58,7 +58,7 @@ export async function POST() {
   let seeded = 0
   for (const [slug, guide] of Object.entries(SEED_DATA)) {
     const result = await sql`
-      UPDATE ppw_collections
+      UPDATE gtd_collections
       SET
         ultimate_guide_title = COALESCE(ultimate_guide_title, ${guide.title}),
         ultimate_guide_url   = COALESCE(ultimate_guide_url,   ${guide.url})

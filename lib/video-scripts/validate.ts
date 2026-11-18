@@ -19,7 +19,7 @@ const BANNED_HYPE = [
   /\bthey don'?t want you to know\b/i,
 ];
 const BANNED_PRICE = [/\$\s?\d[\d,]*\s?\/\s?mo/i, /\bper month\b/i, /\$\s?[\d,]+\s+a month\b/i, /\bcheap(er|est)?\b/i, /\bdeal of the year\b/i, /\bsteal\b/i, /\bdeal\b/i];
-// Brand wall: the founders' other businesses never appear in PPW content.
+// Brand wall: the founders' other businesses never appear in GTD content.
 const BRAND_WALL = [/green\s*thumb\s*depot/i, /greenthumbdepot/i, /naked\s*nutrition/i];
 
 function hits(text: string, patterns: RegExp[]): string[] {

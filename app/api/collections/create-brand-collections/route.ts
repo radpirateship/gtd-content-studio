@@ -8,7 +8,7 @@
 // Creates a vendor-rule smart collection for each vendor that has products but
 // no brand collection yet (James's convention: title = exact vendor string,
 // rule VENDOR EQUALS <vendor>, handle = slugified vendor), then registers the
-// collection in the content queue (ppw_collections) tagged as a brand page so
+// collection in the content queue (gtd_collections) tagged as a brand page so
 // the collection copy generator picks it up.
 //
 // Dry run unless confirm is true. The dry run reports, per vendor: product
@@ -26,7 +26,7 @@ import { guessCategory, asHub } from "@/lib/collection-category";
 export const maxDuration = 120;
 
 const API_VERSIONS = ["2024-10", "2024-07", "2024-04", "2024-01"];
-const STOREFRONT = "https://peakprimalwellness.com";
+const STOREFRONT = "https://greenthumbdepot.com";
 
 type Existing = { id: number; type: "custom" | "smart"; handle: string; title: string; published: boolean; via: "handle" | "rule" };
 
@@ -181,7 +181,7 @@ export async function POST(req: NextRequest) {
       const [products, existing, rows] = await Promise.all([
         vendorProducts(vendor),
         findExisting(vendor, slug),
-        sql`SELECT slug, shopify_collection_id, primary_keyword, category FROM ppw_collections WHERE slug = ${slug}` as Promise<Array<Record<string, any>>>,
+        sql`SELECT slug, shopify_collection_id, primary_keyword, category FROM gtd_collections WHERE slug = ${slug}` as Promise<Array<Record<string, any>>>,
       ]);
       const row = rows[0] || null;
       const queueRow = row
@@ -250,7 +250,7 @@ export async function POST(req: NextRequest) {
       try {
         if (queueRow.exists) {
           await sql`
-            UPDATE ppw_collections SET
+            UPDATE gtd_collections SET
               shopify_collection_id = ${String(liveId)},
               url = ${url},
               collection_type = 'brand',
@@ -267,7 +267,7 @@ export async function POST(req: NextRequest) {
           result.queue = "updated";
         } else {
           await sql`
-            INSERT INTO ppw_collections
+            INSERT INTO gtd_collections
               (slug, url, category, collection_type, primary_keyword, secondary_keywords, rule_summary,
                shopify_collection_id, product_count, is_published, is_hidden, status, last_synced_at)
             VALUES

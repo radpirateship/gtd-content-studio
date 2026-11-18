@@ -27,7 +27,7 @@ export const runtime = "nodejs";
 export const maxDuration = 300;
 
 const API_VERSIONS = ["2024-10", "2024-07", "2024-04", "2024-01"];
-const STOREFRONT = "https://peakprimalwellness.com";
+const STOREFRONT = "https://greenthumbdepot.com";
 const FROZEN = new Set(["barrel-saunas", "outdoor-saunas", "hyperbaric-chambers"]);
 
 type Col = { id: number; type: "custom" | "smart"; handle: string; title: string; published: boolean };
@@ -102,7 +102,7 @@ async function storefrontStatus(path: string): Promise<{ status: number; locatio
   try {
     const res = await fetch(`${STOREFRONT}${path}`, {
       redirect: "manual",
-      headers: { "User-Agent": "Mozilla/5.0 ppw-content-studio retire-check" },
+      headers: { "User-Agent": "Mozilla/5.0 gtd-content-studio retire-check" },
       cache: "no-store",
     });
     return { status: res.status, location: res.headers.get("location") };

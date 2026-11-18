@@ -109,7 +109,7 @@ export function GuideContentGeneratorV2({ guide, onSave, onBack }: Props) {
         const existing = (r.existingUrl as string) || (r.url as string) || ''
         const slugFromUrl = existing.replace(/^.*\/blogs\/wellness\//, '').replace(/^\//, '')
         const s = (r.slug as string) || slugFromUrl
-        return { title: (r.title as string) || (r.anchor as string) || (r.primaryKeyword as string) || '', url: existing || (s ? `/blogs/wellness/${s}` : '') }
+        return { title: (r.title as string) || (r.anchor as string) || (r.primaryKeyword as string) || '', url: existing || (s ? `/blogs/guides/${s}` : '') }
       }).filter(l => l.title && l.url)
       setClusterLinks(links)
     }).catch(() => {})

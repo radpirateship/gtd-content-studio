@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
 
       const rows = (await sql`
             SELECT slug, collection_type, rule_summary, shopify_collection_id, last_synced_at
-                  FROM ppw_collections WHERE slug = ${slug}
+                  FROM gtd_collections WHERE slug = ${slug}
                       `) as Array<Record<string, any>>
           if (!rows.length) return NextResponse.json({ error: `Unknown collection: ${slug}` }, { status: 404 })
           const row = rows[0]
@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
               const hit = found?.[kind]?.[0]
               if (hit?.id) {
                         await sql`
-                                  UPDATE ppw_collections SET
+                                  UPDATE gtd_collections SET
                                               shopify_collection_id = ${String(hit.id)},
                                                           last_synced_at = NOW()
                                                                     WHERE slug = ${slug}
@@ -151,9 +151,9 @@ export async function POST(req: NextRequest) {
           const handleDrifted = finalHandle !== slug
 
       await sql`
-            UPDATE ppw_collections SET
+            UPDATE gtd_collections SET
                     shopify_collection_id = ${String(created.id)},
-                            url            = ${'https://peakprimalwellness.com/collections/' + finalHandle},
+                            url            = ${'https://greenthumbdepot.com/collections/' + finalHandle},
                                     is_published   = FALSE,
                                             status         = 'Created, unpublished',
                                                     last_synced_at = NOW()

@@ -8,8 +8,8 @@
 // credentials. None of the blog guards ran on them.
 //
 // This module puts a guide on the same footing as a template_version 2 article:
-//   - the same ppwb- markup and the same theme stylesheet (ppw-blog.css), with a
-//     handful of guide-only classes appended to it (.ppwb-guide-*)
+//   - the same gtdb- markup and the same theme stylesheet (gtd-blog.css), with a
+//     handful of guide-only classes appended to it (.gtdb-guide-*)
 //   - the same deterministic blocks from lib/article-v2 (takeaways, jump nav,
 //     product cards, FAQ, shop CTA, author)
 //   - the same guard chain, run per section by the generate-v2 route and once
@@ -101,8 +101,8 @@ export const DEFAULT_GUIDE_PLAN: GuidePlanItem[] = [
     heading: "Types of {topics} and how to choose",
     navLabel: "Types and how to choose",
     brief:
-      "Lay out the main types PPW carries, what each is best for, and the trade-offs between them. " +
-      "Include one comparison table (ppwb-cmp) with a row per type, naming real models from the product data in the first column where a model exemplifies the type. " +
+      "Lay out the main types GTD carries, what each is best for, and the trade-offs between them. " +
+      "Include one comparison table (gtdb-cmp) with a row per type, naming real models from the product data in the first column where a model exemplifies the type. " +
       "Follow the table with prose on how to decide: space, budget, who uses it, how often. Be opinionated.",
     words: 800,
     enabled: true,
@@ -125,7 +125,7 @@ export const DEFAULT_GUIDE_PLAN: GuidePlanItem[] = [
     navLabel: "How to use it",
     brief:
       "Getting started, a sensible routine or progression for a beginner, how experienced users go further, and the mistakes that waste the purchase. " +
-      "Use a numbered step list (ppwb-steps) for the getting-started part. Figures must be specific and must agree with the product data.",
+      "Use a numbered step list (gtdb-steps) for the getting-started part. Figures must be specific and must agree with the product data.",
     words: 800,
     enabled: true,
   },
@@ -146,7 +146,7 @@ export const DEFAULT_GUIDE_PLAN: GuidePlanItem[] = [
     navLabel: "Safety",
     brief:
       "Who should talk to a doctor first, how to use {topic} safely, the warning signs that mean stop, and the maintenance that keeps it safe. " +
-      "Open with a ppwb-call-warn callout holding a one-sentence medical disclaimer. Name specific considerations, not vague categories.",
+      "Open with a gtdb-call-warn callout holding a one-sentence medical disclaimer. Name specific considerations, not vague categories.",
     words: 600,
     enabled: true,
   },
@@ -230,15 +230,15 @@ export function normalisePlan(raw: unknown): GuidePlanItem[] {
 
 /**
  * Guides are bylined to Ryan by his own decision (Aug 2026), with his real
- * role. The blog keeps the PPW team byline until the other authors are
+ * role. The blog keeps the GTD team byline until the other authors are
  * confirmed; that is why this reads the table by slug rather than through
  * authorForArticle(), which only returns active authors.
  */
 export function guideAuthor(): Author {
   const ryan = authorBySlug("ryan-oconnor");
-  const ppw = authorBySlug("ppw")!;
+  const gtd = authorBySlug("gtd")!;
   if (ryan && ryan.name && ryan.bio) return ryan;
-  return ppw;
+  return gtd;
 }
 
 // ── Citations ───────────────────────────────────────────────────────────────
@@ -294,7 +294,7 @@ export function sealGuideLinks(
         // Product links are written by linkComparisonTable() and the product
         // cards, never by the model, so they are trusted as our own.
         if (key.startsWith("/products/") || inventory.has(key)) {
-          const rel = h.replace(/^https?:\/\/(www\.)?peakprimalwellness\.com/i, "");
+          const rel = h.replace(/^https?:\/\/(www\.)?greenthumbdepot\.com/i, "");
           return rel === h ? whole : whole.replace(href, rel);
         }
         stripped.push(h);
@@ -317,7 +317,7 @@ export function collectCitations(html: string): { href: string; label: string }[
   const out: { href: string; label: string }[] = [];
   for (const m of html.matchAll(/<a\b[^>]*href=["'](https?:\/\/[^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi)) {
     const href = m[1].trim();
-    if (/peakprimalwellness\.com/i.test(href)) continue;
+    if (/greenthumbdepot\.com/i.test(href)) continue;
     if (seen.has(href)) continue;
     seen.add(href);
     out.push({ href, label: m[2].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() });
@@ -330,11 +330,11 @@ function buildGuideSources(citations: { href: string; label: string }[]): string
   const li = citations.map((c) => {
     let host = c.href;
     try { host = new URL(c.href).hostname.replace(/^www\./, ""); } catch { /* keep href */ }
-    return `<li class="ppwb-source">${esc(c.label || host)}. <a class="ppwb-a" href="${esc(c.href)}" rel="nofollow noopener" target="_blank">${esc(host)}</a></li>`;
+    return `<li class="gtdb-source">${esc(c.label || host)}. <a class="gtdb-a" href="${esc(c.href)}" rel="nofollow noopener" target="_blank">${esc(host)}</a></li>`;
   }).join("\n");
-  return `<section class="ppwb-sources">
-<div class="ppwb-sources-label">Sources cited</div>
-<ol class="ppwb-sources-list">
+  return `<section class="gtdb-sources">
+<div class="gtdb-sources-label">Sources cited</div>
+<ol class="gtdb-sources-list">
 ${li}
 </ol>
 </section>`;
@@ -356,7 +356,7 @@ ${li}
  */
 export function liftFiguresOutOfCallouts(html: string): string {
   return html.replace(
-    /(<aside\b[^>]*class=["'][^"']*ppwb-call[^"']*["'][^>]*>)([\s\S]*?)(<\/aside>)/gi,
+    /(<aside\b[^>]*class=["'][^"']*gtdb-call[^"']*["'][^>]*>)([\s\S]*?)(<\/aside>)/gi,
     (whole, open: string, inner: string, close: string) => {
       const figs: string[] = [];
       const cleaned = inner.replace(/<figure\b[\s\S]*?<\/figure>/gi, (f) => { figs.push(f); return ""; });
@@ -370,20 +370,20 @@ export function normaliseGuideImages(html: string): string {
   // Repair pass first: a comparison thumbnail that an earlier assembly wrapped
   // in a figure gets unwrapped, so the table cell holds the bare thumb again.
   html = html.replace(
-    /<figure class="ppwb-fig">\s*((?:<picture>[\s\S]*?<\/picture>|<img\b[^>]*ppwb-cmp-thumb[^>]*>))\s*<\/figure>/gi,
-    (whole, inner: string) => (/ppwb-cmp-thumb/i.test(inner) ? inner : whole),
+    /<figure class="gtdb-fig">\s*((?:<picture>[\s\S]*?<\/picture>|<img\b[^>]*gtdb-cmp-thumb[^>]*>))\s*<\/figure>/gi,
+    (whole, inner: string) => (/gtdb-cmp-thumb/i.test(inner) ? inner : whole),
   );
   return html.replace(/<img\b[^>]*>/gi, (tag, offset: number, whole: string) => {
-    // An img that already carries a ppwb- class is a deliberate block
+    // An img that already carries a gtdb- class is a deliberate block
     // (comparison thumb, pick image); never rewrap it.
-    if (/class=["'][^"']*ppwb-/i.test(tag)) return tag;
+    if (/class=["'][^"']*gtdb-/i.test(tag)) return tag;
     const before = whole.slice(Math.max(0, offset - 80), offset);
-    if (/<figure\b[^>]*>\s*$/i.test(before) || /ppwb-pick-img|ppwb-cmp-thumb|ppwb-cmp-link/i.test(before)) return tag;
+    if (/<figure\b[^>]*>\s*$/i.test(before) || /gtdb-pick-img|gtdb-cmp-thumb|gtdb-cmp-link/i.test(before)) return tag;
     const clean = tag
       .replace(/\s*style=["'][^"']*["']/i, "")
       .replace(/\s*loading=["'][^"']*["']/i, "")
       .replace(/\/?>$/, "") + ' loading="lazy" />';
-    return `<figure class="ppwb-fig">${clean}</figure>`;
+    return `<figure class="gtdb-fig">${clean}</figure>`;
   });
 }
 
@@ -394,23 +394,23 @@ export function normaliseGuideImages(html: string): string {
  */
 export function upgradeLegacyFragment(html: string): string {
   let h = html;
-  if (/class="ppwb-/.test(h)) return h;
+  if (/class="gtdb-/.test(h)) return h;
   h = h
-    .replace(/<p(?![^>]*class=)/gi, '<p class="ppwb-p"')
-    .replace(/<h3(?![^>]*class=)/gi, '<h3 class="ppwb-h3"')
-    .replace(/<h4(?![^>]*class=)/gi, '<h3 class="ppwb-h3"').replace(/<\/h4>/gi, "</h3>")
-    .replace(/<ul(?![^>]*class=)/gi, '<ul class="ppwb-ul"')
-    .replace(/<ol(?![^>]*class=)/gi, '<ol class="ppwb-ol"')
-    .replace(/<li(?![^>]*class=)/gi, '<li class="ppwb-li"')
-    .replace(/<div class="ppw-callout-warn">/gi, '<aside class="ppwb-call ppwb-call-warn"><span class="ppwb-call-label">Before you start</span>')
-    .replace(/<div class="callout-info">/gi, '<aside class="ppwb-call"><span class="ppwb-call-label">Note</span>')
-    .replace(/<div class="ppw-table-wrap">\s*<table class="ppw-table">/gi, '<div class="ppwb-cmp-wrap"><table class="ppwb-cmp">')
-    .replace(/<div class="ppw-stat-box"[^>]*>[\s\S]*?<\/div>/gi, "")
-    .replace(/<span class="ppw-benefit-icon">[\s\S]*?<\/span>/gi, "")
-    .replace(/<div class="ppw-benefits-grid">/gi, "<div>")
-    .replace(/<div class="ppw-benefit-card">/gi, "<div>");
+    .replace(/<p(?![^>]*class=)/gi, '<p class="gtdb-p"')
+    .replace(/<h3(?![^>]*class=)/gi, '<h3 class="gtdb-h3"')
+    .replace(/<h4(?![^>]*class=)/gi, '<h3 class="gtdb-h3"').replace(/<\/h4>/gi, "</h3>")
+    .replace(/<ul(?![^>]*class=)/gi, '<ul class="gtdb-ul"')
+    .replace(/<ol(?![^>]*class=)/gi, '<ol class="gtdb-ol"')
+    .replace(/<li(?![^>]*class=)/gi, '<li class="gtdb-li"')
+    .replace(/<div class="gtd-callout-warn">/gi, '<aside class="gtdb-call gtdb-call-warn"><span class="gtdb-call-label">Before you start</span>')
+    .replace(/<div class="callout-info">/gi, '<aside class="gtdb-call"><span class="gtdb-call-label">Note</span>')
+    .replace(/<div class="gtd-table-wrap">\s*<table class="gtd-table">/gi, '<div class="gtdb-cmp-wrap"><table class="gtdb-cmp">')
+    .replace(/<div class="gtd-stat-box"[^>]*>[\s\S]*?<\/div>/gi, "")
+    .replace(/<span class="gtd-benefit-icon">[\s\S]*?<\/span>/gi, "")
+    .replace(/<div class="gtd-benefits-grid">/gi, "<div>")
+    .replace(/<div class="gtd-benefit-card">/gi, "<div>");
   // The warn/info callouts above opened an <aside>; their closing </div> is now wrong.
-  h = h.replace(/(<aside class="ppwb-call[^"]*">[\s\S]*?)<\/div>/gi, "$1</aside>");
+  h = h.replace(/(<aside class="gtdb-call[^"]*">[\s\S]*?)<\/div>/gi, "$1</aside>");
   return h;
 }
 
@@ -460,13 +460,13 @@ export type GuideV2Options = {
   verifiedAt?: Date;
 };
 
-// "ppwb-guide" was the first choice and collided with the blog's "Go deeper"
-// guide-link box (.ppwb-guide is display:flex in section 10 of the CSS), which
+// "gtdb-guide" was the first choice and collided with the blog's "Go deeper"
+// guide-link box (.gtdb-guide is display:flex in section 10 of the CSS), which
 // laid the whole page out as that little flex row. Hence the longer name.
-export const GUIDE_V2_MARKER = "ppwb-guidepage";
+export const GUIDE_V2_MARKER = "gtdb-guidepage";
 
 export function isGuideV2Html(html: string | null | undefined): boolean {
-  return !!html && html.includes(`class="ppwb-article ${GUIDE_V2_MARKER}`);
+  return !!html && html.includes(`class="gtdb-article ${GUIDE_V2_MARKER}`);
 }
 
 function fmtDate(d: Date): string {
@@ -489,15 +489,15 @@ function buildGuideHeader(o: {
   const crumb = o.collectionLabel && o.collectionSlug
     ? `<a href="/">Home</a><span>›</span><a href="/collections/${esc(o.collectionSlug)}">${esc(o.collectionLabel)}</a><span>›</span><span aria-current="page">Ultimate guide</span>`
     : `<a href="/">Home</a><span>›</span><span aria-current="page">Ultimate guide</span>`;
-  return `<header class="ppwb-head">
-<nav class="ppwb-crumb" aria-label="Breadcrumb">${crumb}</nav>
-<div class="ppwb-kicker">Ultimate guide</div>
-<h1 class="ppwb-h1">${esc(o.title)}</h1>${o.deck ? `\n<p class="ppwb-deck">${esc(o.deck)}</p>` : ""}
-<div class="ppwb-meta">
+  return `<header class="gtdb-head">
+<nav class="gtdb-crumb" aria-label="Breadcrumb">${crumb}</nav>
+<div class="gtdb-kicker">Ultimate guide</div>
+<h1 class="gtdb-h1">${esc(o.title)}</h1>${o.deck ? `\n<p class="gtdb-deck">${esc(o.deck)}</p>` : ""}
+<div class="gtdb-meta">
 <span>By <strong>${esc(o.author.name)}</strong>${o.author.role ? `, ${esc(o.author.role)}` : ""}</span>
-<i class="ppwb-meta-dot"></i>
+<i class="gtdb-meta-dot"></i>
 <span>${o.readTime} min read</span>
-<i class="ppwb-meta-dot"></i>
+<i class="gtdb-meta-dot"></i>
 <span>Updated ${fmtDate(o.updated)}</span>
 </div>
 </header>`;
@@ -505,7 +505,7 @@ function buildGuideHeader(o: {
 
 function buildGuideHero(url: string, alt: string): string {
   if (!url) return "";
-  return `<figure class="ppwb-hero-img ppwb-guide-hero"><img src="${esc(url)}" alt="${esc(alt)}" width="1200" height="675" loading="eager" /></figure>`;
+  return `<figure class="gtdb-hero-img gtdb-guide-hero"><img src="${esc(url)}" alt="${esc(alt)}" width="1200" height="675" loading="eager" /></figure>`;
 }
 
 function buildRelatedGuides(guides: { title: string; slug: string; description?: string }[]): string {
@@ -513,15 +513,15 @@ function buildRelatedGuides(guides: { title: string; slug: string; description?:
   if (!list.length) return "";
   const cards = list.map((g) => {
     const href = g.slug.startsWith("/") ? g.slug : `/pages/${g.slug}`;
-    return `<a class="ppwb-gcard" href="${esc(href)}">
-<div class="ppwb-gcard-kick">Ultimate guide</div>
-<div class="ppwb-gcard-title">${esc(g.title)}</div>${g.description ? `\n<p class="ppwb-card-dek">${esc(g.description)}</p>` : ""}
-<div class="ppwb-gcard-meta">Read the guide ›</div>
+    return `<a class="gtdb-gcard" href="${esc(href)}">
+<div class="gtdb-gcard-kick">Ultimate guide</div>
+<div class="gtdb-gcard-title">${esc(g.title)}</div>${g.description ? `\n<p class="gtdb-card-dek">${esc(g.description)}</p>` : ""}
+<div class="gtdb-gcard-meta">Read the guide ›</div>
 </a>`;
   }).join("\n");
-  return `<section class="ppwb-guide-related">
-<h2 class="ppwb-h2" id="related-guides" style="margin-top:0">Related ultimate guides</h2>
-<div class="ppwb-guide-related-grid">
+  return `<section class="gtdb-guide-related">
+<h2 class="gtdb-h2" id="related-guides" style="margin-top:0">Related ultimate guides</h2>
+<div class="gtdb-guide-related-grid">
 ${cards}
 </div>
 </section>`;
@@ -531,13 +531,13 @@ function buildKeepReading(links: { url: string; title: string }[], topic: string
   const list = links.filter((l) => l.url && l.title).slice(0, 6);
   if (!list.length) return "";
   const tiles = list.map((l) =>
-    `<a class="ppwb-tile" href="${esc(l.url)}">
-<div class="ppwb-tile-hub">${esc(topic)}</div>
-<div class="ppwb-tile-title">${esc(l.title)}</div>
+    `<a class="gtdb-tile" href="${esc(l.url)}">
+<div class="gtdb-tile-hub">${esc(topic)}</div>
+<div class="gtdb-tile-title">${esc(l.title)}</div>
 </a>`).join("\n");
-  return `<section class="ppwb-related">
-<h2 class="ppwb-h2" id="keep-reading" style="margin-top:0">Keep reading</h2>
-<div class="ppwb-related-grid">
+  return `<section class="gtdb-related">
+<h2 class="gtdb-h2" id="keep-reading" style="margin-top:0">Keep reading</h2>
+<div class="gtdb-related-grid">
 ${tiles}
 </div>
 </section>`;
@@ -582,7 +582,7 @@ export function assembleGuideV2(
     // A fragment must not carry its own H2; the plan owns the heading.
     frag = frag.replace(/<h2\b[^>]*>[\s\S]*?<\/h2>/gi, "");
     tocItems.push({ id, text: item.heading, navLabel: item.navLabel || navLabelFrom(item.heading) });
-    bodyParts.push(`<h2 class="ppwb-h2" id="${id}">${esc(item.heading)}</h2>\n${frag.trim()}`);
+    bodyParts.push(`<h2 class="gtdb-h2" id="${id}">${esc(item.heading)}</h2>\n${frag.trim()}`);
   }
   if (!bodyParts.length) warnings.push("no section content; the page has a header and nothing else");
 
@@ -623,7 +623,7 @@ export function assembleGuideV2(
   // same product may legitimately anchor a row in two different tables, and
   // dedupe was unwrapping the second one to plain text.
   const cmpTokens: string[] = [];
-  body = body.replace(/<a class="ppwb-cmp-link"[\s\S]*?<\/a>/gi, (m) => {
+  body = body.replace(/<a class="gtdb-cmp-link"[\s\S]*?<\/a>/gi, (m) => {
     cmpTokens.push(m);
     return `\u0001CMPLINK${cmpTokens.length - 1}\u0001`;
   });
@@ -669,21 +669,21 @@ export function assembleGuideV2(
     // A guide with six products should compare six. The row count is the
     // model's to write, so this reports rather than repairs: a short table is
     // visible in the run instead of being found on the published page.
-    for (const t of body.match(/<table class="ppwb-cmp"[\s\S]*?<\/table>/gi) || []) {
-      const rows = (t.match(/<td class="ppwb-cmp-model">/g) || []).length;
-      const unlinked = (t.match(/<td class="ppwb-cmp-model">(?!\s*<a)/g) || []).length;
+    for (const t of body.match(/<table class="gtdb-cmp"[\s\S]*?<\/table>/gi) || []) {
+      const rows = (t.match(/<td class="gtdb-cmp-model">/g) || []).length;
+      const unlinked = (t.match(/<td class="gtdb-cmp-model">(?!\s*<a)/g) || []).length;
       if (rows && rows < Math.min(6, products.length)) {
         warnings.push(`comparison table has ${rows} rows for ${products.length} featured products`);
       }
-      if (unlinked) warnings.push(`${unlinked} comparison row(s) name no product PPW sells`);
+      if (unlinked) warnings.push(`${unlinked} comparison row(s) name no product GTD sells`);
     }
     const imgByHandle = new Map(products.filter((p) => p.image_url).map((p) => [p.handle.toLowerCase(), p.image_url as string]));
     body = body.replace(
-      /(<a class="ppwb-cmp-link" href="\/products\/([^"]+)">)(?!\s*<img)/gi,
+      /(<a class="gtdb-cmp-link" href="\/products\/([^"]+)">)(?!\s*<img)/gi,
       (whole, open: string, rawHandle: string) => {
         let img: string | undefined;
         try { img = imgByHandle.get(decodeURIComponent(rawHandle).toLowerCase()); } catch { img = imgByHandle.get(rawHandle.toLowerCase()); }
-        return img ? `${open}<img class="ppwb-cmp-thumb" src="${esc(img)}" alt="" loading="lazy" />` : whole;
+        return img ? `${open}<img class="gtdb-cmp-thumb" src="${esc(img)}" alt="" loading="lazy" />` : whole;
       },
     );
   }
@@ -694,7 +694,7 @@ export function assembleGuideV2(
     const at = renderedKeys.indexOf("buying");
     if (at >= 0) {
       // Re-split on the H2 markers so the insertion lands between sections.
-      const chunks = body.split(/(?=<h2 class="ppwb-h2" id="section-\d+">)/);
+      const chunks = body.split(/(?=<h2 class="gtdb-h2" id="section-\d+">)/);
       chunks.splice(at + 1, 0, picksHtml);
       body = chunks.join("\n\n");
     } else {
@@ -749,7 +749,7 @@ export function assembleGuideV2(
       }, null, 2)}\n</script>`
     : "";
 
-  const html = `<article class="ppwb-article ${GUIDE_V2_MARKER}">
+  const html = `<article class="gtdb-article ${GUIDE_V2_MARKER}">
 
 ${parts.filter((p) => p && p.trim()).join("\n\n")}
 

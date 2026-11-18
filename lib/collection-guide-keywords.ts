@@ -1,8 +1,8 @@
 // ============================================================================
 // lib/collection-guide-keywords.ts — CANONICAL keywords per collection, from
-// PPW_Complete_Collection_Optimization_6.xlsx (Ryan's collection guide).
+// GTD_Complete_Collection_Optimization_6.xlsx (Ryan's collection guide).
 // Generated Aug 2 2026. These are the ORIGINAL curated keywords; the
-// restore-keywords route resets ppw_collections to these in bulk after
+// restore-keywords route resets gtd_collections to these in bulk after
 // earlier generate runs inflated the lists with auto-added Ahrefs terms.
 // Regenerate this file from the xlsx when the guide changes.
 // ============================================================================

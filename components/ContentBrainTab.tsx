@@ -229,12 +229,12 @@ export default function ContentBrainTab({
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="ppw-wrap" style={{ padding: '20px 24px', maxWidth: 1400, margin: '0 auto' }}>
+      <div className="gtd-wrap" style={{ padding: '20px 24px', maxWidth: 1400, margin: '0 auto' }}>
         <header style={{ marginBottom: 16 }}>
           <h1 style={{ fontSize: 22, fontWeight: 700, color: '#003366', margin: 0 }}>
             Content Brain
           </h1>
-          <p className="ppw-muted" style={{ margin: '4px 0 0', fontSize: 13 }}>
+          <p className="gtd-muted" style={{ margin: '4px 0 0', fontSize: 13 }}>
             The strategic planning layer above the generation pipeline — every article, idea, and
             topical authority cluster in one place.
           </p>
@@ -242,7 +242,7 @@ export default function ContentBrainTab({
 
         {needsMigration && (
           <div
-            className="ppw-callout"
+            className="gtd-callout"
             style={{
               border: '1px solid #f4c44b',
               background: '#fff8e1',
@@ -603,7 +603,7 @@ function CaptureView({ onIdeaLogged, onGoToReview }: { onIdeaLogged: () => void;
           >
             Download template
           </button>
-          <span className="ppw-muted" style={{ fontSize: 11, flex: 1, minWidth: 180 }}>
+          <span className="gtd-muted" style={{ fontSize: 11, flex: 1, minWidth: 180 }}>
             Columns: title, keyword, collection (primary → links), secondarycollection (secondary → products), articleType, tone, wordCount… — header casing doesn't matter; rows go to the Review Queue.
           </span>
           {bulkStatus && (
@@ -640,7 +640,7 @@ function CaptureView({ onIdeaLogged, onGoToReview }: { onIdeaLogged: () => void;
           }}
         />
         <div style={{ display: 'flex', gap: 10, alignItems: 'center', justifyContent: 'space-between' }}>
-          <div className="ppw-muted" style={{ fontSize: 11 }}>
+          <div className="gtd-muted" style={{ fontSize: 11 }}>
             ⌘/Ctrl + Enter to send. Last 10 exchanges kept for context.
             {input.length > 0 && ` • ${input.length.toLocaleString()} chars`}
             {input.length >= 600 && ' • brainstorm mode'}
@@ -1385,7 +1385,7 @@ function ClusterMapView({
   }
 
   if (loading) {
-    return <div className="ppw-muted">Loading…</div>
+    return <div className="gtd-muted">Loading…</div>
   }
 
   return (
@@ -1429,7 +1429,7 @@ function ClusterMapView({
                   <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: '#003366' }}>
                     {hub}
                   </h3>
-                  <span className="ppw-muted" style={{ fontSize: 11 }}>
+                  <span className="gtd-muted" style={{ fontSize: 11 }}>
                     {liveCount}/{totalCount} live
                   </span>
                 </div>
@@ -1484,7 +1484,7 @@ function ClusterMapView({
                           <span>
                             {expanded ? '▾' : '▸'} {c.name}
                           </span>
-                          <span className="ppw-muted" style={{ fontSize: 10, fontWeight: 400 }}>
+                          <span className="gtd-muted" style={{ fontSize: 10, fontWeight: 400 }}>
                             {clusterLive}/{clusterTotal}
                           </span>
                         </div>
@@ -1517,7 +1517,7 @@ function ClusterMapView({
                             />
                           ))}
                           {clusterIdeas.length === 0 && (
-                            <div className="ppw-muted" style={{ fontSize: 11, fontStyle: 'italic' }}>
+                            <div className="gtd-muted" style={{ fontSize: 11, fontStyle: 'italic' }}>
                               No articles yet.
                             </div>
                           )}
@@ -2542,7 +2542,7 @@ function ExportQueueView({ ideas, onRefresh }: { ideas: Idea[]; onRefresh: () =>
       const a = document.createElement('a')
       a.href = url
       const ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')
-      a.download = `ppw-content-queue-${ts}.csv`
+      a.download = `gtd-content-queue-${ts}.csv`
       a.click()
       URL.revokeObjectURL(url)
 
@@ -2619,7 +2619,7 @@ function ExportQueueView({ ideas, onRefresh }: { ideas: Idea[]; onRefresh: () =>
 
       {eligible.length === 0 && (
         <div
-          className="ppw-callout"
+          className="gtd-callout"
           style={{
             padding: 16,
             border: '1px solid #e5e7eb',
@@ -2667,7 +2667,7 @@ function ExportQueueView({ ideas, onRefresh }: { ideas: Idea[]; onRefresh: () =>
                   onChange={() => toggleOne(r.id)}
                 />
                 <span style={{ flex: 1 }}>{r.title}</span>
-                <span className="ppw-muted" style={{ fontSize: 11 }}>
+                <span className="gtd-muted" style={{ fontSize: 11 }}>
                   {r.cluster_group} · {r.article_type || '—'}
                 </span>
               </label>
@@ -3284,7 +3284,7 @@ function TapImportModal({
           </div>
         )}
         {preview && preview.length === 0 && (
-          <div className="ppw-muted" style={{ fontSize: 12 }}>
+          <div className="gtd-muted" style={{ fontSize: 12 }}>
             No rows parsed. Double-check your format selection and CSV header.
           </div>
         )}

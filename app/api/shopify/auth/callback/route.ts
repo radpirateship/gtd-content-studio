@@ -85,7 +85,7 @@ export async function GET(request: NextRequest) {
         </style>
       </head>
       <body>
-        <h1>PPW Content Automation</h1>
+        <h1>GTD Content Automation</h1>
         <p class="success">App installed successfully!</p>
         <p>A Shopify Admin API access token was issued (shown masked for security):</p>
         <div class="token-box">${masked}</div>

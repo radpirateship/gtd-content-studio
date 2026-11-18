@@ -34,7 +34,7 @@ interface Cluster {
 
 const HUBS = ['Saunas', 'Recovery', 'Wellness', 'Cardio']
 
-const PPW = {
+const GTD = {
   navy: '#003366',
   blue: '#0066cc',
   green: 'rgb(26,122,84)',
@@ -49,8 +49,8 @@ export default function ContentBrainSettings() {
   return (
     <div style={{ padding: 24, maxWidth: 1100 }}>
       <div style={{ marginBottom: 18 }}>
-        <div style={{ fontSize: 22, fontWeight: 700, color: PPW.navy }}>Content Brain · Settings</div>
-        <div style={{ fontSize: 13, color: PPW.muted, marginTop: 2 }}>
+        <div style={{ fontSize: 22, fontWeight: 700, color: GTD.navy }}>Content Brain · Settings</div>
+        <div style={{ fontSize: 13, color: GTD.muted, marginTop: 2 }}>
           Upload reference docs, edit the canonical taxonomy, and manage data.
         </div>
       </div>
@@ -69,7 +69,7 @@ export default function ContentBrainSettings() {
               border: 'none',
               borderRadius: 6,
               background: tab === o.id ? 'white' : 'transparent',
-              color: tab === o.id ? PPW.navy : PPW.muted,
+              color: tab === o.id ? GTD.navy : GTD.muted,
               fontWeight: tab === o.id ? 600 : 500,
               fontSize: 13,
               cursor: 'pointer',
@@ -182,7 +182,7 @@ function DocsTab() {
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               style={inputStyle}
-              placeholder="e.g. PPW Brand Voice Guide v2"
+              placeholder="e.g. GTD Brand Voice Guide v2"
             />
           </Field>
           <Field label="Kind">
@@ -226,7 +226,7 @@ function DocsTab() {
               border: '1px dashed #cbd5e1',
               borderRadius: 8,
               padding: 12,
-              background: PPW.cream,
+              background: GTD.cream,
               marginBottom: 8,
             }}
           >
@@ -236,7 +236,7 @@ function DocsTab() {
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
               style={{ fontSize: 12 }}
             />
-            <span style={{ fontSize: 11, color: PPW.muted, marginLeft: 8 }}>
+            <span style={{ fontSize: 11, color: GTD.muted, marginLeft: 8 }}>
               or paste below. Text formats only — xlsx/pdf: convert to text first.
             </span>
           </div>
@@ -247,7 +247,7 @@ function DocsTab() {
             style={{ ...inputStyle, fontFamily: 'ui-monospace, monospace', fontSize: 12, resize: 'vertical' }}
             placeholder="Paste document contents here..."
           />
-          <div style={{ fontSize: 11, color: PPW.muted, marginTop: 4 }}>
+          <div style={{ fontSize: 11, color: GTD.muted, marginTop: 4 }}>
             {form.content.length.toLocaleString()} chars
           </div>
         </Field>
@@ -255,7 +255,7 @@ function DocsTab() {
           <button
             onClick={saveDoc}
             disabled={uploading}
-            style={{ ...buttonStyle, background: PPW.green, color: 'white' }}
+            style={{ ...buttonStyle, background: GTD.green, color: 'white' }}
           >
             {editing ? 'Save changes' : 'Add document'}
           </button>
@@ -265,7 +265,7 @@ function DocsTab() {
                 setEditing(null)
                 setForm({ title: '', kind: 'reference', notes: '', tags: '', content: '' })
               }}
-              style={{ ...buttonStyle, background: '#e5e7eb', color: PPW.navy }}
+              style={{ ...buttonStyle, background: '#e5e7eb', color: GTD.navy }}
             >
               Cancel
             </button>
@@ -274,12 +274,12 @@ function DocsTab() {
       </Card>
 
       <div style={{ marginTop: 24 }}>
-        <div style={{ fontSize: 14, fontWeight: 600, color: PPW.navy, marginBottom: 10 }}>
+        <div style={{ fontSize: 14, fontWeight: 600, color: GTD.navy, marginBottom: 10 }}>
           Uploaded documents ({docs.length})
         </div>
-        {loading && <div style={{ color: PPW.muted, fontSize: 13 }}>Loading…</div>}
+        {loading && <div style={{ color: GTD.muted, fontSize: 13 }}>Loading…</div>}
         {!loading && docs.length === 0 && (
-          <div style={{ color: PPW.muted, fontSize: 13, padding: 20, background: PPW.cream, borderRadius: 8 }}>
+          <div style={{ color: GTD.muted, fontSize: 13, padding: 20, background: GTD.cream, borderRadius: 8 }}>
             No documents yet. Upload your brand voice guide, strategy memos, and reference material to give the Content Brain better context.
           </div>
         )}
@@ -298,16 +298,16 @@ function DocsTab() {
             }}
           >
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: PPW.navy }}>{d.title}</div>
-              <div style={{ fontSize: 11, color: PPW.muted, marginTop: 2 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: GTD.navy }}>{d.title}</div>
+              <div style={{ fontSize: 11, color: GTD.muted, marginTop: 2 }}>
                 {d.kind} • {(d.content_length || 0).toLocaleString()} chars
                 {d.tags?.length ? ` • ${d.tags.join(', ')}` : ''}
               </div>
-              {d.notes && <div style={{ fontSize: 11, color: PPW.muted, fontStyle: 'italic' }}>{d.notes}</div>}
+              {d.notes && <div style={{ fontSize: 11, color: GTD.muted, fontStyle: 'italic' }}>{d.notes}</div>}
             </div>
             <div style={{ display: 'flex', gap: 6 }}>
-              <button onClick={() => startEdit(d)} style={{ ...buttonStyle, padding: '5px 10px', fontSize: 11, background: '#e5e7eb', color: PPW.navy }}>Edit</button>
-              <button onClick={() => deleteDoc(d.id)} style={{ ...buttonStyle, padding: '5px 10px', fontSize: 11, background: 'transparent', color: PPW.red, border: `1px solid ${PPW.red}` }}>Delete</button>
+              <button onClick={() => startEdit(d)} style={{ ...buttonStyle, padding: '5px 10px', fontSize: 11, background: '#e5e7eb', color: GTD.navy }}>Edit</button>
+              <button onClick={() => deleteDoc(d.id)} style={{ ...buttonStyle, padding: '5px 10px', fontSize: 11, background: 'transparent', color: GTD.red, border: `1px solid ${GTD.red}` }}>Delete</button>
             </div>
           </div>
         ))}
@@ -382,31 +382,31 @@ function MapTab() {
           </Field>
           <Field label="Name"><input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} style={inputStyle} placeholder="Infrared Saunas" /></Field>
           <Field label="Slug (kebab-case)"><input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} style={inputStyle} placeholder="infrared-saunas" /></Field>
-          <button onClick={save} style={{ ...buttonStyle, background: PPW.green, color: 'white', height: 36 }}>
+          <button onClick={save} style={{ ...buttonStyle, background: GTD.green, color: 'white', height: 36 }}>
             {editing ? 'Save' : 'Add'}
           </button>
         </div>
         {editing && (
-          <button onClick={() => { setEditing(null); setForm({ hub: 'Saunas', name: '', slug: '' }) }} style={{ ...buttonStyle, marginTop: 10, background: '#e5e7eb', color: PPW.navy }}>
+          <button onClick={() => { setEditing(null); setForm({ hub: 'Saunas', name: '', slug: '' }) }} style={{ ...buttonStyle, marginTop: 10, background: '#e5e7eb', color: GTD.navy }}>
             Cancel edit
           </button>
         )}
       </Card>
 
       <div style={{ marginTop: 24 }}>
-        {loading && <div style={{ color: PPW.muted, fontSize: 13 }}>Loading…</div>}
+        {loading && <div style={{ color: GTD.muted, fontSize: 13 }}>Loading…</div>}
         {byHub.map(({ hub, rows }) => (
           <div key={hub} style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 14, fontWeight: 600, color: PPW.navy, marginBottom: 8 }}>{hub} ({rows.length})</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: GTD.navy, marginBottom: 8 }}>{hub} ({rows.length})</div>
             {rows.map((c) => (
               <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 14px', background: 'white', border: '1px solid #e5e7eb', borderRadius: 6, marginBottom: 4 }}>
                 <div style={{ fontSize: 13 }}>
-                  <span style={{ fontWeight: 600, color: PPW.navy }}>{c.name}</span>
-                  <span style={{ color: PPW.muted, marginLeft: 10, fontFamily: 'ui-monospace, monospace', fontSize: 11 }}>{c.slug}</span>
+                  <span style={{ fontWeight: 600, color: GTD.navy }}>{c.name}</span>
+                  <span style={{ color: GTD.muted, marginLeft: 10, fontFamily: 'ui-monospace, monospace', fontSize: 11 }}>{c.slug}</span>
                 </div>
                 <div style={{ display: 'flex', gap: 6 }}>
-                  <button onClick={() => { setEditing(c); setForm({ hub: c.hub, name: c.name, slug: c.slug }); window.scrollTo({ top: 0, behavior: 'smooth' }) }} style={{ ...buttonStyle, padding: '4px 10px', fontSize: 11, background: '#e5e7eb', color: PPW.navy }}>Edit</button>
-                  <button onClick={() => remove(c.id)} style={{ ...buttonStyle, padding: '4px 10px', fontSize: 11, background: 'transparent', color: PPW.red, border: `1px solid ${PPW.red}` }}>Delete</button>
+                  <button onClick={() => { setEditing(c); setForm({ hub: c.hub, name: c.name, slug: c.slug }); window.scrollTo({ top: 0, behavior: 'smooth' }) }} style={{ ...buttonStyle, padding: '4px 10px', fontSize: 11, background: '#e5e7eb', color: GTD.navy }}>Edit</button>
+                  <button onClick={() => remove(c.id)} style={{ ...buttonStyle, padding: '4px 10px', fontSize: 11, background: 'transparent', color: GTD.red, border: `1px solid ${GTD.red}` }}>Delete</button>
                 </div>
               </div>
             ))}
@@ -445,13 +445,13 @@ function MaintenanceTab() {
   const Action = ({ label, endpoint, body, description }: { label: string; endpoint: string; body?: unknown; description: string }) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', background: 'white', border: '1px solid #e5e7eb', borderRadius: 6, marginBottom: 8 }}>
       <div>
-        <div style={{ fontSize: 13, fontWeight: 600, color: PPW.navy }}>{label}</div>
-        <div style={{ fontSize: 11, color: PPW.muted, marginTop: 2 }}>{description}</div>
+        <div style={{ fontSize: 13, fontWeight: 600, color: GTD.navy }}>{label}</div>
+        <div style={{ fontSize: 11, color: GTD.muted, marginTop: 2 }}>{description}</div>
       </div>
       <button
         onClick={() => run(label, endpoint, body)}
         disabled={busy !== null}
-        style={{ ...buttonStyle, background: busy === label ? '#9ca3af' : PPW.blue, color: 'white' }}
+        style={{ ...buttonStyle, background: busy === label ? '#9ca3af' : GTD.blue, color: 'white' }}
       >
         {busy === label ? 'Running…' : 'Run'}
       </button>
@@ -476,13 +476,13 @@ function MaintenanceTab() {
       <Card title="Export" style={{ marginTop: 16 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', background: 'white', border: '1px solid #e5e7eb', borderRadius: 6 }}>
           <div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: PPW.navy }}>Download current Topical Authority Plan</div>
-            <div style={{ fontSize: 11, color: PPW.muted, marginTop: 2 }}>Multi-sheet .xlsx: one sheet per cluster + a summary tab. Reflects every live edit, status change, and Ahrefs refresh.</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: GTD.navy }}>Download current Topical Authority Plan</div>
+            <div style={{ fontSize: 11, color: GTD.muted, marginTop: 2 }}>Multi-sheet .xlsx: one sheet per cluster + a summary tab. Reflects every live edit, status change, and Ahrefs refresh.</div>
           </div>
           <a
             href="/api/content-brain/export/tap-xlsx"
             download
-            style={{ padding: '8px 16px', background: PPW.green, color: 'white', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 600, textDecoration: 'none', cursor: 'pointer' }}
+            style={{ padding: '8px 16px', background: GTD.green, color: 'white', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 600, textDecoration: 'none', cursor: 'pointer' }}
           >
             Download .xlsx
           </a>
@@ -498,10 +498,10 @@ function MaintenanceTab() {
       </Card>
 
       <Card title="Shopify-only article audit" style={{ marginTop: 16 }}>
-        <div style={{ fontSize: 12, color: PPW.muted, marginBottom: 12 }}>
+        <div style={{ fontSize: 12, color: GTD.muted, marginBottom: 12 }}>
           Enriches the shopify_only list with publish dates, derived keywords, and clash detection against your live Content Brain articles.
           Articles published before <strong>Oct 1 2025</strong> are flagged as old. Runs in ~30s (no Ahrefs calls).
-          <strong style={{ color: PPW.navy }}> Nothing is deleted until you select rows and click an action.</strong>
+          <strong style={{ color: GTD.navy }}> Nothing is deleted until you select rows and click an action.</strong>
         </div>
         <ShopifyOnlyAudit />
       </Card>
@@ -533,7 +533,7 @@ function MaintenanceTab() {
 
       {status && (
         <Card title="Last output" style={{ marginTop: 16 }}>
-          <pre style={{ fontSize: 11, fontFamily: 'ui-monospace, monospace', background: PPW.cream, padding: 12, borderRadius: 4, overflowX: 'auto', whiteSpace: 'pre-wrap' }}>
+          <pre style={{ fontSize: 11, fontFamily: 'ui-monospace, monospace', background: GTD.cream, padding: 12, borderRadius: 4, overflowX: 'auto', whiteSpace: 'pre-wrap' }}>
             {status}
           </pre>
         </Card>
@@ -582,7 +582,7 @@ function ShopifyOnlyAudit() {
     const blob = new Blob([result.csv], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
-    a.href = url; a.download = `ppw-shopify-only-audit-${new Date().toISOString().slice(0,10)}.csv`
+    a.href = url; a.download = `gtd-shopify-only-audit-${new Date().toISOString().slice(0,10)}.csv`
     a.click(); URL.revokeObjectURL(url)
   }
 
@@ -623,27 +623,27 @@ function ShopifyOnlyAudit() {
 
   const CLASH_COLOR: Record<string, string> = { 'exact-keyword': '#c05621', 'title-overlap': '#d69e2e', 'none': '#6b7280' }
   const REC_BG = (r: string) => r.startsWith('DELETE') ? '#fde7dc' : r.startsWith('REVIEW') ? '#fff4d6' : '#f0f9ff'
-  const REC_COLOR = (r: string) => r.startsWith('DELETE') ? '#c05621' : r.startsWith('REVIEW') ? '#7a5a00' : PPW.blue
+  const REC_COLOR = (r: string) => r.startsWith('DELETE') ? '#c05621' : r.startsWith('REVIEW') ? '#7a5a00' : GTD.blue
 
   return (
     <div>
       <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12, flexWrap: 'wrap' }}>
         <button onClick={run} disabled={busy}
-          style={{ padding: '8px 16px', background: busy ? '#9ca3af' : PPW.blue, color: 'white', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: busy ? 'default' : 'pointer' }}>
+          style={{ padding: '8px 16px', background: busy ? '#9ca3af' : GTD.blue, color: 'white', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: busy ? 'default' : 'pointer' }}>
           {busy ? 'Fetching dates + checking clashes…' : 'Run shopify-only audit'}
         </button>
-        {result && <button onClick={downloadCsv} style={{ padding: '8px 16px', background: PPW.green, color: 'white', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>Download CSV</button>}
+        {result && <button onClick={downloadCsv} style={{ padding: '8px 16px', background: GTD.green, color: 'white', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>Download CSV</button>}
       </div>
-      {error && <div style={{ color: PPW.red, fontSize: 12, padding: '6px 10px', background: '#fde7dc', borderRadius: 4, marginBottom: 8 }}>{error}</div>}
-      {actionMsg && <div style={{ fontSize: 12, padding: '6px 10px', background: '#e6f4ea', color: PPW.green, borderRadius: 4, marginBottom: 8, fontWeight: 600 }}>{actionMsg}</div>}
+      {error && <div style={{ color: GTD.red, fontSize: 12, padding: '6px 10px', background: '#fde7dc', borderRadius: 4, marginBottom: 8 }}>{error}</div>}
+      {actionMsg && <div style={{ fontSize: 12, padding: '6px 10px', background: '#e6f4ea', color: GTD.green, borderRadius: 4, marginBottom: 8, fontWeight: 600 }}>{actionMsg}</div>}
 
       {/* Sticky action bar when rows are selected */}
       {selected.size > 0 && (
-        <div style={{ position: 'sticky', top: 0, zIndex: 10, background: PPW.navy, color: 'white', padding: '10px 14px', borderRadius: 6, marginBottom: 8, display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ position: 'sticky', top: 0, zIndex: 10, background: GTD.navy, color: 'white', padding: '10px 14px', borderRadius: 6, marginBottom: 8, display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
           <span style={{ fontSize: 13, fontWeight: 600 }}>{selected.size} selected</span>
           <button onClick={() => runAction('Import to Brain', '/api/content-brain/shopify-article/import-to-brain')}
             disabled={!!actionBusy}
-            style={{ padding: '6px 14px', background: PPW.blue, color: 'white', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: actionBusy ? 'default' : 'pointer' }}>
+            style={{ padding: '6px 14px', background: GTD.blue, color: 'white', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: actionBusy ? 'default' : 'pointer' }}>
             {actionBusy === 'Import to Brain' ? 'Importing…' : '📥 Import to Brain (keep)'}
           </button>
           <button onClick={() => runAction('Delete + rebuild', '/api/content-brain/shopify-article/delete-and-rebuild')}
@@ -653,7 +653,7 @@ function ShopifyOnlyAudit() {
           </button>
           <button onClick={() => runAction('Delete only', '/api/content-brain/shopify-article/delete')}
             disabled={!!actionBusy}
-            style={{ padding: '6px 14px', background: PPW.red, color: 'white', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: actionBusy ? 'default' : 'pointer' }}>
+            style={{ padding: '6px 14px', background: GTD.red, color: 'white', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: actionBusy ? 'default' : 'pointer' }}>
             {actionBusy === 'Delete only' ? 'Deleting…' : '🗑 Delete only'}
           </button>
           <button onClick={() => setSelected(new Set())} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.4)', color: 'white', padding: '5px 10px', borderRadius: 6, fontSize: 12, cursor: 'pointer' }}>
@@ -665,11 +665,11 @@ function ShopifyOnlyAudit() {
       {result && (
         <div>
           <div style={{ display: 'flex', gap: 16, marginBottom: 10, fontSize: 12, flexWrap: 'wrap' }}>
-            <span style={{ color: PPW.red, fontWeight: 700 }}>🔴 {result.counts.exact_keyword_clash} exact clash</span>
+            <span style={{ color: GTD.red, fontWeight: 700 }}>🔴 {result.counts.exact_keyword_clash} exact clash</span>
             <span style={{ color: '#d69e2e', fontWeight: 700 }}>🟡 {result.counts.title_overlap} title overlap</span>
-            <span style={{ color: PPW.muted }}>🕐 {result.counts.old_no_clash} old, no clash</span>
-            <span style={{ color: PPW.blue }}>🆕 {result.counts.recent_no_clash} recent, no clash</span>
-            <span style={{ fontWeight: 600, color: PPW.navy }}>Total: {result.counts.total}</span>
+            <span style={{ color: GTD.muted }}>🕐 {result.counts.old_no_clash} old, no clash</span>
+            <span style={{ color: GTD.blue }}>🆕 {result.counts.recent_no_clash} recent, no clash</span>
+            <span style={{ fontWeight: 600, color: GTD.navy }}>Total: {result.counts.total}</span>
           </div>
           <div style={{ overflowX: 'auto', maxHeight: 540, overflowY: 'auto', border: '1px solid #e5e7eb', borderRadius: 6 }}>
             <table style={{ width: '100%', fontSize: 11, borderCollapse: 'collapse' }}>
@@ -679,7 +679,7 @@ function ShopifyOnlyAudit() {
                     <input type="checkbox" checked={selected.size === result.results.length && result.results.length > 0} onChange={toggleAll} />
                   </th>
                   {['Action','Published','~Words','Title','Keyword','Clashes With'].map(h => (
-                    <th key={h} style={{ padding: '6px 8px', textAlign: 'left', borderBottom: '1px solid #e5e7eb', fontWeight: 600, color: PPW.navy, whiteSpace: 'nowrap' }}>{h}</th>
+                    <th key={h} style={{ padding: '6px 8px', textAlign: 'left', borderBottom: '1px solid #e5e7eb', fontWeight: 600, color: GTD.navy, whiteSpace: 'nowrap' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -694,15 +694,15 @@ function ShopifyOnlyAudit() {
                         {r.recommendation.split('—')[0].trim()}
                       </span>
                     </td>
-                    <td style={{ padding: '5px 8px', whiteSpace: 'nowrap', color: r.age_flag.startsWith('OLD') ? PPW.red : PPW.muted, fontWeight: r.age_flag.startsWith('OLD') ? 600 : 400 }}>
+                    <td style={{ padding: '5px 8px', whiteSpace: 'nowrap', color: r.age_flag.startsWith('OLD') ? GTD.red : GTD.muted, fontWeight: r.age_flag.startsWith('OLD') ? 600 : 400 }}>
                       {r.published_at}
                     </td>
-                    <td style={{ padding: '5px 8px', color: PPW.muted }}>{r.word_count_approx.toLocaleString()}</td>
+                    <td style={{ padding: '5px 8px', color: GTD.muted }}>{r.word_count_approx.toLocaleString()}</td>
                     <td style={{ padding: '5px 8px', maxWidth: 320 }}>
-                      <a href={r.url} target="_blank" rel="noreferrer" style={{ color: PPW.navy, textDecoration: 'none', fontWeight: 500 }}>{r.title}</a>
+                      <a href={r.url} target="_blank" rel="noreferrer" style={{ color: GTD.navy, textDecoration: 'none', fontWeight: 500 }}>{r.title}</a>
                     </td>
-                    <td style={{ padding: '5px 8px', color: PPW.muted, whiteSpace: 'nowrap' }}>{r.derived_keyword}</td>
-                    <td style={{ padding: '5px 8px', maxWidth: 260, color: CLASH_COLOR[r.clash_type] || PPW.muted, fontSize: 10 }}>
+                    <td style={{ padding: '5px 8px', color: GTD.muted, whiteSpace: 'nowrap' }}>{r.derived_keyword}</td>
+                    <td style={{ padding: '5px 8px', maxWidth: 260, color: CLASH_COLOR[r.clash_type] || GTD.muted, fontSize: 10 }}>
                       {r.clash_with || '—'}
                     </td>
                   </tr>
@@ -722,7 +722,7 @@ function ShopifyOnlyAudit() {
 function Card({ title, children, style }: { title: string; children: React.ReactNode; style?: React.CSSProperties }) {
   return (
     <div style={{ background: 'white', border: '1px solid #e5e7eb', borderRadius: 8, padding: 18, ...style }}>
-      <div style={{ fontSize: 13, fontWeight: 600, color: PPW.navy, marginBottom: 12 }}>{title}</div>
+      <div style={{ fontSize: 13, fontWeight: 600, color: GTD.navy, marginBottom: 12 }}>{title}</div>
       {children}
     </div>
   )
@@ -731,7 +731,7 @@ function Card({ title, children, style }: { title: string; children: React.React
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div style={{ fontSize: 11, color: PPW.muted, fontWeight: 500, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.3 }}>{label}</div>
+      <div style={{ fontSize: 11, color: GTD.muted, fontWeight: 500, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.3 }}>{label}</div>
       {children}
     </div>
   )

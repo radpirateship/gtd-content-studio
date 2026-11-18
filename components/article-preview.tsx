@@ -74,11 +74,11 @@ import { CATEGORY_LABELS } from '@/lib/types'
           bodyHtml: article.htmlContent,
           summary: article.metaDescription || '',
           tags,
-          author: 'Peak Primal Wellness',
+          author: 'Green Thumb Depot',
           handle: article.slug,
           published: true,
           featuredImageUrl: featuredImageUrl || undefined,
-          featuredImageAlt: `${article.title} - Peak Primal Wellness`,
+          featuredImageAlt: `${article.title} - Green Thumb Depot`,
           metafields: [
             { namespace: 'global', key: 'title_tag', value: (article as any).titleTag || article.title, type: 'single_line_text_field' },
             { namespace: 'global', key: 'description_tag', value: article.metaDescription || '', type: 'single_line_text_field' },
@@ -473,7 +473,7 @@ import { CATEGORY_LABELS } from '@/lib/types'
                     <div className="relative overflow-hidden rounded-lg" style={{ aspectRatio: '2/1' }}>
                       <img
                         src={featuredImageUrl}
-                        alt={`${article.title} - Peak Primal Wellness`}
+                        alt={`${article.title} - Green Thumb Depot`}
                         className="h-full w-full object-cover"
                       />
                       <div className="absolute inset-0 flex items-center justify-center bg-black/30">
@@ -496,7 +496,7 @@ import { CATEGORY_LABELS } from '@/lib/types'
                 {/* Article Content.
                     Rendered in a sandboxed iframe with the real theme
                     stylesheets, the same approach the collection preview uses.
-                    Injecting it into the app DOM instead meant ppwb- classes
+                    Injecting it into the app DOM instead meant gtdb- classes
                     had no CSS at all, so there was no way to see the article as
                     it would actually publish. The iframe also stops a legacy
                     article's inline <style> block leaking into the app. */}
@@ -574,7 +574,7 @@ import { CATEGORY_LABELS } from '@/lib/types'
               <div className="space-y-2">
                 <h3 className="font-medium">URL Slug</h3>
                 <p className="rounded-lg border border-border/50 bg-muted/30 p-3 font-mono text-sm">
-                  /blogs/wellness/{article.slug}
+                  /blogs/guides/{article.slug}
                 </p>
               </div>
 

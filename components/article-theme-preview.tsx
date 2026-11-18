@@ -5,11 +5,11 @@ import { buildBlogPreviewDocument } from '@/lib/blog-theme-css'
 
 /**
  * Renders article body_html exactly as the live theme will, by loading the real
- * ppw-collections.css and ppw-blog.css into a sandboxed iframe. Same approach
+ * gtd-collections.css and gtd-blog.css into a sandboxed iframe. Same approach
  * the collection preview uses.
  *
  * Why an iframe rather than dangerouslySetInnerHTML into the app DOM:
- *   1. ppwb- classes have no styling inside the app, so previews were unstyled
+ *   1. gtdb- classes have no styling inside the app, so previews were unstyled
  *      and there was no way to check an article before publishing.
  *   2. A legacy (v1) article carries its own <style> block, which leaks into
  *      and restyles the app when injected directly.

@@ -44,16 +44,16 @@ export function RevampStepper({ currentStep }: RevampStepperProps) {
                 className="flex h-[26px] w-[26px] items-center justify-center rounded-full text-[11px] font-mono font-semibold transition-all"
                 style={{
                   background: status === 'done'
-                    ? 'var(--ppw-accent)'
+                    ? 'var(--gtd-accent)'
                     : status === 'active'
-                      ? 'var(--ppw-accent-light)'
+                      ? 'var(--gtd-accent-light)'
                       : 'var(--surface)',
                   color: status === 'done'
                     ? '#fff'
                     : status === 'active'
-                      ? 'var(--ppw-accent)'
+                      ? 'var(--gtd-accent)'
                       : 'var(--text4)',
-                  border: status === 'active' ? '2px solid var(--ppw-accent)' : '2px solid transparent',
+                  border: status === 'active' ? '2px solid var(--gtd-accent)' : '2px solid transparent',
                 }}
               >
                 {status === 'done' ? (
@@ -68,7 +68,7 @@ export function RevampStepper({ currentStep }: RevampStepperProps) {
                 className="mt-1.5 text-[10px] font-medium text-center leading-tight"
                 style={{
                   color: status === 'done'
-                    ? 'var(--ppw-accent)'
+                    ? 'var(--gtd-accent)'
                     : status === 'active'
                       ? 'var(--text1)'
                       : 'var(--text4)',
@@ -93,7 +93,7 @@ export function RevampStepper({ currentStep }: RevampStepperProps) {
                 style={{
                   background: getStepStatus(STEPS[i + 1], currentStep) === 'upcoming' && status !== 'done'
                     ? 'var(--border)'
-                    : 'var(--ppw-accent)',
+                    : 'var(--gtd-accent)',
                   opacity: status === 'done' ? 0.4 : 1,
                 }}
               />

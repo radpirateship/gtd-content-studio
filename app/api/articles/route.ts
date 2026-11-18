@@ -11,7 +11,7 @@ function countLinksInHtml(html: string | null | undefined): number {
   if (!html) return 0;
   const editorial = countEditorialLinks(html);
   if (editorial > 0) return editorial;
-  const hrefs = html.match(/href=["'](?:https?:\/\/(?:www\.)?peakprimalwellness\.com)?\/(?:blogs|collections)\/[^"'#?]+/gi) || [];
+  const hrefs = html.match(/href=["'](?:https?:\/\/(?:www\.)?greenthumbdepot\.com)?\/(?:blogs|collections)\/[^"'#?]+/gi) || [];
   return new Set(hrefs.map((h) => h.toLowerCase().replace(/\/+$/, ""))).size;
 }
 

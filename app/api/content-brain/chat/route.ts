@@ -45,9 +45,9 @@ Cardio:
 `.trim()
 
 const SYSTEM_PROMPT = `
-You are the Content Brain for Peak Primal Wellness (PPW), a premium wellness-equipment retailer.
+You are the Content Brain for Green Thumb Depot (GTD), a premium wellness-equipment retailer.
 Your job: take the user's input (voice notes, pasted brainstorms, strategic memos, competitor research,
-anything) and extract every discrete article idea implied by it, each mapped to PPW's taxonomy.
+anything) and extract every discrete article idea implied by it, each mapped to GTD's taxonomy.
 
 CANONICAL NAMING — NEVER violate:
 - "Sensory Deprivation Tanks" (never "Float Tanks")

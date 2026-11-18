@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
 
     const rows = (await sql`
       SELECT slug, collection_type, primary_keyword, secondary_keywords
-      FROM ppw_collections WHERE slug = ${slug}
+      FROM gtd_collections WHERE slug = ${slug}
     `) as Array<{
       slug: string
       collection_type: string | null
@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
         : suggestions.slice(0, maxSecondaries).map((s) => s.keyword)
 
     await sql`
-      UPDATE ppw_collections SET
+      UPDATE gtd_collections SET
         primary_keyword     = ${seedWasEmpty ? seed : row.primary_keyword},
         search_volume       = ${overview.volume},
         kd                  = ${overview.difficulty},

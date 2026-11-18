@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       key: String(b.key),
       productIds: b.productIds.map(String).slice(0, 3),
       comparisonProductId: b.comparisonProductId ? String(b.comparisonProductId) : null,
-      series: String(b.series || "PPW Honest Verdict"),
+      series: String(b.series || "GTD Honest Verdict"),
       hookType: b.hookType || null,
       targetBuyer: String(b.targetBuyer),
       lengthSec,

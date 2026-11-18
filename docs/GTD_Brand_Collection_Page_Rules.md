@@ -1,4 +1,4 @@
-# PPW Brand Collection Page Optimization Rules
+# GTD Brand Collection Page Optimization Rules
 
 Rules for brand-specific collection pages (e.g. PRX Performance, SaunaLife, OxyRevo, Finnmark).
 These pages showcase a single brand's full product lineup rather than a product category.
@@ -55,13 +55,13 @@ The brand name leads. The category descriptor orients the buyer and provides key
 
 **Brand-specific**
 
-Format: `[Brand Name] [Product Type] | Peak Primal Wellness`
+Format: `[Brand Name] [Product Type] | Green Thumb Depot`
 
 Hard limit: 60 characters.
 
 Examples:
-- "PRX Performance Home Gyms | Peak Primal Wellness"
-- "SaunaLife Outdoor Saunas | Peak Primal Wellness"
+- "PRX Performance Home Gyms | Green Thumb Depot"
+- "SaunaLife Outdoor Saunas | Green Thumb Depot"
 
 Leads with brand name since brand-aware searchers are the primary audience for these pages.
 
@@ -73,7 +73,7 @@ Leads with brand name since brand-aware searchers are the primary audience for t
 
 150 to 160 characters. Lead with the brand name. Include a price anchor referencing the entry-level product. Name the primary product line. End with a commercial CTA.
 
-Example: "PRX Performance wall-mounted folding racks, functional trainers, and accessories from $X,XXX. Professional-grade home gym equipment at Peak Primal Wellness."
+Example: "PRX Performance wall-mounted folding racks, functional trainers, and accessories from $X,XXX. Professional-grade home gym equipment at Green Thumb Depot."
 
 ---
 
@@ -150,7 +150,7 @@ Answer should give a genuine, honest comparison covering the key differentiators
 - Are there financing options
 - Is this suitable for [specific use case relevant to the brand category]
 
-**FAQ accordion style:** Must use the `.faq-modern` structure with chevron toggles — not the `.ppw-faq` left `+/-` style. Brand collection pages must match the site-wide FAQ component for visual consistency.
+**FAQ accordion style:** Must use the `.faq-modern` structure with chevron toggles — not the `.gtd-faq` left `+/-` style. Brand collection pages must match the site-wide FAQ component for visual consistency.
 
 ---
 
@@ -170,12 +170,12 @@ For brand collection pages, the ItemList should reference the products shown in 
 
 Each ListItem must include both `name` and `url`:
 ```json
-{"@type":"ListItem","position":1,"name":"PRX Profile ONE Squat Rack","url":"https://peakprimalwellness.com/products/..."}
+{"@type":"ListItem","position":1,"name":"PRX Profile ONE Squat Rack","url":"https://greenthumbdepot.com/products/..."}
 ```
 
 URL format: verify all product handles are live and correctly encoded. Special characters like ® must use percent-encoding (`%C2%AE`) in URLs, not the literal symbol.
 
-ItemList name field: "[Brand Name] Products at Peak Primal Wellness"
+ItemList name field: "[Brand Name] Products at Green Thumb Depot"
 
 ---
 
@@ -189,12 +189,12 @@ Include a `Brand` schema type in the @graph block for brand collection pages.
 {
   "@type": "Brand",
   "name": "[Brand Name]",
-  "url": "https://peakprimalwellness.com/collections/[collection-handle]",
+  "url": "https://greenthumbdepot.com/collections/[collection-handle]",
   "description": "[2 to 3 sentence brand description covering what they make and their key differentiator]"
 }
 ```
 
-Do not include a `logo` field unless you have the brand's actual logo URL. Do not use the Peak Primal Wellness logo as the brand logo — these are different entities.
+Do not include a `logo` field unless you have the brand's actual logo URL. Do not use the Green Thumb Depot logo as the brand logo — these are different entities.
 
 ---
 
@@ -203,7 +203,7 @@ Do not include a `logo` field unless you have the brand's actual logo URL. Do no
 **Same as category template**
 
 Two items only:
-- Position 1: "Home" at `https://peakprimalwellness.com`
+- Position 1: "Home" at `https://greenthumbdepot.com`
 - Position 2: The brand collection name at the full collection URL
 
 The brand collection name in the breadcrumb must match the H1 exactly.

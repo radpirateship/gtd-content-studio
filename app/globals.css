@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* PPW Light Editor Theme */
+  /* GTD Light Editor Theme */
   --bg: #ffffff;
   --bg-warm: #fafaf8;
   --surface: #f5f5f2;
@@ -12,18 +12,18 @@
   --surface3: #e2e2dc;
   --border: #dfddd8;
   --border2: #d0cdc6;
-  --ppw-accent: #1a7a54;
-  --ppw-accent-light: #e9f5ef;
-  --ppw-accent-hover: #15634a;
+  --gtd-accent: #1a7a54;
+  --gtd-accent-light: #e9f5ef;
+  --gtd-accent-hover: #15634a;
   --accent2: #5b5fc7;
   --accent2-light: #eeedf8;
   --text1: #1c1c1c;
   --text2: #6b6960;
   --text3: #9a9890;
   --text4: #c0bdb6;
-  --ppw-danger: #c9392c;
+  --gtd-danger: #c9392c;
   --danger-light: #fdf1f0;
-  --ppw-warn: #b87315;
+  --gtd-warn: #b87315;
   --warn-light: #fef7ec;
 
   /* Shadcn tokens mapped to wireframe */

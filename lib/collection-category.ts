@@ -9,7 +9,7 @@
 
 export type Category = 'Saunas' | 'Recovery' | 'Fitness' | 'Clinical' | 'Wellness' | 'Unsorted'
 
-/** The five real hubs. Anything else in ppw_collections.category ("Type Parents"
+/** The five real hubs. Anything else in gtd_collections.category ("Type Parents"
  *  has been seen) is a grouping label, not a hub, and must not be used as one. */
 export const VALID_HUBS: ReadonlySet<string> = new Set(['Saunas', 'Recovery', 'Fitness', 'Clinical', 'Wellness'])
 export function asHub(value: string | null | undefined): string | null {

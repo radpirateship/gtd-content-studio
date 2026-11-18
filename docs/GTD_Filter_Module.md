@@ -1,4 +1,4 @@
-# PPW Product Filter Module
+# GTD Product Filter Module
 
 Bulk-derives structured product attributes (metafields) so Shopify Search &
 Discovery can power sidebar filters on collection pages. Lives inside Content

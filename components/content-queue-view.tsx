@@ -178,7 +178,7 @@ export function ContentQueueView({ articles, onNewArticle, onOpenArticle }: Prop
           <button
             onClick={onNewArticle}
             className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-semibold text-white"
-            style={{ background: 'var(--ppw-accent)' }}
+            style={{ background: 'var(--gtd-accent)' }}
           >
             <Plus className="h-3.5 w-3.5" />
             New Article
@@ -194,7 +194,7 @@ export function ContentQueueView({ articles, onNewArticle, onOpenArticle }: Prop
             className="flex w-[220px] flex-shrink-0 flex-col rounded-lg border"
             style={{
               background: dragOverCol === col.id ? 'rgba(26,122,84,0.03)' : 'var(--bg)',
-              borderColor: dragOverCol === col.id ? 'var(--ppw-accent)' : 'var(--border)',
+              borderColor: dragOverCol === col.id ? 'var(--gtd-accent)' : 'var(--border)',
             }}
             onDragOver={(e) => { e.preventDefault(); setDragOverCol(col.id) }}
             onDragLeave={() => setDragOverCol(null)}

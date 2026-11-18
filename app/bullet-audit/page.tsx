@@ -162,7 +162,7 @@ export default function BulletAuditPage() {
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
     const a = document.createElement("a");
     a.href = url;
-    a.download = "ppw-product-card-bullets.csv";
+    a.download = "gtd-product-card-bullets.csv";
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -197,7 +197,7 @@ export default function BulletAuditPage() {
       <div>
         <h1 className="text-2xl font-bold">Product Card Bullet Audit</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Inventories every feature bullet inside <code>.ppw-product-card</code> blocks across all
+          Inventories every feature bullet inside <code>.gtd-product-card</code> blocks across all
           articles, then bulk-removes the unsupported claims. White-glove delivery and blanket free
           shipping are queued for deletion; cards drop to 3 bullets rather than getting a substitute
           claim. Dry run first, spot-check a few articles, then apply.
@@ -346,7 +346,7 @@ export default function BulletAuditPage() {
                     <td className="p-2">{item.title}</td>
                     <td className="p-2">
                       <a
-                        href={`https://peakprimalwellness.com/blogs/${item.blogHandle}/${item.handle}`}
+                        href={`https://greenthumbdepot.com/blogs/${item.blogHandle}/${item.handle}`}
                         target="_blank"
                         rel="noreferrer"
                         className="text-blue-600 hover:underline"
@@ -383,7 +383,7 @@ export default function BulletAuditPage() {
             {reviewItems.map((item) => (
               <div key={item.handle} className="rounded-md border p-3 text-sm">
                 <a
-                  href={`https://peakprimalwellness.com/blogs/${item.blogHandle}/${item.handle}`}
+                  href={`https://greenthumbdepot.com/blogs/${item.blogHandle}/${item.handle}`}
                   target="_blank"
                   rel="noreferrer"
                   className="font-medium text-blue-600 hover:underline"

@@ -4,7 +4,7 @@
 //                                                    guides already set
 //
 // Applies scripts/ultimate-guide-map.json (collection handle -> guide) to
-// ppw_collections. Rows are only updated when they are in the synced table,
+// gtd_collections. Rows are only updated when they are in the synced table,
 // so run /api/collections/sync-shopify first if a handle is missing. By
 // default a collection that already has a guide URL is left alone; pass
 // overwrite=1 to replace it with the map's value. Visit it logged in; the
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
   try {
     const sql = getSQL();
     await ensureCollectionColumns(sql);
-    const rows = Array.from(await sql`SELECT slug, ultimate_guide_url, ultimate_guide_title FROM ppw_collections`) as
+    const rows = Array.from(await sql`SELECT slug, ultimate_guide_url, ultimate_guide_title FROM gtd_collections`) as
       { slug: string; ultimate_guide_url: string | null; ultimate_guide_title: string | null }[];
     const bySlug = new Map(rows.map((r) => [r.slug.toLowerCase(), r]));
 
@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
     let written = 0;
     if (apply) {
       for (const w of [...willSet, ...willReplace]) {
-        await sql`UPDATE ppw_collections SET ultimate_guide_url = ${w.url}, ultimate_guide_title = ${w.title} WHERE slug = ${w.slug}`;
+        await sql`UPDATE gtd_collections SET ultimate_guide_url = ${w.url}, ultimate_guide_title = ${w.title} WHERE slug = ${w.slug}`;
         written++;
       }
     }
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
       unchanged,
       notSynced,
       hint: notSynced.length
-        ? "Handles under notSynced are live in Shopify but missing from ppw_collections; run /api/collections/sync-shopify then call this again."
+        ? "Handles under notSynced are live in Shopify but missing from gtd_collections; run /api/collections/sync-shopify then call this again."
         : undefined,
     });
   } catch (e) {

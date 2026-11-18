@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     const categoryLabel = (CATEGORY_LABELS as Record<string, string>)[category] || category || "Wellness"
 
-    const systemPrompt = `You are a Senior Content Editor at Peak Primal Wellness. Generate ONLY a quick answer summary for a blog article. Output ONLY 1-2 plain-text sentences — no HTML, no markdown, no explanation.
+    const systemPrompt = `You are a Senior Content Editor at Green Thumb Depot. Generate ONLY a quick answer summary for a blog article. Output ONLY 1-2 plain-text sentences — no HTML, no markdown, no explanation.
 
 RULES:
 - Answer the core question implied by the article title/keyword in 1-2 sentences (max 60 words total)

@@ -163,7 +163,7 @@ async function runAudit(_req: NextRequest, fix: boolean, ghostOnly = false) {
 
       // 1b. Handle/slug match — catches articles where the title changed but
       //     the URL stayed the same (Shopify rewrites, subtitle additions, etc.)
-      //     url_slug in DB may be stored as "/blogs/wellness/slug" or just "slug"
+      //     url_slug in DB may be stored as "/blogs/guides/slug" or just "slug"
       const rawSlug = (r.url_slug || '').replace(/^.*\//, '').toLowerCase().trim()
       if (rawSlug) {
         const handleMatch = shopifyByHandle.get(rawSlug)

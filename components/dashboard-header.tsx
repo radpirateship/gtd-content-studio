@@ -23,8 +23,8 @@ export function DashboardHeader({ productCount, articleCount }: DashboardHeaderP
             <Leaf className="h-5 w-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold leading-tight">PPW Content Studio</h1>
-            <p className="text-xs text-muted-foreground">Peak Primal Wellness</p>
+            <h1 className="text-lg font-semibold leading-tight">GTD Content Studio</h1>
+            <p className="text-xs text-muted-foreground">Green Thumb Depot</p>
           </div>
         </div>
 

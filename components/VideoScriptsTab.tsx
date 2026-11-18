@@ -3,7 +3,7 @@
 /**
  * Video Scripts tab (sidebar: Video > Video Scripts; also served standalone at
  * /video-scripts): short-form video scripts (Reels / Shorts) for our best
- * sellers. Products and collections are ranked by net revenue from the PPW
+ * sellers. Products and collections are ranked by net revenue from the GTD
  * Dashboard; each one opens a panel showing the source material (product or
  * collection page, store facts, related blog posts) and the scripts written
  * for it, with a status that tracks it from draft to posted.
@@ -191,7 +191,7 @@ export default function VideoScriptsTab() {
         <h1 className="text-2xl font-bold">Video Scripts</h1>
         <p className="text-sm text-muted-foreground mt-1">
           Reels and Shorts scripts for our best sellers. Products and collections are ranked by net revenue
-          (sales minus discounts and refunds) from the PPW Dashboard. Open one to see its source material and write a script.
+          (sales minus discounts and refunds) from the GTD Dashboard. Open one to see its source material and write a script.
         </p>
       </div>
 
@@ -456,7 +456,7 @@ function TargetPanel({ row, catalog, onClose }: { row: RankRow; catalog: RankRow
           type, kind: row.kind, key: row.key,
           productIds: productIds.slice(0, maxProducts),
           comparisonProductId: type === "PRODUCT_REVIEW" ? compId : null,
-          series: series === "__custom" ? customSeries || "PPW Honest Verdict" : series,
+          series: series === "__custom" ? customSeries || "GTD Honest Verdict" : series,
           hookType: hookType || null,
           targetBuyer,
           lengthSec: type === "LONG_FORM" ? lengthMin * 60 : lengthSec,

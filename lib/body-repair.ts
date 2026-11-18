@@ -2,7 +2,7 @@
  * Block-level repair of generated prose, shared by the blog generator and the
  * ultimate guide generator (it used to be two diverging copies).
  *
- * Each prose block (ppwb-p, ppwb-lead, ppwb-li, ppwb-step-body) that names an
+ * Each prose block (gtdb-p, gtdb-lead, gtdb-li, gtdb-step-body) that names an
  * uncarried brand, makes an unsupported claim, or carries an AI writing tell
  * (lib/brandRules AI_TELLS) is rewritten once by the model, in parallel. A
  * rewrite is accepted only if every href survives unchanged, the substantive
@@ -13,7 +13,7 @@
 import { callAI } from "@/lib/ai";
 import { validateBrandRules, stripEmDashes, scrubUncarriedBrands } from "@/lib/brandRules";
 
-const BODY_BLOCK = /<(p|li)\b([^>]*\bclass=["'][^"']*\bppwb-(?:p|lead|li|step-body)\b[^"']*["'][^>]*)>([\s\S]*?)<\/\1>/gi;
+const BODY_BLOCK = /<(p|li)\b([^>]*\bclass=["'][^"']*\bgtdb-(?:p|lead|li|step-body)\b[^"']*["'][^>]*)>([\s\S]*?)<\/\1>/gi;
 const hrefsOf = (html: string) =>
   Array.from(html.matchAll(/\bhref=["']([^"']+)["']/gi)).map((m) => m[1]).sort().join("|");
 
@@ -55,7 +55,7 @@ export async function repairBodyBlocks(
       }
       try {
         const fixed = await callAI(
-          `You are rewriting one block of a Peak Primal Wellness ${docLabel}. PPW is an equipment retailer; ` +
+          `You are rewriting one block of a Green Thumb Depot ${docLabel}. GTD is an equipment retailer; ` +
             `the ${docLabel} exists to help a buyer choose and to sell the products it features.\n\n` +
             `The block below has the problems listed. Rewrite it so it has none of them, keeping the same ` +
             `facts, the same recommendation and roughly the same length.\n` +

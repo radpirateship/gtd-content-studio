@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
         return {
           id: r.id,
           title: r.title,
-          url: `/blogs/wellness/${handle}`,
+          url: `/blogs/guides/${handle}`,
           description: r.description || "",
           planned: !LIVE.has((r.status || "").toLowerCase()),
           cluster: true,

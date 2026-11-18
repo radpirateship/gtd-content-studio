@@ -240,7 +240,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
       setSeoTitle(shopifyData.seo_title || shopifyData.title || '')
       setSeoDescription(shopifyData.seo_description || '')
 
-      // DB data (optional — collection may not be in ppw_collections yet)
+      // DB data (optional — collection may not be in gtd_collections yet)
       // Track locally so we can pass to runGrade before React state settles
       let dbColForGrade: DBCollection | null = null
       if (dbRes.ok) {
@@ -544,7 +544,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
 
       {/* ── Header ── */}
       <div style={{ marginBottom: 24 }}>
-        <h2 style={{ margin: 0, fontSize: 20, color: 'var(--ppw-accent)' }}>Collection Revamp</h2>
+        <h2 style={{ margin: 0, fontSize: 20, color: 'var(--gtd-accent)' }}>Collection Revamp</h2>
         <p style={{ margin: '4px 0 0', color: 'var(--text3)', fontSize: 13 }}>
           Load a Shopify collection, grade its SEO, inject missing keywords with AI, then publish.
         </p>
@@ -595,8 +595,8 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                   onClick={() => { setSelectedHandle(c.handle); setShowPicker(false); setPickSearch('') }}
                   style={{
                     padding: '9px 14px', cursor: 'pointer', fontSize: 13,
-                    background: selectedHandle === c.handle ? 'var(--ppw-accent-light)' : undefined,
-                    color: selectedHandle === c.handle ? 'var(--ppw-accent)' : 'var(--text1)',
+                    background: selectedHandle === c.handle ? 'var(--gtd-accent-light)' : undefined,
+                    color: selectedHandle === c.handle ? 'var(--gtd-accent)' : 'var(--text1)',
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                   }}
                   onMouseEnter={e => { if (selectedHandle !== c.handle) (e.currentTarget as HTMLElement).style.background = 'var(--surface)' }}
@@ -651,9 +651,9 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
               </>
             )}
             <a
-              href={`https://peakprimalwellness.com/collections/${selectedHandle}`}
+              href={`https://greenthumbdepot.com/collections/${selectedHandle}`}
               target="_blank" rel="noreferrer"
-              style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, color: 'var(--ppw-accent)', fontSize: 12, textDecoration: 'none' }}
+              style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, color: 'var(--gtd-accent)', fontSize: 12, textDecoration: 'none' }}
             >
               View live <ExternalLink className="h-3 w-3" />
             </a>
@@ -731,9 +731,9 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                 onClick={() => setActiveSection(tab.id)}
                 style={{
                   padding: '8px 16px', fontSize: 13, border: 'none', cursor: 'pointer',
-                  borderBottom: activeSection === tab.id ? '2px solid var(--ppw-accent)' : '2px solid transparent',
+                  borderBottom: activeSection === tab.id ? '2px solid var(--gtd-accent)' : '2px solid transparent',
                   background: 'transparent',
-                  color: activeSection === tab.id ? 'var(--ppw-accent)' : 'var(--text3)',
+                  color: activeSection === tab.id ? 'var(--gtd-accent)' : 'var(--text3)',
                   fontWeight: activeSection === tab.id ? 600 : 400,
                   marginBottom: -1,
                 }}
@@ -823,7 +823,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                           style={{
                             marginTop: 10, display: 'flex', alignItems: 'center', gap: 6,
                             padding: '7px 14px', fontSize: 12, fontWeight: 600,
-                            background: 'var(--ppw-accent)', color: '#fff',
+                            background: 'var(--gtd-accent)', color: '#fff',
                             border: 'none', borderRadius: 6, cursor: analyzing ? 'wait' : 'pointer',
                           }}
                         >
@@ -910,7 +910,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                       <span title="Drag to reorder — first keyword is the primary" style={{ color: 'var(--text4)', fontSize: 13, letterSpacing: 1, userSelect: 'none' }}>⠿</span>
                       <span style={{ fontSize: 11, color: 'var(--text4)', fontFamily: 'monospace', width: 20 }}>{idx + 1}</span>
                       {idx === 0 && (
-                        <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 8, background: 'var(--ppw-accent-light)', color: 'var(--ppw-accent)', fontWeight: 700 }}>
+                        <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 8, background: 'var(--gtd-accent-light)', color: 'var(--gtd-accent)', fontWeight: 700 }}>
                           PRIMARY
                         </span>
                       )}
@@ -963,7 +963,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                   onClick={addKeyword}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 5,
-                    padding: '8px 14px', background: 'var(--ppw-accent)', color: '#fff',
+                    padding: '8px 14px', background: 'var(--gtd-accent)', color: '#fff',
                     border: 'none', borderRadius: 7, fontSize: 13, cursor: 'pointer', fontWeight: 600,
                   }}
                 >
@@ -1004,12 +1004,12 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                         <span style={{ flex: 1, fontSize: 13, color: 'var(--text1)' }}>{s.keyword}</span>
                         <span style={{ fontSize: 11, color: 'var(--text3)' }}>vol {s.volume ?? '—'}</span>
                         <span style={{ fontSize: 11, color: 'var(--text3)' }}>KD {s.difficulty ?? '—'}</span>
-                        <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--ppw-accent)' }}>opp {s.opportunity}</span>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--gtd-accent)' }}>opp {s.opportunity}</span>
                         <button
                           onClick={() => addSuggestedKeyword(s.keyword)}
                           style={{
                             display: 'flex', alignItems: 'center', gap: 4, padding: '4px 10px',
-                            fontSize: 12, background: 'var(--ppw-accent)', color: '#fff',
+                            fontSize: 12, background: 'var(--gtd-accent)', color: '#fff',
                             border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600,
                           }}
                         >
@@ -1041,7 +1041,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                     display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px',
                     fontSize: 12, borderRadius: 6, fontWeight: 600,
                     cursor: savingKeywords || keywords.length === 0 ? 'default' : 'pointer',
-                    background: 'var(--ppw-accent)', border: 'none', color: '#fff',
+                    background: 'var(--gtd-accent)', border: 'none', color: '#fff',
                   }}
                 >
                   {savingKeywords ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
@@ -1100,7 +1100,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                         disabled={analyzing}
                         style={{
                           display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px',
-                          background: 'var(--ppw-accent)', color: '#fff', border: 'none', borderRadius: 7,
+                          background: 'var(--gtd-accent)', color: '#fff', border: 'none', borderRadius: 7,
                           fontSize: 13, fontWeight: 600, cursor: 'pointer',
                         }}
                       >
@@ -1127,7 +1127,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                     }}>
                       {s.type.replace(/_/g, ' ')}
                     </span>
-                    <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ppw-accent)' }}>{s.keyword}</span>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--gtd-accent)' }}>{s.keyword}</span>
                     <span style={{ fontSize: 11, color: 'var(--text3)', marginLeft: 4 }}>{s.location}</span>
                     <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
                       <button
@@ -1188,7 +1188,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                     onClick={applyApproved}
                     style={{
                       display: 'flex', alignItems: 'center', gap: 6,
-                      padding: '9px 18px', background: 'var(--ppw-accent)', color: '#fff',
+                      padding: '9px 18px', background: 'var(--gtd-accent)', color: '#fff',
                       border: 'none', borderRadius: 7, fontSize: 13, fontWeight: 600, cursor: 'pointer',
                     }}
                   >
@@ -1264,7 +1264,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                   <button
                     onClick={generateSeo}
                     disabled={genLoading || keywords.length === 0}
-                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', fontSize: 12, fontWeight: 600, borderRadius: 6, border: 'none', color: '#fff', background: 'var(--ppw-accent)', cursor: genLoading || keywords.length === 0 ? 'default' : 'pointer', opacity: genLoading ? 0.7 : 1 }}
+                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', fontSize: 12, fontWeight: 600, borderRadius: 6, border: 'none', color: '#fff', background: 'var(--gtd-accent)', cursor: genLoading || keywords.length === 0 ? 'default' : 'pointer', opacity: genLoading ? 0.7 : 1 }}
                   >
                     {genLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
                     {genLoading ? 'Generating...' : 'Generate options'}
@@ -1277,7 +1277,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                     {titleOptions.map((t, i) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 10px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, marginBottom: 6 }}>
                         <span style={{ flex: 1, fontSize: 13, color: 'var(--text1)' }}>{t} <span style={{ color: 'var(--text4)', fontSize: 11 }}>({t.length})</span></span>
-                        <button onClick={() => setSeoTitle(t)} style={{ padding: '3px 10px', fontSize: 12, fontWeight: 600, border: '1px solid var(--ppw-accent)', background: 'transparent', color: 'var(--ppw-accent)', borderRadius: 5, cursor: 'pointer' }}>Use</button>
+                        <button onClick={() => setSeoTitle(t)} style={{ padding: '3px 10px', fontSize: 12, fontWeight: 600, border: '1px solid var(--gtd-accent)', background: 'transparent', color: 'var(--gtd-accent)', borderRadius: 5, cursor: 'pointer' }}>Use</button>
                       </div>
                     ))}
                   </div>
@@ -1288,7 +1288,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
                     {descOptions.map((d, i) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 10px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, marginBottom: 6 }}>
                         <span style={{ flex: 1, fontSize: 13, color: 'var(--text1)' }}>{d} <span style={{ color: 'var(--text4)', fontSize: 11 }}>({d.length})</span></span>
-                        <button onClick={() => setSeoDescription(d)} style={{ padding: '3px 10px', fontSize: 12, fontWeight: 600, border: '1px solid var(--ppw-accent)', background: 'transparent', color: 'var(--ppw-accent)', borderRadius: 5, cursor: 'pointer' }}>Use</button>
+                        <button onClick={() => setSeoDescription(d)} style={{ padding: '3px 10px', fontSize: 12, fontWeight: 600, border: '1px solid var(--gtd-accent)', background: 'transparent', color: 'var(--gtd-accent)', borderRadius: 5, cursor: 'pointer' }}>Use</button>
                       </div>
                     ))}
                   </div>
@@ -1373,7 +1373,7 @@ export function CollectionRevampTool({ initialHandle, onHandleConsumed, onBack }
               disabled={publishing}
               style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                padding: '10px 22px', background: publishing ? 'var(--text4)' : 'var(--ppw-accent)',
+                padding: '10px 22px', background: publishing ? 'var(--text4)' : 'var(--gtd-accent)',
                 color: '#fff', border: 'none', borderRadius: 7,
                 fontSize: 14, fontWeight: 700, cursor: publishing ? 'wait' : 'pointer',
               }}

@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
     }
     const cl = await get(`/api/content-brain/cluster-links?collection=${encodeURIComponent(category)}${row.id ? `&exclude=${row.id}` : ""}`);
     if (cl?.links) {
-      const have = new Set(internalLinks.map((l) => l.url.replace(/^https?:\/\/(www\.)?peakprimalwellness\.com/i, "").replace(/\/+$/, "").toLowerCase()));
+      const have = new Set(internalLinks.map((l) => l.url.replace(/^https?:\/\/(www\.)?greenthumbdepot\.com/i, "").replace(/\/+$/, "").toLowerCase()));
       for (const l of cl.links as { title: string; url: string; description?: string; planned?: boolean }[]) {
         const key = l.url.replace(/\/+$/, "").toLowerCase();
         // Never link an article to itself.
@@ -183,7 +183,7 @@ export async function POST(request: NextRequest) {
           const q = pr as Record<string, string>;
           return {
             title: q.title, description: q.description, price: q.price, imageUrl: q.imageUrl,
-            url: q.handle ? `https://peakprimalwellness.com/products/${q.handle}` : q.url,
+            url: q.handle ? `https://greenthumbdepot.com/products/${q.handle}` : q.url,
             handle: q.handle, vendor: q.vendor,
           };
         }),

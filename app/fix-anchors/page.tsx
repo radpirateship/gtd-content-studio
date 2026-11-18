@@ -195,7 +195,7 @@ export default function FixAnchorsPage() {
                   <td className="p-2">{item.title}</td>
                   <td className="p-2">
                     <a
-                      href={`https://peakprimalwellness.com/blogs/${item.blogHandle}/${item.handle}`}
+                      href={`https://greenthumbdepot.com/blogs/${item.blogHandle}/${item.handle}`}
                       target="_blank"
                       rel="noreferrer"
                       className="text-blue-600 hover:underline"

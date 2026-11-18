@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
     const columns = present.filter((h) => (WRITABLE as readonly string[]).includes(h)) as Writable[]
     const ignored = present.filter((h) => h !== 'slug' && !columns.includes(h as Writable))
 
-    const existing = (await sql`SELECT slug FROM ppw_collections`) as Array<{ slug: string }>
+    const existing = (await sql`SELECT slug FROM gtd_collections`) as Array<{ slug: string }>
     const known = new Set(existing.map((r) => r.slug))
 
     const updated: string[] = []
@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
       if (!known.has(slug)) {
         unknown.push(slug)
         if (dryRun) continue
-        await sql`INSERT INTO ppw_collections (slug, url) VALUES (${slug}, ${'https://peakprimalwellness.com/collections/' + slug}) ON CONFLICT (slug) DO NOTHING`
+        await sql`INSERT INTO gtd_collections (slug, url) VALUES (${slug}, ${'https://greenthumbdepot.com/collections/' + slug}) ON CONFLICT (slug) DO NOTHING`
         created.push(slug)
       } else {
         updated.push(slug)
@@ -138,7 +138,7 @@ export async function POST(req: NextRequest) {
       const sets = Object.entries(patch)
         .map(([k, v]) => sql`${sql.unsafe(k)} = ${v as never}`)
       await sql`
-        UPDATE ppw_collections
+        UPDATE gtd_collections
         SET ${sets.reduce((acc, cur) => sql`${acc}, ${cur}`)},
             keywords_updated_at = NOW()
         WHERE slug = ${slug}

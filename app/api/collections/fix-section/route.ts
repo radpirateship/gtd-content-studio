@@ -81,7 +81,7 @@ ${cards}
         return NextResponse.json({ html: bodyHtml, changed: false, message: "No banned phrases found in standard blocks" });
       }
       const raw = await callAI(
-        `You are a precise copy editor for Peak Primal Wellness.\n${WRITING_RULES}\nBANNED (remove/replace every occurrence): ${all.join("; ")}`,
+        `You are a precise copy editor for Green Thumb Depot.\n${WRITING_RULES}\nBANNED (remove/replace every occurrence): ${all.join("; ")}`,
         `Rewrite each numbered HTML fragment to remove all banned phrases with minimal change. Keep every HTML tag, attribute, class, and link exactly. Keep meaning identical. Return ONLY a JSON array of rewritten fragments in order.\n\n${offenders.map((o, i) => `${i + 1}. ${o}`).join("\n")}`,
         { maxTokens: 6000 }
       );

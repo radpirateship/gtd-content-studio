@@ -38,17 +38,17 @@ export async function POST() {
       return NextResponse.json({ error: "Could not list collections from Shopify" }, { status: 500 });
     }
 
-    const existing = (await sql`SELECT slug FROM ppw_collections`) as Array<{ slug: string }>;
+    const existing = (await sql`SELECT slug FROM gtd_collections`) as Array<{ slug: string }>;
     const known = new Set(existing.map((r) => r.slug));
     const missing = live.filter((c) => !known.has(c.handle));
 
     const added: string[] = [];
     for (const c of missing) {
       await sql`
-        INSERT INTO ppw_collections (slug, url, category, collection_type, primary_keyword, secondary_keywords)
+        INSERT INTO gtd_collections (slug, url, category, collection_type, primary_keyword, secondary_keywords)
         VALUES (
           ${c.handle},
-          ${"https://peakprimalwellness.com/collections/" + c.handle},
+          ${"https://greenthumbdepot.com/collections/" + c.handle},
           ${guessCategory(c.handle)},
           'standard',
           ${c.title.toLowerCase()},
@@ -68,7 +68,7 @@ export async function POST() {
       h.toLowerCase().split("-").map((w) => w.replace(/([^s])s$/, "$1")).join("-");
     const liveByNorm = new Map(live.map((c) => [normSlug(c.handle), c.handle]));
     const liveSet = new Set(live.map((c) => c.handle));
-    const allRows = (await sql`SELECT slug, primary_keyword, secondary_keywords, search_volume, kd, tier FROM ppw_collections`) as Array<Record<string, unknown>>;
+    const allRows = (await sql`SELECT slug, primary_keyword, secondary_keywords, search_volume, kd, tier FROM gtd_collections`) as Array<Record<string, unknown>>;
     const merged: string[] = [];
     for (const row of allRows) {
       const slug = String(row.slug);
@@ -77,7 +77,7 @@ export async function POST() {
       if (!liveMatch || liveMatch === slug) continue;
       // Copy research data onto the live row where the live row has none.
       await sql`
-        UPDATE ppw_collections t SET
+        UPDATE gtd_collections t SET
           primary_keyword = COALESCE(NULLIF(t.primary_keyword, ''), ${row.primary_keyword as string}),
           secondary_keywords = CASE WHEN t.secondary_keywords IS NULL OR cardinality(t.secondary_keywords) = 0 THEN ${Array.isArray(row.secondary_keywords) ? (row.secondary_keywords as string[]) : ([] as string[])} ELSE t.secondary_keywords END,
           search_volume = COALESCE(t.search_volume, ${row.search_volume as number}),
@@ -85,7 +85,7 @@ export async function POST() {
           tier = COALESCE(t.tier, ${row.tier as string})
         WHERE t.slug = ${liveMatch}
       `;
-      await sql`DELETE FROM ppw_collections WHERE slug = ${slug}`;
+      await sql`DELETE FROM gtd_collections WHERE slug = ${slug}`;
       merged.push(`${slug} -> ${liveMatch}`);
     }
 
@@ -97,7 +97,7 @@ export async function POST() {
         ?? (c as { published?: boolean }).published
         ?? null;
       await sql`
-        UPDATE ppw_collections
+        UPDATE gtd_collections
         SET is_published   = COALESCE(${published}, is_published),
             last_synced_at = NOW()
         WHERE slug = ${c.handle}
@@ -109,14 +109,14 @@ export async function POST() {
     // "Wellness" default before Clinical existed. Never overwrites a category
     // a human set to something the rules would not produce.
     const uncategorised = (await sql`
-      SELECT slug, category FROM ppw_collections
+      SELECT slug, category FROM gtd_collections
       WHERE category IS NULL OR category = '' OR category = 'Wellness'
     `) as Array<{ slug: string; category: string | null }>;
     const recategorised: string[] = [];
     for (const row of uncategorised) {
       const next = guessCategory(row.slug);
       if (next === row.category || next === "Unsorted") continue;
-      await sql`UPDATE ppw_collections SET category = ${next} WHERE slug = ${row.slug}`;
+      await sql`UPDATE gtd_collections SET category = ${next} WHERE slug = ${row.slug}`;
       recategorised.push(`${row.slug}: ${row.category ?? "null"} -> ${next}`);
     }
 
@@ -134,14 +134,14 @@ export async function POST() {
       vendorSlugs = vendorRows.map((r) => slugify(r.vendor)).filter((v) => v.length > 2);
     } catch { /* products table optional */ }
     const staticSlugs = [...BRAND_COLLECTIONS.map((b) => b.handle), "finnmark"];
-    const allRowsForTag = (await sql`SELECT slug, collection_type FROM ppw_collections`) as Array<{ slug: string; collection_type: string | null }>;
+    const allRowsForTag = (await sql`SELECT slug, collection_type FROM gtd_collections`) as Array<{ slug: string; collection_type: string | null }>;
     const taggable = allRowsForTag.filter((r) => !r.collection_type || r.collection_type === "standard" || r.collection_type === "");
     const brandTaggedSlugs: string[] = [];
     for (const row of taggable) {
       const isKnown = staticSlugs.includes(row.slug);
       const vendorMatch = vendorSlugs.some((v) => row.slug === v || row.slug.startsWith(v + "-") || v.startsWith(row.slug + "-"));
       if (isKnown || vendorMatch) {
-        await sql`UPDATE ppw_collections SET collection_type = 'brand' WHERE slug = ${row.slug}`;
+        await sql`UPDATE gtd_collections SET collection_type = 'brand' WHERE slug = ${row.slug}`;
         brandTaggedSlugs.push(row.slug);
       }
     }

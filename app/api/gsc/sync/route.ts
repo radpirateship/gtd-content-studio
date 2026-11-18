@@ -8,8 +8,8 @@
 //
 // Required env (see content-brain-build-summary / GSC setup notes):
 //   GOOGLE_SERVICE_ACCOUNT_JSON  — the full service-account key JSON (one line)
-//   GSC_SITE_URL                 — e.g. "sc-domain:peakprimalwellness.com"
-//                                  or "https://peakprimalwellness.com/"
+//   GSC_SITE_URL                 — e.g. "sc-domain:greenthumbdepot.com"
+//                                  or "https://greenthumbdepot.com/"
 import { NextResponse } from "next/server";
 import { getSQL } from "@/lib/db";
 import crypto from "crypto";

@@ -215,7 +215,7 @@ export interface SerpEntry {
 }
 
 /** Top-10 organic results for a keyword, with DR — competitor phrasing +
- *  whether PPW already ranks. Returns [] on any failure. */
+ *  whether GTD already ranks. Returns [] on any failure. */
 export async function serpOverview(keyword: string, country = 'us'): Promise<SerpEntry[]> {
   try {
     const data = await ahrefsGet<{ positions?: Array<Record<string, any>> }>('/serp-overview/serp-overview', {

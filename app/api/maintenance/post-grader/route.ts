@@ -7,7 +7,7 @@ import { ensureGradeColumns } from "@/lib/ensureGradeColumns";
 /**
  * POST /api/maintenance/post-grader
  *
- * READ-ONLY. Grades every article against the PPW core-element checklist
+ * READ-ONLY. Grades every article against the GTD core-element checklist
  * (see lib/post-grader.ts). Never writes anything. Includes the published
  * flag so leftover drafts (old 2025-dated duplicates) can be filtered out.
  */

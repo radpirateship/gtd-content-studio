@@ -1,6 +1,6 @@
 // ============================================================================
 // lib/collection-task-enforcer.ts — deterministic enforcement of the 14
-// verifiable tasks (docs/PPW_Collection_14_Tasks.md).
+// verifiable tasks (docs/GTD_Collection_14_Tasks.md).
 //
 // Runs AFTER generation/assembly. Each task performs its own check on the
 // final HTML and either fixes deterministically, applies provided AI content,
@@ -20,7 +20,7 @@ export interface EnforcerCtx {
   collectionTitle: string;
   /** live products for tile matching: title/handle/price/image */
   products: { title: string; handle: string; price: string; imageUrl?: string }[];
-  /** Brand collection page — docs/PPW_Brand_Collection_Page_Rules.md */
+  /** Brand collection page — docs/GTD_Brand_Collection_Page_Rules.md */
   isBrand?: boolean;
   /** For brand pages: the brand's own name (leads Q1/H1). */
   brandName?: string;
@@ -238,7 +238,7 @@ export function enforceTasks(htmlIn: string, ctx: EnforcerCtx): { html: string; 
   }
 
   // ── T11: CTA on EVERY featured product tile ───────────────────────────────
-  // .ppw-type cards are <a> elements (anchors can't nest, so lazy-match to
+  // .gtd-type cards are <a> elements (anchors can't nest, so lazy-match to
   // </a> is structurally safe). The CTA span is inserted as the LAST child
   // before </a> — never inside the image div. Exact markup per the task doc.
   {
@@ -249,8 +249,8 @@ export function enforceTasks(htmlIn: string, ctx: EnforcerCtx): { html: string; 
     else {
       let newTiles = tilesBlk.html;
       let added = 0, already = 0, priceAdded = 0;
-      // Pass 1: anchor cards (<a class="...ppw-type...">...</a>)
-      newTiles = newTiles.replace(/<a\b[^>]*class="[^"]*ppw-type[^"]*"[^>]*>[\s\S]*?<\/a>/gi, (card) => {
+      // Pass 1: anchor cards (<a class="...gtd-type...">...</a>)
+      newTiles = newTiles.replace(/<a\b[^>]*class="[^"]*gtd-type[^"]*"[^>]*>[\s\S]*?<\/a>/gi, (card) => {
         // Brand pages: "View [Model] →" CTAs count too (any View...→ span/button).
         if (/view product details/i.test(card) || (ctx.isBrand && /view [^<]{2,40}(→|&rarr;)/i.test(card))) { already++; return card; }
         let priceBit = "";
@@ -265,7 +265,7 @@ export function enforceTasks(htmlIn: string, ctx: EnforcerCtx): { html: string; 
       // Pass 2: div-based cards (fallback for other tile markups) — only when
       // no anchor cards matched, to avoid double-handling.
       if (added === 0 && already === 0) {
-        const divCards = [...newTiles.matchAll(/<div\b[^>]*class="[^"]*(?:ppw-type|ppw-card|tile)[^"]*"[^>]*>/gi)];
+        const divCards = [...newTiles.matchAll(/<div\b[^>]*class="[^"]*(?:gtd-type|gtd-card|tile)[^"]*"[^>]*>/gi)];
         for (const m of divCards) {
           // find the balanced close for THIS div
           let depth = 0, i = m.index as number, end = -1;
@@ -290,7 +290,7 @@ export function enforceTasks(htmlIn: string, ctx: EnforcerCtx): { html: string; 
         html = replaceBlock(html, tilesBlk, newTiles);
         R("T11", "Product tiles: View Product Details CTAs", "fixed", `CTA added to ${added} tile(s)${priceAdded ? `, price to ${priceAdded}` : ""}${already ? `; ${already} already had one` : ""}`);
       } else if (already > 0) R("T11", "Product tiles: View Product Details CTAs", "pass", `all ${already} tile(s) have CTAs`);
-      else R("T11", "Product tiles: View Product Details CTAs", "failed", "no .ppw-type / card tiles matched");
+      else R("T11", "Product tiles: View Product Details CTAs", "failed", "no .gtd-type / card tiles matched");
     }
   }
 
@@ -355,7 +355,7 @@ export function buildSchemaForTasks(
   graph.push({
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://peakprimalwellness.com" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://greenthumbdepot.com" },
       { "@type": "ListItem", position: 2, name: ctx.collectionTitle, item: ctx.collectionUrl },
     ],
   });
@@ -384,11 +384,11 @@ export function buildSchemaForTasks(
     };
     graph.push({
       "@type": "ItemList",
-      name: ctx.isBrand && ctx.brandName ? `${ctx.brandName} Products at Peak Primal Wellness` : `Featured ${ctx.catLabel} at Peak Primal Wellness`,
+      name: ctx.isBrand && ctx.brandName ? `${ctx.brandName} Products at Green Thumb Depot` : `Featured ${ctx.catLabel} at Green Thumb Depot`,
       itemListElement: urls.map((u, i) => ({
         "@type": "ListItem", position: i + 1,
         name: nameFor(u),
-        url: u.startsWith("http") ? u : `https://peakprimalwellness.com${u}`,
+        url: u.startsWith("http") ? u : `https://greenthumbdepot.com${u}`,
       })),
     });
     results.push({ task: "T6", label: "ItemList synced to featured products", status: dup.length ? "failed" : "fixed", detail: dup.length ? `dup-suffix handle(s): ${dup.join(", ")}` : `${urls.length} product URL(s)` });
@@ -396,7 +396,7 @@ export function buildSchemaForTasks(
     results.push({ task: "T6", label: "ItemList synced to featured products", status: "failed", detail: "no product links found on page" });
   }
 
-  // Brand schema — brand pages only (docs/PPW_Brand_Collection_Page_Rules.md).
+  // Brand schema — brand pages only (docs/GTD_Brand_Collection_Page_Rules.md).
   if (ctx.isBrand && ctx.brandName) {
     graph.push({
       "@type": "Brand",

@@ -1,8 +1,8 @@
 // ============================================================================
-// lib/authors.ts — the PPW authors table.
+// lib/authors.ts — the GTD authors table.
 //
 // STATUS (Aug 2026): four bylines are PLANNED, one is ACTIVE.
-// Only "PPW team" is active, so that is what every article is bylined to today.
+// Only "GTD team" is active, so that is what every article is bylined to today.
 // The other three are defined so the wiring, hub assignment and archive links
 // are already built; each switches on by setting status to "active" once its
 // bio is confirmed and (for real people) they have agreed to be named.
@@ -15,7 +15,7 @@
 // enforcement lives in UNSUPPORTED_CLAIMS in lib/brandRules.ts.
 //
 // Nothing in a bio may assert a certification, licence, qualification, or a
-// years-of-experience figure. PPW's authority is that it sells, ships and
+// years-of-experience figure. GTD's authority is that it sells, ships and
 // installs this equipment as an authorized dealer. That is the claim to make.
 //
 // TO SWITCH ONE ON
@@ -24,7 +24,7 @@
 //   3. Set status: "active".
 //   4. New articles pick it up automatically. Articles already published under
 //      template_version = 2 keep the old byline until patched; they are
-//      findable because the byline, role and bio sit in data-ppwb-slot
+//      findable because the byline, role and bio sit in data-gtdb-slot
 //      ="author.*" nodes, so a bulk pass rewrites exactly those. Version 1
 //      articles are never touched.
 // ============================================================================
@@ -34,7 +34,7 @@ export type AuthorStatus = "active" | "planned";
 export type Author = {
   slug: string;
   name: string;
-  /** Real role at PPW. Never a credential. Empty renders no role line. */
+  /** Real role at GTD. Never a credential. Empty renders no role line. */
   role: string;
   /** 25 to 40 words. Verifiable scope of work only. */
   bio: string;
@@ -72,7 +72,7 @@ export const AUTHORS: Author[] = [
     name: "James Ruhle",
     role: "", // TODO confirm with James. A real role only, never a credential.
     bio: "", // TODO 25 to 40 words. What he actually works on: product selection,
-             // the brands PPW is an authorized dealer for, how the catalogue is set up.
+             // the brands GTD is an authorized dealer for, how the catalogue is set up.
     initials: "JR",
     hubs: ["saunas", "recovery", "fitness"],
     // Fitness is owned at hub level, so cardio and strength both land here.
@@ -87,10 +87,10 @@ export const AUTHORS: Author[] = [
     name: "Ryan O'Connor",
     // Confirmed by Ryan, Aug 2026. A real role, never a credential. Ultimate
     // guides are bylined to him through guideAuthor() in lib/guide-v2.ts; the
-    // blog keeps the PPW team byline until status flips to active.
-    role: "Co-Founder at PPW",
+    // blog keeps the GTD team byline until status flips to active.
+    role: "Co-Founder at GTD",
     bio:
-      "Ryan co-founded Peak Primal Wellness and works on the catalogue, the brands PPW is an authorized dealer for, and the guides that explain the equipment PPW sells, ships and supports.",
+      "Ryan co-founded Green Thumb Depot and works on the catalogue, the brands GTD is an authorized dealer for, and the guides that explain the equipment GTD sells, ships and supports.",
     initials: "RO",
     // Ownership is by FORMAT, not subject: the shopping-guide side of the
     // library, across every hub. Measured against the bulk-creation CSVs this
@@ -122,12 +122,12 @@ export const AUTHORS: Author[] = [
     status: "planned",
   },
   {
-    slug: "ppw",
-    name: "Peak Primal Wellness",
+    slug: "gtd",
+    name: "Green Thumb Depot",
     role: "",
     bio:
-      "Peak Primal Wellness is an authorized dealer for the brands on this page. We sell, ship and support this equipment, so the guides are written from what we handle day to day.",
-    initials: "PPW",
+      "Green Thumb Depot is an authorized dealer for the brands on this page. We sell, ship and support this equipment, so the guides are written from what we handle day to day.",
+    initials: "GTD",
     hubs: [], // catch-all
     hasArchive: false,
     status: "active",
@@ -135,20 +135,20 @@ export const AUTHORS: Author[] = [
 ];
 
 const BY_SLUG = new Map(AUTHORS.map((a) => [a.slug, a]));
-const FALLBACK = AUTHORS.find((a) => a.slug === "ppw")!;
+const FALLBACK = AUTHORS.find((a) => a.slug === "gtd")!;
 
 const active = () => AUTHORS.filter((a) => a.status === "active");
 
 /** Author archive URL, or null when there is no page to link to yet. */
 export function authorUrl(a: Author): string | null {
-  return a.hasArchive ? `/blogs/wellness/tagged/author-${a.slug}` : null;
+  return a.hasArchive ? `/blogs/guides/tagged/author-${a.slug}` : null;
 }
 
 const norm = (s: string) => s.toLowerCase().trim().replace(/\s+/g, "-");
 
 /**
  * Pick the byline. Most specific match wins:
- *   locked hub  ->  articleType  ->  topic  ->  hub  ->  catch-all  ->  PPW team
+ *   locked hub  ->  articleType  ->  topic  ->  hub  ->  catch-all  ->  GTD team
  * Planned authors are skipped entirely, so nothing appears before its bio is
  * confirmed. Regeneration is stable: the same article always resolves the same
  * way, so a byline never silently changes between runs.

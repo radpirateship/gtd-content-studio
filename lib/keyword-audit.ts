@@ -3,7 +3,7 @@
 // Collection keyword audit: per-collection research (GSC queries, Ahrefs
 // candidates, competitor pages, SERPs) stored in collection_keyword_research,
 // plus an AI recommendation (primary, secondaries, title, meta, H2 additions)
-// that Ryan reviews and applies to the ppw_collections row and, optionally,
+// that Ryan reviews and applies to the gtd_collections row and, optionally,
 // to the live Shopify SEO fields. Research is pulled offline (Ahrefs API,
 // GSC) and imported as JSON; see scripts/keyword-research/.
 
@@ -54,7 +54,7 @@ export async function ensureKeywordResearchTable(sql: any) {
   await sql`ALTER TABLE collection_keyword_research ADD COLUMN IF NOT EXISTS must_terms JSONB`;
 }
 
-const SYSTEM = `You are the SEO lead for Peak Primal Wellness (peakprimalwellness.com), a US Shopify store selling high-ticket wellness equipment: saunas, cold plunges, hyperbaric chambers, recovery gear, home gym, and clinical rehab equipment. You are choosing the target keywords and the title tag, meta description and section headings for ONE collection page, from research that is given to you.
+const SYSTEM = `You are the SEO lead for Green Thumb Depot (greenthumbdepot.com), a US Shopify store selling high-ticket wellness equipment: saunas, cold plunges, hyperbaric chambers, recovery gear, home gym, and clinical rehab equipment. You are choosing the target keywords and the title tag, meta description and section headings for ONE collection page, from research that is given to you.
 
 How to choose:
 - Collection pages at this store get almost no organic traffic today. The goal is a page that can realistically win queries within months, not a vanity head term.
@@ -65,7 +65,7 @@ How to choose:
 
 Writing rules:
 - title_tag: 50 to 60 characters, primary keyword near the front, one secondary woven in naturally, no brand suffix, no call to action ("Shop Now", "Buy"), no exclamation marks, no quotes, no em dashes or en dashes. SCOPE: the title must describe the whole collection. If the primary is a sub-type (e.g. "preacher curl machine" on an arm-machines page, "wood fired hot tub" on a hot-tubs page), the title still names the parent category and the range of types carried; never a single-brand title unless the collection is that brand's page. Use a pipe or a colon to separate parts. Match the house style of existing titles such as "Outdoor Saunas | Barrel, Cabin & Kit Models".
-- meta_description: 140 to 158 characters, written for a first-time buyer. SCOPE: it describes the whole collection (the main product types carried), never one sub-type, one product or one brand. Lead with the primary keyword and a plain-language benefit or definition (what this kind of product does for them), then one concrete reason to click (range, sizes, a secondary keyword that is not already in the title, or the starting price when allowed), then a short call to action ("Shop the full range.", "Compare models.", "Find the right fit."). NEVER write the store name "Peak Primal Wellness" or "at Peak" in the meta; Google shows the site name beside the result already and the words are wasted. Brands depend on the hub: on Gym, Clinical and Cardio pages buyers are often brand-led, so naming up to two brands this collection carries is the default; on Saunas, Recovery, Wellness and Sports pages do NOT list brands, name one only when the research shows people searching that brand together with this category (a brand term in the page's GSC queries or keyword candidates, e.g. Harvia or HUUM on sauna heaters), at most two. Only ever name brands from the AUTHORITATIVE FACTS list when one is given. A starting price ("from $X") is welcome ONLY when the AUTHORITATIVE FACTS say it is allowed, written exactly as given; never invent, round or guess a price, and never put a price in the title. No em dashes.
+- meta_description: 140 to 158 characters, written for a first-time buyer. SCOPE: it describes the whole collection (the main product types carried), never one sub-type, one product or one brand. Lead with the primary keyword and a plain-language benefit or definition (what this kind of product does for them), then one concrete reason to click (range, sizes, a secondary keyword that is not already in the title, or the starting price when allowed), then a short call to action ("Shop the full range.", "Compare models.", "Find the right fit."). NEVER write the store name "Green Thumb Depot" or "at Peak" in the meta; Google shows the site name beside the result already and the words are wasted. Brands depend on the hub: on Gym, Clinical and Cardio pages buyers are often brand-led, so naming up to two brands this collection carries is the default; on Saunas, Recovery, Wellness and Sports pages do NOT list brands, name one only when the research shows people searching that brand together with this category (a brand term in the page's GSC queries or keyword candidates, e.g. Harvia or HUUM on sauna heaters), at most two. Only ever name brands from the AUTHORITATIVE FACTS list when one is given. A starting price ("from $X") is welcome ONLY when the AUTHORITATIVE FACTS say it is allowed, written exactly as given; never invent, round or guess a price, and never put a price in the title. No em dashes.
 - h1: the plain category name, usually the current H1; change it only if the primary keyword requires it.
 - h2_additions: 3 to 5 new section headings the page should add so the secondaries appear in headings and get real answers (for example a cost section with ranges, kits vs assembled, sizes, a type comparison). Write them as headings, not instructions.
 - rationale: 2 to 4 sentences citing the specific numbers that drove the choice (our GSC position and impressions, volume, KD, who ranks).
@@ -97,7 +97,7 @@ function trimAtBoundary(text: string, max: number): string {
   const word = cut.lastIndexOf(" ");
   let out = (word > 0 ? cut.slice(0, word) : cut).replace(/[,;:\s]+$/, "").trim();
   // never leave a dangling fragment ("... at Peak", "... starting at", "... from")
-  out = out.replace(/\s+(at|from|for|with|and|or|to|in|on|of|the|a|an|by|starting|priced|starting at|at Peak|at Peak Primal)$/i, "").trim();
+  out = out.replace(/\s+(at|from|for|with|and|or|to|in|on|of|the|a|an|by|starting|priced|starting at|at Peak|at Green Thumb Depot)$/i, "").trim();
   return out + ".";
 }
 
@@ -143,7 +143,7 @@ export async function enforceLengths(rec: Recommendation): Promise<{ rec: Recomm
   const noStore = stripStoreName(rec.meta_description || "");
   if (noStore !== (rec.meta_description || "")) { rec.meta_description = noStore; changed.push("meta_description"); }
   // no dangling fragment on any meta, long or not
-  const cleanedMeta = (rec.meta_description || "").replace(/\s+(at|from|for|with|and|or|to|in|on|of|the|a|an|by|starting|starting at|at Peak|at Peak Primal)[.]?$/i, "").trim();
+  const cleanedMeta = (rec.meta_description || "").replace(/\s+(at|from|for|with|and|or|to|in|on|of|the|a|an|by|starting|starting at|at Peak|at Green Thumb Depot)[.]?$/i, "").trim();
   if (cleanedMeta !== (rec.meta_description || "").trim()) { rec.meta_description = cleanedMeta.replace(/[,;:]$/, "") + (/[.!?]$/.test(cleanedMeta) ? "" : "."); changed.push("meta_description"); }
   const cleanedTitle = tightenTitle(rec.title_tag);
   if (cleanedTitle !== rec.title_tag) { rec.title_tag = cleanedTitle; if (!changed.includes("title_tag")) changed.push("title_tag"); }
@@ -193,7 +193,7 @@ export async function rewriteMeta(rec: Recommendation, research: Research, opts:
   const user = `Write ONE meta description for /collections/${research.handle}.
 Primary keyword (must appear, plural is fine): "${rec.primary}". Title tag already live: "${rec.title_tag}". Secondaries: ${rec.secondaries.join("; ")}.
 ${opts.notes ? `Operator notes: ${opts.notes}\n` : ""}${opts.facts ? `${opts.facts}\n` : ""}
-Rules: 140 to ${META_MAX} characters. It must describe the WHOLE collection (the range of product types carried, see facts), never one sub-type, one product or one brand. Written for someone buying their first one: open with the primary keyword and a plain-language benefit or definition, then one concrete reason to click (range, sizes, a secondary keyword not in the title${opts.priceAllowed && money ? `, or "from ${money}"` : ""}), then a short call to action ("Shop the full range." or similar). NEVER include the store name Peak Primal Wellness or "at Peak"; the site name already shows beside the result. ${opts.allowedBrands.length ? (opts.brandLed ? `Buyers in this category shop by brand, so name one or two of these brands this collection carries: ${opts.allowedBrands.join(", ")}.` : `You MAY name at most these brands, because searchers pair them with this category: ${opts.allowedBrands.join(", ")}. Naming none is fine.`) : "Do NOT name any brand."} ${opts.priceAllowed && money ? `The only price you may use is "from ${money}".` : "No prices or dollar figures."} No em dashes, no en dashes, no quotes, no exclamation marks. Return only the meta description text.`;
+Rules: 140 to ${META_MAX} characters. It must describe the WHOLE collection (the range of product types carried, see facts), never one sub-type, one product or one brand. Written for someone buying their first one: open with the primary keyword and a plain-language benefit or definition, then one concrete reason to click (range, sizes, a secondary keyword not in the title${opts.priceAllowed && money ? `, or "from ${money}"` : ""}), then a short call to action ("Shop the full range." or similar). NEVER include the store name Green Thumb Depot or "at Peak"; the site name already shows beside the result. ${opts.allowedBrands.length ? (opts.brandLed ? `Buyers in this category shop by brand, so name one or two of these brands this collection carries: ${opts.allowedBrands.join(", ")}.` : `You MAY name at most these brands, because searchers pair them with this category: ${opts.allowedBrands.join(", ")}. Naming none is fine.`) : "Do NOT name any brand."} ${opts.priceAllowed && money ? `The only price you may use is "from ${money}".` : "No prices or dollar figures."} No em dashes, no en dashes, no quotes, no exclamation marks. Return only the meta description text.`;
   const raw = await callAI("You write meta descriptions for an ecommerce store. Return only the text.", user, { maxTokens: 300, timeoutMs: 60000, retryOnTimeout: false });
   let m = raw.replace(/^["']|["']$/g, "").replace(/[\u2014\u2013]/g, "-").replace(/\s+/g, " ").trim();
   if (m.length > META_MAX) m = await tightenMeta(m, rec.primary);
@@ -209,7 +209,7 @@ Rules: 140 to ${META_MAX} characters. It must describe the WHOLE collection (the
 
 export type SeoRuleInput = {
   primary: string;
-  hub?: string | null;          // ppw_collections.category
+  hub?: string | null;          // gtd_collections.category
   isBrand?: boolean;            // brand collection page
   brandName?: string | null;
   vendors?: string[];           // carried vendors, most products first
@@ -233,7 +233,7 @@ export function metaSpec(input: SeoRuleInput): string {
   const pa = NO_PRICES_IN_GENERATED_TEXT ? { allowed: false, min: null, reason: "house rule: no prices in generated text, they go stale" } : priceAllowance(input.prices);
   const brandLed = !!input.isBrand || isBrandLedHub(input.hub);
   const allowed = input.isBrand && input.brandName ? [input.brandName] : brandLed ? (input.vendors || []).slice(0, 2) : [];
-  return `Meta description, 140 to ${META_MAX} characters, written for someone buying their first one. Open with the primary keyword "${input.primary}" and a plain-language benefit or definition, then one concrete reason to click (range, sizes, a secondary keyword${pa.allowed && pa.min ? `, or "from ${money(pa.min)}"` : ""}), then a short call to action such as "Shop the full range." NEVER include the store name Peak Primal Wellness; the site name already shows beside the result. ${allowed.length ? `Brands: you may name at most these, because buyers in this category shop by brand: ${allowed.join(", ")}. No others.` : "Do NOT name any brand."} ${pa.allowed && pa.min ? `The only price allowed is "from ${money(pa.min)}".` : `No prices or dollar figures (${pa.reason}).`} Never mention shipping. No em dashes or en dashes, no quotes, no exclamation marks.`;
+  return `Meta description, 140 to ${META_MAX} characters, written for someone buying their first one. Open with the primary keyword "${input.primary}" and a plain-language benefit or definition, then one concrete reason to click (range, sizes, a secondary keyword${pa.allowed && pa.min ? `, or "from ${money(pa.min)}"` : ""}), then a short call to action such as "Shop the full range." NEVER include the store name Green Thumb Depot; the site name already shows beside the result. ${allowed.length ? `Brands: you may name at most these, because buyers in this category shop by brand: ${allowed.join(", ")}. No others.` : "Do NOT name any brand."} ${pa.allowed && pa.min ? `The only price allowed is "from ${money(pa.min)}".` : `No prices or dollar figures (${pa.reason}).`} Never mention shipping. No em dashes or en dashes, no quotes, no exclamation marks.`;
 }
 
 const titleCase = (s: string) => s.replace(/\b\w/g, (c) => c.toUpperCase());
@@ -272,8 +272,8 @@ List 6 to 10 vocabulary terms a knowledgeable page about this category would nat
 /** Remove the store name from a meta description, keeping the sentence whole. */
 export function stripStoreName(meta: string): string {
   let m = meta || "";
-  m = m.replace(/\s*(?:at|from|with|by)\s+Peak Primal(?: Wellness)?(?:\.com)?/gi, "");
-  m = m.replace(/\s*Peak Primal(?: Wellness)?(?:\.com)?(?:'s)?\s*/g, " ");
+  m = m.replace(/\s*(?:at|from|with|by)\s+Green Thumb Depot(?: Wellness)?(?:\.com)?/gi, "");
+  m = m.replace(/\s*Green Thumb Depot(?: Wellness)?(?:\.com)?(?:'s)?\s*/g, " ");
   m = m.replace(/\s{2,}/g, " ").replace(/\s+([,.;:!?])/g, "$1").replace(/\s+(at|from|for|with|and|or|to|in|on|of|the|a|an|by)[.]?$/i, "").trim();
   if (m && !/[.!?]$/.test(m)) m += ".";
   return m;

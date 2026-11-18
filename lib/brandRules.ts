@@ -1,5 +1,5 @@
 // ============================================================================
-// PPW BRAND RULES — Single source of truth for writing voice across ALL
+// GTD BRAND RULES — Single source of truth for writing voice across ALL
 // generation routes (articles, bulk, workshop regenerate, ultimate guides,
 // section editor, Content Brain chat).
 //
@@ -61,13 +61,13 @@ FORMAT
 - NEVER use these AI patterns: "In today's world...", "Let's dive into...", "It's important to note...", "When it comes to...", "Whether you're a...or a...".
 
 CLAIMS - NEVER STATE (factual accuracy, not style):
-- Never promise "white-glove delivery", "white-glove assembly", or that assembly is included. PPW does not offer this.
+- Never promise "white-glove delivery", "white-glove assembly", or that assembly is included. GTD does not offer this.
 - Never discuss shipping cost at all. Not "free shipping", not "shipping is not free", not "factor shipping into your budget". Shipping is handled at checkout and is not a topic for an article.
 - Never invent warranty length, delivery timeframes, return policies, financing terms, or certifications that are not in the product data.
-- Product feature bullets must describe the PRODUCT (materials, resistance type, capacity, power, certifications), not PPW's service.
-- Never claim years of experience, decades in the industry, certifications, or licences for PPW or its staff. None are evidenced.
+- Product feature bullets must describe the PRODUCT (materials, resistance type, capacity, power, certifications), not GTD's service.
+- Never claim years of experience, decades in the industry, certifications, or licences for GTD or its staff. None are evidenced.
 - Never write "medically reviewed", "reviewed by our...", "clinically proven", "doctor recommended", or "our experts". No such review process or credentialed staff exists.
-- PPW's real authority is verifiable: authorized dealer for the brands covered, equipment sold, shipped and installed by us, specifications taken from manufacturer documentation. Say that instead.
+- GTD's real authority is verifiable: authorized dealer for the brands covered, equipment sold, shipped and installed by us, specifications taken from manufacturer documentation. Say that instead.
 
 NAMING RULES (NEVER violate):
 - Always "Sensory Deprivation Tanks" (never "Float Tanks")
@@ -84,7 +84,7 @@ TONE: Specific, evidence-based, conversational, and confident when recommending.
 Before finalizing any section, read each sentence once as the buyer would. If its meaning is not clear on one read, or it would fit any article in any category, rewrite it.`;
 
 /**
- * Phrases that should never appear in published PPW content.
+ * Phrases that should never appear in published GTD content.
  * Used by validateBrandRules() for post-generation checking.
  * Lowercase; matched case-insensitively against text content (HTML stripped).
  */
@@ -120,10 +120,10 @@ export const BANNED_PHRASES: string[] = [
 ];
 
 /**
- * Service and shipping claims PPW cannot support. Added Aug 3 2026 after an
+ * Service and shipping claims GTD cannot support. Added Aug 3 2026 after an
  * audit found "White-Glove Delivery Included" hardcoded as the first bullet of
  * every product card sitewide, plus "Free Shipping Included" used as filler.
- * PPW does not offer white-glove delivery or assembly, and free shipping is
+ * GTD does not offer white-glove delivery or assembly, and free shipping is
  * conditional on product class (not offered on freight items such as saunas).
  *
  * These are checked separately from BANNED_PHRASES because they are accuracy
@@ -133,15 +133,15 @@ export const BANNED_PHRASES: string[] = [
  */
 export const UNSUPPORTED_CLAIMS: Array<{ pattern: RegExp; note: string }> = [
   // Catalogue-scope claims. A brands roundup with four featured products
-  // from two vendors wrote "PPW currently carries Prism Fitness and PRx
-  // Performance" and "the brands available through Peak Primal Wellness".
+  // from two vendors wrote "GTD currently carries Prism Fitness and PRx
+  // Performance" and "the brands available through Green Thumb Depot".
   // The featured products are a selection from hundreds of vendors; the
   // article may never describe them as the whole range.
-  { pattern: /\b(?:PPW|Peak Primal Wellness|we)\s+(?:currently\s+)?(?:carr(?:y|ies)|stocks?|offers?|sells?)\s+(?:only\s+)?(?:two|three|four|2|3|4)?\s*(?:brands?|vendors?|manufacturers?)?\s*(?::|,)?\s*[A-Z][\w&.'-]*(?:\s+[A-Z][\w&.'-]*)*\s+and\s+[A-Z][\w&.'-]*/g, note: "names featured vendors as the brands PPW carries; the catalogue is far larger" },
-  { pattern: /\b(?:the|all|every|only)\s+(?:[\w-]+\s+){0,4}(?:brands?|vendors?|models?|options?|manufacturers?)\s+(?:available|offered|sold|stocked|carried)\s+(?:through|by|at|from)\s+(?:PPW|Peak Primal Wellness|us)\b/gi, note: "implies the featured products are the whole range" },
-  { pattern: /\b(?:PPW|Peak Primal Wellness)\s+(?:currently\s+)?(?:carries|stocks|offers)\s+(?:two|three|four|2|3|4)\s+(?:brands?|vendors?|manufacturers?)\b/gi, note: "counts featured vendors as the whole range" },
-  { pattern: /\b(?:only|the two|both)\s+(?:brands?|vendors?)\s+(?:PPW|Peak Primal Wellness|we)\s+(?:carr(?:y|ies)|stocks?|sells?)\b/gi, note: "implies the featured products are the whole range" },
-  { pattern: /white[\s-]?glove/gi, note: "PPW does not offer white-glove delivery or assembly" },
+  { pattern: /\b(?:GTD|Green Thumb Depot|we)\s+(?:currently\s+)?(?:carr(?:y|ies)|stocks?|offers?|sells?)\s+(?:only\s+)?(?:two|three|four|2|3|4)?\s*(?:brands?|vendors?|manufacturers?)?\s*(?::|,)?\s*[A-Z][\w&.'-]*(?:\s+[A-Z][\w&.'-]*)*\s+and\s+[A-Z][\w&.'-]*/g, note: "names featured vendors as the brands GTD carries; the catalogue is far larger" },
+  { pattern: /\b(?:the|all|every|only)\s+(?:[\w-]+\s+){0,4}(?:brands?|vendors?|models?|options?|manufacturers?)\s+(?:available|offered|sold|stocked|carried)\s+(?:through|by|at|from)\s+(?:GTD|Green Thumb Depot|us)\b/gi, note: "implies the featured products are the whole range" },
+  { pattern: /\b(?:GTD|Green Thumb Depot)\s+(?:currently\s+)?(?:carries|stocks|offers)\s+(?:two|three|four|2|3|4)\s+(?:brands?|vendors?|manufacturers?)\b/gi, note: "counts featured vendors as the whole range" },
+  { pattern: /\b(?:only|the two|both)\s+(?:brands?|vendors?)\s+(?:GTD|Green Thumb Depot|we)\s+(?:carr(?:y|ies)|stocks?|sells?)\b/gi, note: "implies the featured products are the whole range" },
+  { pattern: /white[\s-]?glove/gi, note: "GTD does not offer white-glove delivery or assembly" },
   { pattern: /free\s+shipping/gi, note: "free shipping is conditional on product class, never a blanket claim" },
   { pattern: /shipping\s+is\s+free/gi, note: "free shipping is conditional on product class" },
   // Any mention of shipping cost, either polarity. "Shipping on freight items
@@ -154,7 +154,7 @@ export const UNSUPPORTED_CLAIMS: Array<{ pattern: RegExp; note: string }> = [
   { pattern: /lifetime\s+warranty/gi, note: "warranty terms are set per manufacturer, verify before claiming" },
 
   // ── AUTHORSHIP AND CREDENTIALS (added Aug 2026) ────────────────────────────
-  // Content is generated from manufacturer and product data. PPW's real
+  // Content is generated from manufacturer and product data. GTD's real
   // authority is being an authorized dealer that sells, ships and installs this
   // equipment. That is verifiable; invented tenure, certifications and review
   // processes are not. Patterns are written to leave the approved service
@@ -162,18 +162,18 @@ export const UNSUPPORTED_CLAIMS: Array<{ pattern: RegExp; note: string }> = [
   // genuine product certifications (ETL, UL, CSA) alone.
   { pattern: /\b\d+\+?\s*years?\s+(?:of\s+)?(?:experience|expertise|in\s+the\s+(?:industry|business|field))\b/gi, note: "years-of-experience figures are not evidenced, do not claim them" },
   { pattern: /\b(?:decades?|generations?)\s+of\s+(?:experience|expertise)\b/gi, note: "vague long-tenure claims are not evidenced" },
-  { pattern: /\bmedically\s+reviewed\b/gi, note: "PPW does not run a medical review process" },
+  { pattern: /\bmedically\s+reviewed\b/gi, note: "GTD does not run a medical review process" },
   { pattern: /\breviewed\s+by\s+(?:our|a|an)\b/gi, note: "no named reviewer process exists, do not imply one" },
   { pattern: /\bclinically\s+(?:proven|validated|tested)\b/gi, note: "clinical efficacy claims require cited evidence, never assert them" },
   { pattern: /\b(?:doctor|physician|dentist)[\s-]?(?:recommended|approved|endorsed)\b/gi, note: "no practitioner endorsement exists" },
   { pattern: /\bboard[\s-]certified\b/gi, note: "no board certification exists" },
-  { pattern: /\bour\s+(?:certified|licensed|accredited|board[\s-]certified)\b/gi, note: "PPW staff hold no certifications we can evidence" },
+  { pattern: /\bour\s+(?:certified|licensed|accredited|board[\s-]certified)\b/gi, note: "GTD staff hold no certifications we can evidence" },
   { pattern: /\bour\s+(?:team\s+of\s+)?experts?\b/gi, note: "do not assert in-house expert staff, say what is true: authorized dealer, we sell and install it" },
   { pattern: /\bcertified\s+(?:sauna|wellness|fitness|recovery|health)\s+(?:expert|specialist|professional|coach)\b/gi, note: "invented practitioner credential" },
   { pattern: /\b(?:industry[\s-]leading\s+expertise|unrivalled\s+expertise|unmatched\s+expertise)\b/gi, note: "unevidenced expertise superlative" },
 
   // ── HEALTH EFFICACY (added Aug 21 2026) ────────────────────────────────────
-  // PPW sells equipment. It is not a supplement company and not a clinic, and a
+  // GTD sells equipment. It is not a supplement company and not a clinic, and a
   // bald health claim on a page with a buy button is the kind an FTC action is
   // built on. Two decks shipped before this existed: "builds mental toughness,
   // boosts immunity, and transforms your body from the inside out" and "your
@@ -182,7 +182,7 @@ export const UNSUPPORTED_CLAIMS: Array<{ pattern: RegExp; note: string }> = [
   // Deliberately narrow. These target MARKETING VERBS attached to a health
   // outcome, not physiological discussion. "Research on cold water immersion
   // documents norepinephrine increases" is fine and must stay fine; "boosts
-  // immunity" is not. Note that "anti-aging" is absent on purpose — PPW has a
+  // immunity" is not. Note that "anti-aging" is absent on purpose — GTD has a
   // published article using it in the title, so it is house vocabulary.
   { pattern: /\b(?:boosts?|boosting|strengthens?|supercharges?|supercharging)\s+(?:your\s+)?immun(?:ity|e\s+system|e\s+function)\b/gi, note: "immunity claims are not evidenced and are FTC-sensitive on a sales page" },
   { pattern: /\bimmune[\s-]boosting\b/gi, note: "immunity claim, not evidenced" },
@@ -241,9 +241,9 @@ function toText(html: string): string {
  * @param expectFaq   When true, validates the FAQ has exactly 8 questions
  */
 /**
- * Brands PPW does NOT carry, across every category it writes about. Added Aug 20
+ * Brands GTD does NOT carry, across every category it writes about. Added Aug 20
  * 2026 after a generated FAQ told readers to buy "a brand like Plunge, Ice Barrel,
- * or Edge Theory Labs" on PPW's own article. The model reaches for the names it
+ * or Edge Theory Labs" on GTD's own article. The model reaches for the names it
  * has seen most often online, which are the DTC brands with the biggest ad spend,
  * so a prompt rule alone does not hold.
  *
@@ -260,37 +260,37 @@ function toText(html: string): string {
  */
 export const UNCARRIED_BRANDS: Array<{ pattern: RegExp; note: string }> = [
   // Cold plunge
-  { pattern: /\bIce\s?Barrel\b/gi,            note: "competitor, PPW does not carry it" },
-  { pattern: /\bEdge\s+Theory(\s+Labs)?\b/gi,  note: "competitor, PPW does not carry it" },
-  { pattern: /\bRenu\s+Therapy\b/gi,          note: "competitor, PPW does not carry it" },
-  { pattern: /\bBlue\s?Cube\b/gi,             note: "competitor, PPW does not carry it" },
-  { pattern: /\bMorozko(\s+Forge)?\b/gi,       note: "competitor, PPW does not carry it" },
-  { pattern: /\bPolar\s+Monkeys\b/gi,         note: "competitor, PPW does not carry it" },
-  { pattern: /\bPenguin\s+Chillers?\b/gi,      note: "competitor, PPW does not carry it" },
-  { pattern: /\bCold\s+Stoic\b/gi,            note: "competitor, PPW does not carry it" },
-  { pattern: /\bPlungeAll\b/gi,               note: "competitor, PPW does not carry it" },
+  { pattern: /\bIce\s?Barrel\b/gi,            note: "competitor, GTD does not carry it" },
+  { pattern: /\bEdge\s+Theory(\s+Labs)?\b/gi,  note: "competitor, GTD does not carry it" },
+  { pattern: /\bRenu\s+Therapy\b/gi,          note: "competitor, GTD does not carry it" },
+  { pattern: /\bBlue\s?Cube\b/gi,             note: "competitor, GTD does not carry it" },
+  { pattern: /\bMorozko(\s+Forge)?\b/gi,       note: "competitor, GTD does not carry it" },
+  { pattern: /\bPolar\s+Monkeys\b/gi,         note: "competitor, GTD does not carry it" },
+  { pattern: /\bPenguin\s+Chillers?\b/gi,      note: "competitor, GTD does not carry it" },
+  { pattern: /\bCold\s+Stoic\b/gi,            note: "competitor, GTD does not carry it" },
+  { pattern: /\bPlungeAll\b/gi,               note: "competitor, GTD does not carry it" },
   // Sauna and light
-  { pattern: /\bSun\s?Home\s+Saunas?\b/gi,    note: "competitor, PPW does not carry it" },
-  { pattern: /\bClearlight\b/gi,              note: "competitor, PPW does not carry it" },
-  { pattern: /\bSunlighten\b/gi,              note: "competitor, PPW does not carry it" },
-  { pattern: /\bHigherDOSE\b/gi,              note: "competitor, PPW does not carry it" },
-  { pattern: /\bTherasage\b/gi,               note: "competitor, PPW does not carry it" },
-  { pattern: /\bJoovv\b/gi,                   note: "competitor, PPW does not carry it" },
-  { pattern: /\bMito\s?Red\b/gi,             note: "competitor, PPW does not carry it" },
+  { pattern: /\bSun\s?Home\s+Saunas?\b/gi,    note: "competitor, GTD does not carry it" },
+  { pattern: /\bClearlight\b/gi,              note: "competitor, GTD does not carry it" },
+  { pattern: /\bSunlighten\b/gi,              note: "competitor, GTD does not carry it" },
+  { pattern: /\bHigherDOSE\b/gi,              note: "competitor, GTD does not carry it" },
+  { pattern: /\bTherasage\b/gi,               note: "competitor, GTD does not carry it" },
+  { pattern: /\bJoovv\b/gi,                   note: "competitor, GTD does not carry it" },
+  { pattern: /\bMito\s?Red\b/gi,             note: "competitor, GTD does not carry it" },
   // Recovery and massage
-  { pattern: /\bTheragun\b/gi,                note: "competitor, PPW does not carry it" },
-  { pattern: /\bTherabody\b/gi,               note: "competitor, PPW does not carry it" },
-  { pattern: /\bHyperice\b/gi,                note: "competitor, PPW does not carry it" },
-  { pattern: /\bHypervolt\b/gi,               note: "competitor, PPW does not carry it" },
-  { pattern: /\bNormatec\b/gi,                note: "competitor, PPW does not carry it" },
+  { pattern: /\bTheragun\b/gi,                note: "competitor, GTD does not carry it" },
+  { pattern: /\bTherabody\b/gi,               note: "competitor, GTD does not carry it" },
+  { pattern: /\bHyperice\b/gi,                note: "competitor, GTD does not carry it" },
+  { pattern: /\bHypervolt\b/gi,               note: "competitor, GTD does not carry it" },
+  { pattern: /\bNormatec\b/gi,                note: "competitor, GTD does not carry it" },
   // Fitness
-  { pattern: /\bPeloton\b/gi,                 note: "competitor, PPW does not carry it" },
-  { pattern: /\bNordicTrack\b/gi,             note: "competitor, PPW does not carry it" },
-  { pattern: /\bBowflex\b/gi,                 note: "competitor, PPW does not carry it" },
-  { pattern: /\bRogue\s+Fitness\b/gi,        note: "competitor, PPW does not carry it" },
-  { pattern: /\bConcept\s?2\b/gi,            note: "competitor, PPW does not carry it" },
-  { pattern: /\bTonal\b/gi,                   note: "competitor, PPW does not carry it" },
-  { pattern: /\bHydrow\b/gi,                  note: "competitor, PPW does not carry it" },
+  { pattern: /\bPeloton\b/gi,                 note: "competitor, GTD does not carry it" },
+  { pattern: /\bNordicTrack\b/gi,             note: "competitor, GTD does not carry it" },
+  { pattern: /\bBowflex\b/gi,                 note: "competitor, GTD does not carry it" },
+  { pattern: /\bRogue\s+Fitness\b/gi,        note: "competitor, GTD does not carry it" },
+  { pattern: /\bConcept\s?2\b/gi,            note: "competitor, GTD does not carry it" },
+  { pattern: /\bTonal\b/gi,                   note: "competitor, GTD does not carry it" },
+  { pattern: /\bHydrow\b/gi,                  note: "competitor, GTD does not carry it" },
   // Bare "Plunge" as a brand, only inside an explicit list of brands.
   { pattern: /brands?\s+(?:like|such\s+as)[^.]{0,80}\bPlunge\b/gi, note: "\u201cPlunge\u201d here reads as the competitor brand, not the product category" },
 ];
@@ -307,10 +307,10 @@ const BRAND_LIST_CONSTRUCTION =
 /**
  * Capitalised words that are not brands. Sentence-initial words are not a
  * concern because the construction never starts a sentence, but units, bodies,
- * product categories and PPW's own names all show up capitalised mid-sentence.
+ * product categories and GTD's own names all show up capitalised mid-sentence.
  */
 const NOT_A_BRAND = new Set([
-  "ppw", "peak", "primal", "wellness", "us", "usa", "uk", "eu", "hsa", "fsa", "led", "emf",
+  "gtd", "peak", "primal", "wellness", "us", "usa", "uk", "eu", "hsa", "fsa", "led", "emf",
   "uv", "ata", "ir", "fir", "kw", "btu", "etl", "ul", "csa", "fda", "nih", "cdc", "the", "a", "an",
   "and", "or", "of", "for", "with", "in", "on", "at", "to", "from", "by", "i", "your", "our",
   "january", "february", "march", "april", "may", "june", "july", "august", "september",
@@ -597,7 +597,7 @@ export function validateBrandRules(
   }
 
   // A name on the static seed list that IS a vendor in this article's product
-  // data is not a violation. The catalogue outranks the list: if PPW starts
+  // data is not a violation. The catalogue outranks the list: if GTD starts
   // carrying a brand, the product data says so and nobody has to edit code.
   const knownNorm = Array.from(opts.knownVendors ?? []).map(normBrand).filter(Boolean);
   const vendorCarried = (name: string) => {
@@ -620,12 +620,12 @@ export function validateBrandRules(
     }
   }
   if (uncarriedBrands.length > 0) {
-    warnings.push(`Brands PPW does not carry: ${uncarriedBrands.join("; ")}`);
+    warnings.push(`Brands GTD does not carry: ${uncarriedBrands.join("; ")}`);
   }
 
   let faqCount: number | null = null;
   if (expectFaq) {
-    faqCount = (html.match(/<summary[^>]*class="ppw-faq-question"/gi) || []).length;
+    faqCount = (html.match(/<summary[^>]*class="gtd-faq-question"/gi) || []).length;
     if (faqCount !== 8) warnings.push(`FAQ has ${faqCount} questions, expected 8`);
   }
 

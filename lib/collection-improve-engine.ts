@@ -2,7 +2,7 @@
 // lib/collection-improve-engine.ts — section-replacement engine for the
 // collection Improve flow.
 //
-// Root-cause fix from docs/PPW_Collection_Tool_Eval_Barrel_Sauna.md:
+// Root-cause fix from docs/GTD_Collection_Tool_Eval_Barrel_Sauna.md:
 //   "The tool must output complete section replacements, not appended
 //    additions... Never create a new section with a different class name to
 //    replace the functionality of an existing one."
@@ -91,7 +91,7 @@ export function extractFaqItems(faqHtml: string): { items: FaqItem[]; pattern: R
         }
         const bodyM =
           h.match(/<div class="body"[^>]*>([\s\S]*?)<\/div>\s*<\/details>/i) ||
-          h.match(/<div[^>]*class="[^"]*ppw-faq-answer[^"]*"[^>]*>([\s\S]*?)<\/div>/i) ||
+          h.match(/<div[^>]*class="[^"]*gtd-faq-answer[^"]*"[^>]*>([\s\S]*?)<\/div>/i) ||
           h.match(/<\/summary>([\s\S]*?)<\/details>/i);
         return { html: h, q, a: bodyM ? stripTags(bodyM[1]) : "" };
       });
@@ -119,8 +119,8 @@ export function cloneFaqItem(template: string, q: string, a: string): string {
   });
   if (/<div class="body"/i.test(out)) {
     out = out.replace(/(<div class="body"[^>]*>)([\s\S]*?)(<\/div>\s*<\/details>)/i, (_m, o: string, _i: string, c: string) => `${o}<p>${a}</p>${c}`);
-  } else if (/ppw-faq-answer/i.test(out)) {
-    out = out.replace(/(<div[^>]*class="[^"]*ppw-faq-answer[^"]*"[^>]*>)([\s\S]*?)(<\/div>)/i, (_m, o: string, _i: string, c: string) => `${o}<p>${a}</p>${c}`);
+  } else if (/gtd-faq-answer/i.test(out)) {
+    out = out.replace(/(<div[^>]*class="[^"]*gtd-faq-answer[^"]*"[^>]*>)([\s\S]*?)(<\/div>)/i, (_m, o: string, _i: string, c: string) => `${o}<p>${a}</p>${c}`);
   } else {
     out = out.replace(/(<\/summary>)([\s\S]*?)(<\/details>)/i, (_m, o: string, _i: string, c: string) => `${o}<p>${a}</p>${c}`);
   }
@@ -143,7 +143,7 @@ export function removeNavLinksFor(html: string, block: Block): string {
     out = out.replace(new RegExp(`<a\\b[^>]*href="#[^"]*"[^>]*>\\s*${headWords}[^<]{0,40}<\\/a>`, "gi"), "");
   }
   // Tidy the nav: collapse the blank gap a removed link leaves behind.
-  out = out.replace(/(<nav\b[^>]*ppw-topnav[\s\S]*?<\/nav>)/i, (nav) => nav.replace(/\n[ \t]*\n+/g, "\n"));
+  out = out.replace(/(<nav\b[^>]*gtd-topnav[\s\S]*?<\/nav>)/i, (nav) => nav.replace(/\n[ \t]*\n+/g, "\n"));
   return out;
 }
 

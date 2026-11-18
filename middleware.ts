@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { bearerFrom, configuredBotToken, tokenMatches } from "@/lib/bot-auth";
 
 /**
- * Site-wide password gate. Every page and API route requires the ppw-auth
+ * Site-wide password gate. Every page and API route requires the gtd-auth
  * cookie except /login and /api/auth. The cookie value is an HMAC-style hash
  * of SITE_PASSWORD so it cannot be forged by simply setting "authenticated".
  *
@@ -18,14 +18,14 @@ import { bearerFrom, configuredBotToken, tokenMatches } from "@/lib/bot-auth";
  *
  * Bot path: requests to /api/bot/* may present `Authorization: Bearer <token>`
  * matching BOT_API_TOKEN (or CONTENT_STUDIO_BOT_TOKEN). Read-only product and
- * image reads for external agents (Grok Bot, PPW - Email). Scoped to /api/bot/
+ * image reads for external agents (Grok Bot, GTD - Email). Scoped to /api/bot/
  * only; unset env var disables it. Everything else stays cookie-only.
  */
 
 async function expectedToken(): Promise<string | null> {
   const pw = process.env.SITE_PASSWORD;
   if (!pw) return null;
-  const data = new TextEncoder().encode(`ppw-v2:${pw}`);
+  const data = new TextEncoder().encode(`gtd-v2:${pw}`);
   const digest = await crypto.subtle.digest("SHA-256", data);
   return Array.from(new Uint8Array(digest))
     .map((b) => b.toString(16).padStart(2, "0"))
@@ -62,7 +62,7 @@ export async function middleware(request: NextRequest) {
   }
 
   const expected = await expectedToken();
-  const cookie = request.cookies.get("ppw-auth")?.value;
+  const cookie = request.cookies.get("gtd-auth")?.value;
 
   if (expected && cookie === expected) {
     return NextResponse.next();

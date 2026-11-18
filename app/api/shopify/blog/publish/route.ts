@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
     // It is residue from an old /api/articles collision bug that appended
     // Date.now() whenever a slug PREFIX-matched an existing row. Those slugs
     // are still sitting in the articles table, and publishing one mints a live
-    // URL like /blogs/wellness/home-gym-essentials-...-1787401458275 that no
+    // URL like /blogs/guides/home-gym-essentials-...-1787401458275 that no
     // duplicate check catches, because the mangled handle genuinely is free.
     // Strip it here, at the one door every publish path goes through, so the
     // handle_exists guard below sees the real handle and does its job.
@@ -214,7 +214,7 @@ export async function POST(request: NextRequest) {
     if (existing && !updateIfExists) {
       return NextResponse.json(
         {
-          error: `An article already lives at /blogs/wellness/${handle}. Publishing would create a duplicate URL.`,
+          error: `An article already lives at /blogs/guides/${handle}. Publishing would create a duplicate URL.`,
           code: "handle_exists",
           existingArticleId: existing.id,
           handle,
@@ -244,15 +244,15 @@ export async function POST(request: NextRequest) {
     }
 
     const createdArticle = data.article;
-    const articleUrl = `https://peakprimalwellness.com/blogs/wellness/${createdArticle.handle}`;
+    const articleUrl = `https://greenthumbdepot.com/blogs/guides/${createdArticle.handle}`;
 
     // Ping search engines to re-crawl the sitemap
-    const sitemapUrl = "https://peakprimalwellness.com/sitemap.xml";
+    const sitemapUrl = "https://greenthumbdepot.com/sitemap.xml";
     const pingResults: Record<string, string> = {};
     const pingUrls = [
       { name: "Google", url: `https://www.google.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}` },
       { name: "Bing", url: `https://www.bing.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}` },
-      { name: "IndexNow", url: `https://api.indexnow.org/indexnow?url=${encodeURIComponent(articleUrl)}&key=peakprimalwellness` },
+      { name: "IndexNow", url: `https://api.indexnow.org/indexnow?url=${encodeURIComponent(articleUrl)}&key=greenthumbdepot` },
     ];
     for (const ping of pingUrls) {
       try {

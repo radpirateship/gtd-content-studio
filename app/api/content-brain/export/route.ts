@@ -1,5 +1,5 @@
 // app/api/content-brain/export/route.ts
-// Export selected content_brain rows as the 10-column PPW bulk-upload CSV.
+// Export selected content_brain rows as the 10-column GTD bulk-upload CSV.
 import { NextRequest, NextResponse } from 'next/server'
 import { getSQL } from '@/lib/db'
 
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
     status: 200,
     headers: {
       'Content-Type': 'text/csv; charset=utf-8',
-      'Content-Disposition': `attachment; filename="ppw-content-queue-${timestamp}.csv"`,
+      'Content-Disposition': `attachment; filename="gtd-content-queue-${timestamp}.csv"`,
     },
   })
 }

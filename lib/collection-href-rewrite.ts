@@ -58,7 +58,7 @@ export function buildHrefRewrite(html: string, map: Record<string, string>): Hre
   const alt = handles.map(escapeRe).join("|");
   // href="…/collections/<old>" followed by end of path: quote, slash, ?, #
   const re = new RegExp(
-    `(href\\s*=\\s*(["']))((?:https?:\\/\\/(?:www\\.)?peakprimalwellness\\.com)?\\/collections\\/)(${alt})(?=\\/?(?:[?#][^"']*)?\\2)`,
+    `(href\\s*=\\s*(["']))((?:https?:\\/\\/(?:www\\.)?greenthumbdepot\\.com)?\\/collections\\/)(${alt})(?=\\/?(?:[?#][^"']*)?\\2)`,
     "gi"
   );
 

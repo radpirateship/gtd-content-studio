@@ -55,11 +55,11 @@ export function PublishConfirmView({ article, onBackToEditor, onNewArticle, onVi
           tags,
           collection: article.shopifyBlogTag || article.category,
           articleType: article.articleType,
-          author: 'Peak Primal Wellness',
+          author: 'Green Thumb Depot',
           handle: article.slug,
           published: true,
           featuredImageUrl: article.featuredImage?.url || undefined,
-          featuredImageAlt: article.featuredImage?.altText || `${article.title} - Peak Primal Wellness`,
+          featuredImageAlt: article.featuredImage?.altText || `${article.title} - Green Thumb Depot`,
           metafields: [
             { namespace: 'global', key: 'title_tag', value: article.title, type: 'single_line_text_field' },
             { namespace: 'global', key: 'description_tag', value: article.metaDescription || '', type: 'single_line_text_field' },
@@ -74,7 +74,7 @@ export function PublishConfirmView({ article, onBackToEditor, onNewArticle, onVi
         // failing: creating a second article would fork the URL.
         if (response.status === 409 && errData.code === 'handle_exists' && !updateIfExists) {
           const ok = window.confirm(
-            `An article already lives at /blogs/wellness/${article.slug}.\n\n` +
+            `An article already lives at /blogs/guides/${article.slug}.\n\n` +
             `Update that existing article with this content?\n\n` +
             `The URL, its published date and its search history stay exactly as they are. ` +
             `Only the article body is replaced. Cancel if this was meant to be a new post.`
@@ -89,7 +89,7 @@ export function PublishConfirmView({ article, onBackToEditor, onNewArticle, onVi
 
       const result = await response.json()
       const returnedUrl = result.article?.url
-      const fallbackUrl = `https://peakprimalwellness.com/blogs/wellness/${result.article?.handle || article.slug}`
+      const fallbackUrl = `https://greenthumbdepot.com/blogs/guides/${result.article?.handle || article.slug}`
       setShopifyUrl(returnedUrl || fallbackUrl)
       setPublishedAt(new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }))
       setPhase('success')
@@ -100,11 +100,11 @@ export function PublishConfirmView({ article, onBackToEditor, onNewArticle, onVi
     }
   }
 
-  const liveUrl = shopifyUrl || `https://peakprimalwellness.com/blogs/wellness/${article.slug}`
+  const liveUrl = shopifyUrl || `https://greenthumbdepot.com/blogs/guides/${article.slug}`
 
   const detailRows = [
     { label: 'Title', value: article.title },
-    { label: 'URL', value: `/blogs/wellness/${article.slug}`, href: liveUrl },
+    { label: 'URL', value: `/blogs/guides/${article.slug}`, href: liveUrl },
     // Show the category the way it will actually be tagged, not the raw
     // slug prettified ("Home Gym Equipment For Every Workout").
     { label: 'Category', value: (() => {
@@ -122,13 +122,13 @@ export function PublishConfirmView({ article, onBackToEditor, onNewArticle, onVi
         {/* Icon */}
         <div className="flex justify-center mb-4">
           {phase === 'publishing' && (
-            <div className="flex h-14 w-14 items-center justify-center rounded-full" style={{ background: 'color-mix(in srgb, var(--ppw-accent) 12%, transparent)' }}>
-              <Loader2 className="h-7 w-7 animate-spin" style={{ color: 'var(--ppw-accent)' }} />
+            <div className="flex h-14 w-14 items-center justify-center rounded-full" style={{ background: 'color-mix(in srgb, var(--gtd-accent) 12%, transparent)' }}>
+              <Loader2 className="h-7 w-7 animate-spin" style={{ color: 'var(--gtd-accent)' }} />
             </div>
           )}
           {(phase === 'pre-publish' || phase === 'success') && (
-            <div className="flex h-14 w-14 items-center justify-center rounded-full" style={{ background: phase === 'success' ? 'color-mix(in srgb, var(--ppw-accent) 12%, transparent)' : 'var(--surface)' }}>
-              <Check className="h-7 w-7" style={{ color: phase === 'success' ? 'var(--ppw-accent)' : 'var(--text3)' }} />
+            <div className="flex h-14 w-14 items-center justify-center rounded-full" style={{ background: phase === 'success' ? 'color-mix(in srgb, var(--gtd-accent) 12%, transparent)' : 'var(--surface)' }}>
+              <Check className="h-7 w-7" style={{ color: phase === 'success' ? 'var(--gtd-accent)' : 'var(--text3)' }} />
             </div>
           )}
           {phase === 'error' && (
@@ -171,13 +171,13 @@ export function PublishConfirmView({ article, onBackToEditor, onNewArticle, onVi
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 text-[12px] font-medium text-right max-w-[300px] truncate underline underline-offset-2 hover:opacity-80 transition-opacity"
-                  style={{ color: 'var(--ppw-accent)' }}
+                  style={{ color: 'var(--gtd-accent)' }}
                 >
                   {row.value}
                   <ExternalLink className="h-3 w-3 flex-shrink-0" />
                 </a>
               ) : (
-                <span className="text-[12px] font-medium text-right max-w-[300px] truncate" style={{ color: row.href ? 'var(--ppw-accent)' : 'var(--text1)' }}>
+                <span className="text-[12px] font-medium text-right max-w-[300px] truncate" style={{ color: row.href ? 'var(--gtd-accent)' : 'var(--text1)' }}>
                   {row.value}
                 </span>
               )}
@@ -190,7 +190,7 @@ export function PublishConfirmView({ article, onBackToEditor, onNewArticle, onVi
           <div className="rounded-md border px-4 py-3 mb-5 flex flex-col gap-2" style={{ background: 'var(--bg)', borderColor: 'var(--border)' }}>
             {checklist.map((item, i) => (
               <div key={i} className="flex items-center gap-2.5">
-                {item.status === 'done' && <Check className="h-3.5 w-3.5 flex-shrink-0" style={{ color: 'var(--ppw-accent)' }} />}
+                {item.status === 'done' && <Check className="h-3.5 w-3.5 flex-shrink-0" style={{ color: 'var(--gtd-accent)' }} />}
                 {item.status === 'warn' && <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0" style={{ color: '#b8860b' }} />}
                 {item.status === 'skip' && <div className="h-3.5 w-3.5 flex-shrink-0 rounded-full border" style={{ borderColor: 'var(--text4)' }} />}
                 <span className="text-[12px]" style={{ color: 'var(--text2)' }}>{item.label}</span>
@@ -206,7 +206,7 @@ export function PublishConfirmView({ article, onBackToEditor, onNewArticle, onVi
               <Button
                 onClick={() => handlePublish(false)}
                 className="flex-1 gap-1.5 text-[13px]"
-                style={{ background: 'var(--ppw-accent)', color: '#fff' }}
+                style={{ background: 'var(--gtd-accent)', color: '#fff' }}
               >
                 Publish to Shopify
               </Button>
@@ -225,7 +225,7 @@ export function PublishConfirmView({ article, onBackToEditor, onNewArticle, onVi
             <>
               {shopifyUrl && (
                 <a href={shopifyUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-                  <Button className="w-full gap-1.5 text-[13px]" style={{ background: 'var(--ppw-accent)', color: '#fff' }}>
+                  <Button className="w-full gap-1.5 text-[13px]" style={{ background: 'var(--gtd-accent)', color: '#fff' }}>
                     View on Shopify <ExternalLink className="h-3.5 w-3.5" />
                   </Button>
                 </a>
@@ -243,7 +243,7 @@ export function PublishConfirmView({ article, onBackToEditor, onNewArticle, onVi
               <Button
                 onClick={() => handlePublish(false)}
                 className="flex-1 gap-1.5 text-[13px]"
-                style={{ background: 'var(--ppw-accent)', color: '#fff' }}
+                style={{ background: 'var(--gtd-accent)', color: '#fff' }}
               >
                 Retry Publish
               </Button>

@@ -5,7 +5,7 @@ import { getSQL } from '@/lib/db'
 
 export const maxDuration = 120
 
-const STOREFRONT = 'https://peakprimalwellness.com'
+const STOREFRONT = 'https://greenthumbdepot.com'
 
 /**
  * A 2xx from the Admin API means Shopify accepted the write. It does not mean
@@ -26,7 +26,7 @@ async function verifyLive(handle: string): Promise<{ ok: boolean; status: number
     try {
       const res = await fetch(`${STOREFRONT}/pages/${handle}?_pv=${Date.now()}`, {
         redirect: 'manual',
-        headers: { 'User-Agent': 'ppw-content-studio/publish-verify' },
+        headers: { 'User-Agent': 'gtd-content-studio/publish-verify' },
         cache: 'no-store',
       })
       status = res.status
@@ -242,12 +242,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Sitemap pings — same as blog/publish
-    const sitemapUrl = 'https://peakprimalwellness.com/sitemap.xml'
+    const sitemapUrl = 'https://greenthumbdepot.com/sitemap.xml'
     const pingResults: Record<string, string> = {}
     const pingUrls = [
       { name: 'Google',   url: `https://www.google.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}` },
       { name: 'Bing',     url: `https://www.bing.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}` },
-      { name: 'IndexNow', url: `https://api.indexnow.org/indexnow?url=${encodeURIComponent(pageUrl)}&key=peakprimalwellness` },
+      { name: 'IndexNow', url: `https://api.indexnow.org/indexnow?url=${encodeURIComponent(pageUrl)}&key=greenthumbdepot` },
     ]
     for (const ping of pingUrls) {
       try {

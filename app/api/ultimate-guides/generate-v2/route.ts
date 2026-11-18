@@ -93,9 +93,9 @@ async function collectionContext(guide: GuideRow): Promise<{ own?: Coll; candida
     const sql = getSQL();
     rows = Array.from(await sql`
       SELECT slug, category, title_tag, primary_keyword, secondary_keywords, is_hidden
-      FROM ppw_collections`) as typeof rows;
+      FROM gtd_collections`) as typeof rows;
   } catch (e) {
-    console.warn("[guide-v2] ppw_collections query failed:", e instanceof Error ? e.message : e);
+    console.warn("[guide-v2] gtd_collections query failed:", e instanceof Error ? e.message : e);
   }
   const labelOf = (r: (typeof rows)[number]) =>
     (r.title_tag || "").split(/[|:]|\s-\s/)[0].split(/\s+for\s+/i)[0].trim()
@@ -141,7 +141,7 @@ async function articleInventory(guide: GuideRow, clientLinks: Body["clusterLinks
   const add = (title: string, url: string) => {
     const u = (url || "").trim();
     if (!u || !title) return;
-    const rel = u.startsWith("http") ? u.replace(/^https?:\/\/(www\.)?peakprimalwellness\.com/i, "") : u.startsWith("/") ? u : `/blogs/wellness/${u}`;
+    const rel = u.startsWith("http") ? u.replace(/^https?:\/\/(www\.)?greenthumbdepot\.com/i, "") : u.startsWith("/") ? u : `/blogs/guides/${u}`;
     const k = linkKey(rel);
     if (!k.startsWith("/blogs/")) return;
     if (!out.has(k)) out.set(k, { title: title.trim(), url: rel });
@@ -166,14 +166,14 @@ async function articleInventory(guide: GuideRow, clientLinks: Body["clusterLinks
         AND (b.status = 'live' OR t.slug IS NOT NULL)
       ORDER BY t.shopify_published_at DESC NULLS LAST, b.id DESC
       LIMIT 60`) as { title: string; slug: string }[];
-    for (const r of rows) add(r.title, `/blogs/wellness/${r.slug}`);
+    for (const r of rows) add(r.title, `/blogs/guides/${r.slug}`);
     // Legacy fallback: older collections still have their cluster in `articles`.
     if (!rows.length) {
       const legacy = Array.from(await sql`
         SELECT title, slug FROM articles
         WHERE category = ${guide.collection_slug || ""} AND status = 'published'
         ORDER BY updated_at DESC LIMIT 60`) as { title: string; slug: string }[];
-      for (const r of legacy) add(r.title, `/blogs/wellness/${r.slug}`);
+      for (const r of legacy) add(r.title, `/blogs/guides/${r.slug}`);
     }
   } catch (e) {
     console.warn("[guide-v2] articles query failed:", e instanceof Error ? e.message : e);
@@ -203,7 +203,7 @@ async function verifyUrls(urls: string[]): Promise<Set<string>> {
       try {
         const ctl = new AbortController();
         const t = setTimeout(() => ctl.abort(), 6000);
-        const res = await fetch(u, { method, redirect: "follow", signal: ctl.signal, headers: { "user-agent": "Mozilla/5.0 (compatible; PPW citation check)" } });
+        const res = await fetch(u, { method, redirect: "follow", signal: ctl.signal, headers: { "user-agent": "Mozilla/5.0 (compatible; GTD citation check)" } });
         clearTimeout(t);
         if (res.ok) { ok.add(u); return; }
         // A 404 or a 410 is final. Anything else (405 on HEAD, a 403 from a
@@ -223,23 +223,23 @@ BODY only: no <h2>, no title, no <article>, no <style>, no markdown, no
 preamble, no closing remark. Your reply is inserted into the page verbatim.
 
 Use these classes and no others. They are defined in the theme.
-  Paragraph:       <p class="ppwb-p">...</p>
-  Lead paragraph:  <p class="ppwb-lead">...</p> (first paragraph only, optional)
-  Sub-heading:     <h3 class="ppwb-h3">...</h3>
-  Bullets:         <ul class="ppwb-ul"><li class="ppwb-li">...</li></ul>
-  Numbered:        <ol class="ppwb-ol"><li class="ppwb-li">...</li></ol>
-  Callout:         <aside class="ppwb-call"><span class="ppwb-call-label">Label</span><p>...</p></aside>
-  Warning callout: <aside class="ppwb-call ppwb-call-warn"><span class="ppwb-call-label">Label</span><p>...</p></aside>
-  Steps:           <ol class="ppwb-steps"><li class="ppwb-step"><div><h3 class="ppwb-step-title">Title</h3><p class="ppwb-step-body">...</p></div></li></ol>
-  Spec strip:      <div class="ppwb-specs"><div class="ppwb-spec"><div class="ppwb-spec-num">1.3</div><div class="ppwb-spec-label">ATA</div><p class="ppwb-spec-note">...</p></div></div> (three specs)
-  Comparison:      <div class="ppwb-cmp-wrap"><table class="ppwb-cmp"><thead><tr><th>Model</th><th>Best for</th><th>Key trade-off</th></tr></thead><tbody><tr><td class="ppwb-cmp-model">Exact model name</td><td data-ppwb-col="Best for">...</td><td data-ppwb-col="Key trade-off">...</td></tr></tbody></table></div>
-                   Every cell except the first in a row carries data-ppwb-col. A table is never the last thing in a section.
+  Paragraph:       <p class="gtdb-p">...</p>
+  Lead paragraph:  <p class="gtdb-lead">...</p> (first paragraph only, optional)
+  Sub-heading:     <h3 class="gtdb-h3">...</h3>
+  Bullets:         <ul class="gtdb-ul"><li class="gtdb-li">...</li></ul>
+  Numbered:        <ol class="gtdb-ol"><li class="gtdb-li">...</li></ol>
+  Callout:         <aside class="gtdb-call"><span class="gtdb-call-label">Label</span><p>...</p></aside>
+  Warning callout: <aside class="gtdb-call gtdb-call-warn"><span class="gtdb-call-label">Label</span><p>...</p></aside>
+  Steps:           <ol class="gtdb-steps"><li class="gtdb-step"><div><h3 class="gtdb-step-title">Title</h3><p class="gtdb-step-body">...</p></div></li></ol>
+  Spec strip:      <div class="gtdb-specs"><div class="gtdb-spec"><div class="gtdb-spec-num">1.3</div><div class="gtdb-spec-label">ATA</div><p class="gtdb-spec-note">...</p></div></div> (three specs)
+  Comparison:      <div class="gtdb-cmp-wrap"><table class="gtdb-cmp"><thead><tr><th>Model</th><th>Best for</th><th>Key trade-off</th></tr></thead><tbody><tr><td class="gtdb-cmp-model">Exact model name</td><td data-gtdb-col="Best for">...</td><td data-gtdb-col="Key trade-off">...</td></tr></tbody></table></div>
+                   Every cell except the first in a row carries data-gtdb-col. A table is never the last thing in a section.
                    THE FIRST COLUMN IS THE MODEL, spelled exactly as PRODUCT DATA spells it. It is turned
                    into a link and a thumbnail after you write, and only an exact name resolves. Do not put
                    a category ("Multi-section Hi-Lo") in the first column and hide the model in a later one:
                    that row ships as dead text. Keep the editorial columns you need after it. Up to SIX rows,
                    one per product in PRODUCT DATA, never more than six.
-  Link:            <a class="ppwb-a" href="/blogs/wellness/slug">natural anchor text</a>
+  Link:            <a class="gtdb-a" href="/blogs/guides/slug">natural anchor text</a>
 
 No inline styles. No <img>. No emoji. No <strong> runs inside paragraphs except
 a single key phrase where it earns it. Paragraphs are 2 to 4 sentences.
@@ -250,7 +250,7 @@ publish it.
 
 BRANDS: name only the brands and models in the PRODUCT DATA and CATALOGUE
 RESEARCH. Never "brands like X, Y or Z" with names you have seen elsewhere;
-those are competitors PPW does not stock. Describe the tier instead.
+those are competitors GTD does not stock. Describe the tier instead.
 
 CLAIMS: no years of experience, no certifications, no "medically reviewed", no
 "clinically proven". Never mention shipping cost in any form. No
@@ -264,7 +264,7 @@ const CITATION_SPEC = `
 CITATIONS, this section only. You may link to a primary source when a claim
 rests on a specific study or body: a journal article, a government health
 body, a standards body. Inline, on the claim, as
-<a class="ppwb-a" href="https://...">journal or body, year</a>. Only URLs you
+<a class="gtdb-a" href="https://...">journal or body, year</a>. Only URLs you
 are confident exist on these hosts: pubmed.ncbi.nlm.nih.gov, nih.gov, who.int,
 cdc.gov, cochrane.org, bmj.com, nature.com, sciencedirect.com, springer.com,
 wiley.com, tandfonline.com, jamanetwork.com, nejm.org, thelancet.com,
@@ -375,7 +375,7 @@ export async function POST(request: NextRequest) {
       const d = digest(body.sections || {}, plan);
       if (!d) return NextResponse.json({ error: "no sections to summarise" }, { status: 400 });
       const raw = await callAI(
-        `You are a Senior Content Editor at Peak Primal Wellness.\n${V2_TAKEAWAYS_SPEC.replace("Exactly 5 items", "Exactly 6 items")}\n${WRITING_RULES}`,
+        `You are a Senior Content Editor at Green Thumb Depot.\n${V2_TAKEAWAYS_SPEC.replace("Exactly 5 items", "Exactly 6 items")}\n${WRITING_RULES}`,
         `Guide title: "${guide.title}". Subject: ${topic}.\n\nTHE GUIDE, SECTION BY SECTION, IS BELOW. Your six takeaways carry its conclusions in order, one per major section where possible. Every figure you state must appear in it.\n\n---- GUIDE SECTIONS ----\n${d}`,
         { maxTokens: 1400 },
       ).then(stripEmDashes);
@@ -390,7 +390,7 @@ export async function POST(request: NextRequest) {
       const d = digest(body.sections || {}, plan, 600, 10000);
       const consistency = `\n\nTHE GUIDE BODY IS BELOW. Every figure you state must match it. If the body gives a range, use that range.\n\n${productBrief}\n\n---- GUIDE BODY ----\n${d}`;
       const ask = () => callAI(
-        `You are a Senior Content Editor at Peak Primal Wellness.\n${V2_FAQ_SPEC}\n${WRITING_RULES}`,
+        `You are a Senior Content Editor at Green Thumb Depot.\n${V2_FAQ_SPEC}\n${WRITING_RULES}`,
         `Guide title: "${guide.title}". Subject: ${topic}.${consistency}`,
         { maxTokens: 2600 },
       ).then(stripEmDashes);
@@ -412,7 +412,7 @@ export async function POST(request: NextRequest) {
         if (check.passed) continue;
         try {
           const fixed = await callAI(
-            `You are rewriting one FAQ answer for Peak Primal Wellness. The answer below breaks a house rule. Rewrite it so it names NO brand outside the approved list and makes no health-efficacy claim in marketing language. Keep the length, facts and plain tone. Return ONLY the rewritten answer.`,
+            `You are rewriting one FAQ answer for Green Thumb Depot. The answer below breaks a house rule. Rewrite it so it names NO brand outside the approved list and makes no health-efficacy claim in marketing language. Keep the length, facts and plain tone. Return ONLY the rewritten answer.`,
             `PROBLEM: ${check.warnings.join(" | ")}\n\nAPPROVED BRANDS: ${knownVendors.join(", ")}\n\nQUESTION: ${f.q}\n\nANSWER TO FIX:\n${f.a}`,
             { maxTokens: 600 },
           );
@@ -430,7 +430,7 @@ export async function POST(request: NextRequest) {
     if (action === "meta") {
       const d = digest(body.sections || {}, plan, 300, 5000);
       const raw = await callAI(
-        `You write page metadata for Peak Primal Wellness, a wellness equipment retailer. Return ONLY JSON: {"metaDescription":"...","deck":"..."}. metaDescription is 140 to 160 characters, plain, names the subject and what the guide covers, no hype, no health-efficacy promise. deck is one sentence under 150 characters that sits under the title and says what the reader will be able to decide after reading. No double quotes inside the strings. No em dashes.`,
+        `You write page metadata for Green Thumb Depot, a wellness equipment retailer. Return ONLY JSON: {"metaDescription":"...","deck":"..."}. metaDescription is 140 to 160 characters, plain, names the subject and what the guide covers, no hype, no health-efficacy promise. deck is one sentence under 150 characters that sits under the title and says what the reader will be able to decide after reading. No double quotes inside the strings. No em dashes.`,
         `Guide title: "${guide.title}". Subject: ${topic}.\n\n${d}`,
         { maxTokens: 300 },
       ).then(stripEmDashes);
@@ -469,7 +469,7 @@ export async function POST(request: NextRequest) {
     const otherHeadings = plan.filter((p) => p.key !== section.key).map((p) => `  - ${p.heading}`).join("\n");
     const previous = digest(body.sections || {}, plan.filter((p) => p.key !== section.key), 350, 6000);
 
-    const system = `You are a Senior Content Editor at Peak Primal Wellness, writing the ultimate guide to ${topicPlural.toLowerCase()}. PPW is an authorized dealer that sells, ships and supports this equipment; that is the authority you write from.
+    const system = `You are a Senior Content Editor at Green Thumb Depot, writing the ultimate guide to ${topicPlural.toLowerCase()}. GTD is an authorized dealer that sells, ships and supports this equipment; that is the authority you write from.
 ${GUIDE_SECTION_SPEC}
 ${section.citations ? CITATION_SPEC : NO_CITATION_SPEC}
 
@@ -522,7 +522,7 @@ Return the section body only.`;
     // allowlisted host AND answer a live request.
     let verified: Set<string> | undefined;
     if (section.citations) {
-      const outbound = Array.from(html.matchAll(/href=["'](https?:\/\/[^"']+)["']/gi)).map((m) => m[1]).filter((u) => !/peakprimalwellness\.com/i.test(u));
+      const outbound = Array.from(html.matchAll(/href=["'](https?:\/\/[^"']+)["']/gi)).map((m) => m[1]).filter((u) => !/greenthumbdepot\.com/i.test(u));
       if (outbound.length) {
         verified = await verifyUrls(outbound);
         const dead = outbound.filter((u) => !verified!.has(u));

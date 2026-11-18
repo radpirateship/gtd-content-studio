@@ -103,7 +103,7 @@ export function scoreProduct(product: Product, searchTerms: string[]): number {
 }
 
 /**
- * PPW sells high-ticket equipment, so featured picks should be real equipment
+ * GTD sells high-ticket equipment, so featured picks should be real equipment
  * rather than accessories, without all four being the $30k flagships either.
  *
  * Three rules, the first two relaxing automatically when a collection cannot satisfy them:

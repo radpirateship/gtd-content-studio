@@ -85,13 +85,13 @@ async function regenerateFaq(
   article: { title: string; body_html: string; tags: string },
   categoryLabel: string
 ) {
-  const systemPrompt = `You are a Senior Content Editor at Peak Primal Wellness. Generate ONLY an FAQ section for an article. Output ONLY the HTML below â no explanation, no markdown, no wrapping tags.
+  const systemPrompt = `You are a Senior Content Editor at Green Thumb Depot. Generate ONLY an FAQ section for an article. Output ONLY the HTML below â no explanation, no markdown, no wrapping tags.
 
 FORMAT (use this EXACT structure):
-<section id="faq" class="ppw-section">
+<section id="faq" class="gtd-section">
 <h2>Frequently Asked Questions</h2>
-<div class="ppw-faq-list">
-<details class="ppw-faq-item"><summary class="ppw-faq-question">Question?</summary><div class="ppw-faq-answer"><p>Answer paragraph.</p></div></details>
+<div class="gtd-faq-list">
+<details class="gtd-faq-item"><summary class="gtd-faq-question">Question?</summary><div class="gtd-faq-answer"><p>Answer paragraph.</p></div></details>
 </div>
 </section>
 
@@ -122,7 +122,7 @@ async function regenerateMeta(
     .replace(/\s+/g, " ")
     .slice(0, 500);
 
-  const systemPrompt = `You write SEO meta descriptions for Peak Primal Wellness articles. Return ONLY the meta description text â no quotes, no HTML, no explanation. Keep it under 155 characters.`;
+  const systemPrompt = `You write SEO meta descriptions for Green Thumb Depot articles. Return ONLY the meta description text â no quotes, no HTML, no explanation. Keep it under 155 characters.`;
 
   const userPrompt = `Write a compelling meta description for:
 TITLE: ${article.title}
@@ -142,10 +142,10 @@ async function regenerateIntro(
   article: { title: string; body_html: string; tags: string },
   categoryLabel: string
 ) {
-  const systemPrompt = `You are a Senior Content Editor at Peak Primal Wellness. Rewrite ONLY the Key Takeaways section for an existing article. Output the exact HTML structure â no explanation, no markdown.
+  const systemPrompt = `You are a Senior Content Editor at Green Thumb Depot. Rewrite ONLY the Key Takeaways section for an existing article. Output the exact HTML structure â no explanation, no markdown.
 
 FORMAT:
-<section class="ppw-section ppw-muted">
+<section class="gtd-section gtd-muted">
 <h2>Key Takeaways</h2>
 <ul><li><strong>Label:</strong> description</li>...</ul>
 </section>
@@ -175,10 +175,10 @@ async function regenerateConclusion(
   article: { title: string; body_html: string; tags: string },
   categoryLabel: string
 ) {
-  const systemPrompt = `You are a Senior Content Editor at Peak Primal Wellness. Write a conclusion section for an existing article. Output ONLY the HTML â no explanation, no markdown.
+  const systemPrompt = `You are a Senior Content Editor at Green Thumb Depot. Write a conclusion section for an existing article. Output ONLY the HTML â no explanation, no markdown.
 
 FORMAT:
-<section id="final-thoughts" class="ppw-section">
+<section id="final-thoughts" class="gtd-section">
 <h2>Final Thoughts</h2>
 <p>...</p>
 <p>...</p>
@@ -186,7 +186,7 @@ FORMAT:
 
 RULES:
 - 2-3 paragraphs wrapping up the article's key points
-- Include a call-to-action encouraging the reader to explore Peak Primal Wellness products
+- Include a call-to-action encouraging the reader to explore Green Thumb Depot products
 - Professional, helpful tone`;
 
   const bodyText = (article.body_html || "")
@@ -317,10 +317,10 @@ async function regenerateProducts(
     // Build product card HTML matching the main generate route
     const displayProducts = products.slice(0, 4);
     const cards = displayProducts.map((p: { title: string; description?: string; price?: string; imageUrl?: string; url?: string; handle?: string; vendor?: string; tags?: string }, i: number) => buildProductCard(p, i, displayProducts)).join("\n");
-    const productsHtml = `<section id="featured-products" class="ppw-section">
-<h2 class="ppw-center">Top ${categoryLabel} Picks</h2>
-<p style="margin-bottom:3rem;color:#666;font-size:1.6rem;" class="ppw-center">Premium quality with pre-delivery inspection and expert support.</p>
-<div class="ppw-grid cols-2">
+    const productsHtml = `<section id="featured-products" class="gtd-section">
+<h2 class="gtd-center">Top ${categoryLabel} Picks</h2>
+<p style="margin-bottom:3rem;color:#666;font-size:1.6rem;" class="gtd-center">Premium quality with pre-delivery inspection and expert support.</p>
+<div class="gtd-grid cols-2">
 ${cards}
 </div>
 </section>`;

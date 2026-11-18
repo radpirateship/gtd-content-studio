@@ -91,7 +91,7 @@ function nextPageInfo(link: string | null): string | null {
 // ── PUBLISHED ARTICLE PATHS ─────────────────────────────────────────────────
 // Shopify is the only authority on what is actually live. The content_brain and
 // topical_authority tables both carry URLs that were planned rather than
-// published — /blogs/wellness/tips-for-beginners-using-cold-plunges sat in the
+// published — /blogs/guides/tips-for-beginners-using-cold-plunges sat in the
 // link inventory with status 'live' and 404s on the site. Anything offered to
 // the article generator as a link target gets checked against this set first.
 
@@ -100,7 +100,7 @@ const PUBLISHED_TTL_MS = 10 * 60 * 1000;
 
 /**
  * Every published article as a root-relative, lowercased path
- * ("/blogs/wellness/cold-plunge-and-meditation"). Drafts and unpublished
+ * ("/blogs/guides/cold-plunge-and-meditation"). Drafts and unpublished
  * articles are excluded. Cached for ten minutes; a warm lambda pays nothing.
  * Returns an EMPTY set on failure so callers can tell "nothing is published"
  * (never true in practice) apart from "the check did not run".
@@ -149,7 +149,7 @@ function normalize(a: RestArticle, blog: RestBlog): AdminArticleResult {
     blog_id: blog.id,
     blog_handle: blog.handle,
     blog_title: blog.title,
-    online_store_url: `https://peakprimalwellness.com/blogs/${blog.handle}/${a.handle}`,
+    online_store_url: `https://greenthumbdepot.com/blogs/${blog.handle}/${a.handle}`,
   };
 }
 

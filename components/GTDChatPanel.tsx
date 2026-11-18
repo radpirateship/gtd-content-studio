@@ -7,7 +7,7 @@ interface Message {
   content: string;
 }
 
-export interface PPWChatPanelProps {
+export interface GTDChatPanelProps {
   systemPrompt: string;
   welcomeMessage?: string;
   placeholder?: string;
@@ -16,14 +16,14 @@ export interface PPWChatPanelProps {
   height?: string | number;
 }
 
-export default function PPWChatPanel({
+export default function GTDChatPanel({
   systemPrompt,
   welcomeMessage,
   placeholder = "Ask anything… (Enter to send)",
   contextLabel,
-  appName = "PPW Assistant",
+  appName = "GTD Assistant",
   height = "100%",
-}: PPWChatPanelProps) {
+}: GTDChatPanelProps) {
   const [messages, setMessages] = useState<Message[]>(() =>
     welcomeMessage ? [{ role: "assistant", content: welcomeMessage }] : []
   );

@@ -678,7 +678,7 @@ export function ContentResourcesManager({
                       Collections List
                     </CardTitle>
                     <CardDescription>
-                      Upload your <strong>PPW_COLLECTION_DATABASE_MATCH.csv</strong> to define collections and populate all dropdowns. Format: <code>collection,url</code>
+                      Upload your <strong>GTD_COLLECTION_DATABASE_MATCH.csv</strong> to define collections and populate all dropdowns. Format: <code>collection,url</code>
                     </CardDescription>
                   </div>
                   {collections.length > 0 && (
@@ -765,7 +765,7 @@ export function ContentResourcesManager({
                               <div className="font-medium truncate">{item.primaryKeyword || item.category}</div>
                               <div className="text-xs text-muted-foreground flex items-center gap-2 mt-0.5">
                                 {item.url && (
-                                  <span className="truncate max-w-[200px]">{item.url.replace('https://peakprimalwellness.com', '')}</span>
+                                  <span className="truncate max-w-[200px]">{item.url.replace('https://greenthumbdepot.com', '')}</span>
                                 )}
                                 {item.searchVolume && <span>{'· Vol: '}{item.searchVolume}</span>}
                                 {item.priority && <Badge variant="outline" className="text-[10px] px-1">{item.priority}</Badge>}

@@ -1,4 +1,4 @@
-# PPW Collection Page Optimization Rules
+# GTD Collection Page Optimization Rules
 
 Rules for the collection page generation component of the blog content app.
 Each rule is marked as **Universal** (applies to every collection) or **Conditional** (applies only in specified circumstances).
@@ -43,7 +43,7 @@ Format: `[Primary Keyword] | [Secondary Signal]`
 
 - Hard limit: 60 characters including spaces
 - Primary keyword comes first, always
-- Secondary signal is either the dominant subcategory ("Home & Portable HBOT") or "Peak Primal Wellness" — whichever adds more informational value for that category
+- Secondary signal is either the dominant subcategory ("Home & Portable HBOT") or "Green Thumb Depot" — whichever adds more informational value for that category
 - Never mirror the collection title verbatim without the pipe separator and secondary signal
 - Never let Shopify auto-generate this field
 
@@ -159,7 +159,7 @@ The six bullets should cover these six slots in order. The specific content vari
 - Same four products, same order, same URLs
 - URLs must be verified against live product handles at generation time
 - Never use a handle ending in `-copy`, `-1`, `-2`, or any duplication suffix — if one is detected, flag it and require a clean handle before publishing
-- ItemList name field: "Featured [Collection Name] at Peak Primal Wellness"
+- ItemList name field: "Featured [Collection Name] at Green Thumb Depot"
 - If featured products change, schema updates at the same time — these must never be out of sync
 
 ---
@@ -170,7 +170,7 @@ The six bullets should cover these six slots in order. The specific content vari
 
 - Must be present on every collection page
 - Two items only:
-  - Position 1: "Home" at `https://peakprimalwellness.com`
+  - Position 1: "Home" at `https://greenthumbdepot.com`
   - Position 2: The collection name at the full collection URL
 - The collection name in the breadcrumb must match the H1 exactly
 

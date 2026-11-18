@@ -1,7 +1,7 @@
 /**
  * guide-assembler.ts
  * ─────────────────────────────────────────────────────────────────────────────
- * Single source of truth for assembling a complete, publish-ready PPW Ultimate
+ * Single source of truth for assembling a complete, publish-ready GTD Ultimate
  * Guide HTML page from its generated section fragments.
  *
  * Called by:
@@ -67,7 +67,7 @@ export function assembleGuideHtml(
 ): string {
   if (Number(guide.template_version) === 2) {
     const links = clusterLinks.length
-      ? clusterLinks.map(l => ({ url: l.url || (l.slug ? `/blogs/wellness/${l.slug}` : ''), title: l.title || l.anchor || '' }))
+      ? clusterLinks.map(l => ({ url: l.url || (l.slug ? `/blogs/guides/${l.slug}` : ''), title: l.title || l.anchor || '' }))
       : (guide.cluster_links || []).map(l => ({ url: l.url, title: l.anchor }))
     return assembleGuideV2(
       {
@@ -121,14 +121,14 @@ function getSectionLabel(key: string, topicShort: string, topicShortPlural: stri
 
 // ─── CSS ────────────────────────────────────────────────────────────────────
 
-const PPW_CSS = `<style>
+const GTD_CSS = `<style>
 /* ============================================================
-   PPW Ultimate Guide CSS — embedded for Shopify Pages
+   GTD Ultimate Guide CSS — embedded for Shopify Pages
    ============================================================ */
 :root {
-  --ppw-navy: #0B1A5D;
-  --ppw-navy-light: #1a2f7a;
-  --ppw-navy-dark: #060f35;
+  --gtd-navy: #0B1A5D;
+  --gtd-navy-light: #1a2f7a;
+  --gtd-navy-dark: #060f35;
   --text-primary: #1a1a1a;
   --text-secondary: #4a5568;
   --text-light: #718096;
@@ -150,14 +150,14 @@ body {
 .container { max-width: 1200px; margin: 0 auto; padding: 0 2em; }
 
 /* ── Typography ── */
-h1,h2,h3,h4,h5,h6 { font-weight: 700; line-height: 1.2; margin-bottom: 1em; color: var(--ppw-navy); }
+h1,h2,h3,h4,h5,h6 { font-weight: 700; line-height: 1.2; margin-bottom: 1em; color: var(--gtd-navy); }
 h1 { font-size: clamp(1.8em, 5vw, 3em); }
 h2 { font-size: clamp(1.4em, 4vw, 2.1em); text-transform: capitalize; }
 h3 { font-size: clamp(1.1em, 3vw, 1.4em); }
 h4 { font-size: 1.05em; }
 p  { margin: 0.7em 0; color: var(--text-secondary); line-height: 1.7; }
 li { margin: 0.5em 0; line-height: 1.7; color: var(--text-secondary); }
-a  { color: var(--ppw-navy); text-decoration: none; }
+a  { color: var(--gtd-navy); text-decoration: none; }
 a:hover { text-decoration: underline; }
 ul, ol { margin-left: 1.5em; margin-bottom: 1em; }
 strong { color: var(--text-primary); }
@@ -171,7 +171,7 @@ em { color: var(--text-secondary); }
 
 /* ── Hero ── */
 .hero { padding: 3em 0; background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-white) 100%); text-align: center; }
-.hero h1 { color: var(--ppw-navy) !important; }
+.hero h1 { color: var(--gtd-navy) !important; }
 .hero-subtitle { font-size: 1.1em; color: var(--text-secondary); max-width: 820px; margin: 0 auto 2em; line-height: 1.6; }
 .hero-meta { display: flex; justify-content: center; gap: 2em; flex-wrap: wrap; font-size: 0.9em; color: var(--text-light); }
 .meta-item { display: flex; align-items: center; gap: 0.4em; }
@@ -186,58 +186,58 @@ em { color: var(--text-secondary); }
 .toc h2 { margin-bottom: 1.5em; }
 .toc nav ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.75em; margin: 0; }
 .toc nav li { margin: 0; }
-.toc nav a { display: block; padding: 0.75em 1em; background: var(--bg-light); border-radius: 8px; border-left: 3px solid var(--ppw-navy); transition: all 0.2s; color: var(--ppw-navy); font-size: 0.95em; }
-.toc nav a:hover { background: var(--ppw-navy); color: white; text-decoration: none; transform: translateX(4px); }
+.toc nav a { display: block; padding: 0.75em 1em; background: var(--bg-light); border-radius: 8px; border-left: 3px solid var(--gtd-navy); transition: all 0.2s; color: var(--gtd-navy); font-size: 0.95em; }
+.toc nav a:hover { background: var(--gtd-navy); color: white; text-decoration: none; transform: translateX(4px); }
 
 /* ── Content Sections ── */
 .content-section { padding: 4em 0; border-bottom: 1px solid var(--border-color); }
 .content-section:last-of-type { border-bottom: none; }
 .content-section h2 { margin-bottom: 1em; }
 .content-section h3,
-.content-section h4 { color: var(--ppw-navy) !important; }
+.content-section h4 { color: var(--gtd-navy) !important; }
 .content-section img { width: 100%; border-radius: 8px; margin: 1.5em 0; height: auto; display: block; }
 
 /* ── Key Takeaways ── */
-.ppw-takeaways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5em; margin: 1.5em 0; }
-.ppw-takeaway-card { background: var(--bg-light); border-left: 4px solid var(--ppw-navy); border-radius: 8px; padding: 1.5em; }
-.ppw-takeaway-icon { font-size: 1.5em; display: block; margin-bottom: 0.5em; }
-.ppw-takeaway-card p { margin: 0; }
+.gtd-takeaways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5em; margin: 1.5em 0; }
+.gtd-takeaway-card { background: var(--bg-light); border-left: 4px solid var(--gtd-navy); border-radius: 8px; padding: 1.5em; }
+.gtd-takeaway-icon { font-size: 1.5em; display: block; margin-bottom: 0.5em; }
+.gtd-takeaway-card p { margin: 0; }
 
 /* ── Two-column Layout ── */
-.ppw-cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2em; align-items: start; margin: 1.5em 0; }
+.gtd-cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2em; align-items: start; margin: 1.5em 0; }
 
 /* ── Stat Box ── */
-.ppw-stat-box { background: var(--ppw-navy); color: white; border-radius: 12px; padding: 2em; text-align: center; }
-.ppw-stat-value { display: block; font-size: 3em; font-weight: 700; line-height: 1; margin-bottom: 0.25em; color: white !important; }
-.ppw-stat-label { display: block; font-size: 0.9em; opacity: 0.85; color: white !important; }
+.gtd-stat-box { background: var(--gtd-navy); color: white; border-radius: 12px; padding: 2em; text-align: center; }
+.gtd-stat-value { display: block; font-size: 3em; font-weight: 700; line-height: 1; margin-bottom: 0.25em; color: white !important; }
+.gtd-stat-label { display: block; font-size: 0.9em; opacity: 0.85; color: white !important; }
 
 /* ── Comparison Table ── */
-.ppw-table-wrap { overflow-x: auto; margin: 2em 0; }
-.ppw-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-.ppw-table thead { background: var(--ppw-navy); color: white; }
-.ppw-table th, .ppw-table td { padding: 1em; text-align: left; border-bottom: 1px solid var(--border-color); }
-.ppw-table th { color: white; border-bottom: none; }
-.ppw-table tbody tr:hover { background: var(--bg-light); }
+.gtd-table-wrap { overflow-x: auto; margin: 2em 0; }
+.gtd-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.gtd-table thead { background: var(--gtd-navy); color: white; }
+.gtd-table th, .gtd-table td { padding: 1em; text-align: left; border-bottom: 1px solid var(--border-color); }
+.gtd-table th { color: white; border-bottom: none; }
+.gtd-table tbody tr:hover { background: var(--bg-light); }
 
 /* ── Benefits Grid ── */
-.ppw-benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5em; margin: 2em 0; }
-.ppw-benefit-card { background: var(--bg-light); padding: 2em; border-radius: 12px; border-left: 4px solid var(--ppw-navy); }
-.ppw-benefit-icon { font-size: 2em; display: block; margin-bottom: 0.5em; }
-.ppw-benefit-card h4 { color: var(--ppw-navy) !important; margin-bottom: 0.5em; }
-.ppw-benefit-card p { margin: 0; }
+.gtd-benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5em; margin: 2em 0; }
+.gtd-benefit-card { background: var(--bg-light); padding: 2em; border-radius: 12px; border-left: 4px solid var(--gtd-navy); }
+.gtd-benefit-icon { font-size: 2em; display: block; margin-bottom: 0.5em; }
+.gtd-benefit-card h4 { color: var(--gtd-navy) !important; margin-bottom: 0.5em; }
+.gtd-benefit-card p { margin: 0; }
 
 /* ── Callout Boxes ── */
-.ppw-callout-warn { background: #fffbeb; border-left: 4px solid var(--warning-orange); padding: 1.5em; border-radius: 8px; margin: 2em 0; }
-.ppw-callout-warn p { margin: 0; color: var(--text-primary); }
+.gtd-callout-warn { background: #fffbeb; border-left: 4px solid var(--warning-orange); padding: 1.5em; border-radius: 8px; margin: 2em 0; }
+.gtd-callout-warn p { margin: 0; color: var(--text-primary); }
 .callout-info { background: #eff6ff; border-left: 4px solid var(--info-blue); padding: 1.5em; border-radius: 8px; margin: 2em 0; }
-.callout-info h3 { color: var(--ppw-navy) !important; margin-bottom: 0.75em; font-size: 1.1em; }
+.callout-info h3 { color: var(--gtd-navy) !important; margin-bottom: 0.75em; font-size: 1.1em; }
 .callout-info ul { margin-bottom: 0; }
 
-/* ── Product Cards (PPW format) ── */
-.ppw-products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2em; margin: 2em 0; }
-.ppw-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
-.ppw-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.12); }
-.ppw-card-featured { border: 2px solid var(--ppw-navy); }
+/* ── Product Cards (GTD format) ── */
+.gtd-products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2em; margin: 2em 0; }
+.gtd-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+.gtd-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.12); }
+.gtd-card-featured { border: 2px solid var(--gtd-navy); }
 .card-badge-container { display: flex; gap: 0.5em; flex-wrap: wrap; padding: 1em 1em 0; }
 .card-badge { padding: 0.25em 0.75em; font-size: 0.7em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 4px; }
 .badge-value   { background: #dcfce7; color: #166534; }
@@ -246,8 +246,8 @@ em { color: var(--text-secondary); }
 .card-image { width: 100%; position: relative; padding-top: 56.25%; overflow: hidden; background: var(--bg-light); display: block; }
 .card-image img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; border-radius: 0; }
 .card-content { padding: 1.5em; flex: 1; display: flex; flex-direction: column; }
-.card-title { color: var(--ppw-navy) !important; margin-bottom: 0.5em !important; font-size: 1.15em !important; font-weight: 700 !important; line-height: 1.3 !important; }
-.card-price { font-size: 1.6em !important; font-weight: 700 !important; color: var(--ppw-navy) !important; margin-bottom: 0.75em !important; }
+.card-title { color: var(--gtd-navy) !important; margin-bottom: 0.5em !important; font-size: 1.15em !important; font-weight: 700 !important; line-height: 1.3 !important; }
+.card-price { font-size: 1.6em !important; font-weight: 700 !important; color: var(--gtd-navy) !important; margin-bottom: 0.75em !important; }
 .card-description { color: var(--text-secondary) !important; margin-bottom: 1.25em !important; font-size: 0.95em !important; }
 .card-specs { display: grid; gap: 0.6em; margin-bottom: 1.25em; padding: 1em; background: var(--bg-light); border-radius: 8px; }
 .spec-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5em; font-size: 0.875em; }
@@ -255,55 +255,55 @@ em { color: var(--text-secondary); }
 .spec-value { color: var(--text-primary); font-weight: 500; text-align: right; }
 .card-features { list-style: none; margin: 0 0 1.25em 0; flex: 1; }
 .card-features li { padding: 0.4em 0 0.4em 1.5em; position: relative; color: var(--text-secondary); font-size: 0.9em; margin: 0; }
-.card-features li::before { content: '✓'; position: absolute; left: 0; color: var(--ppw-navy); font-weight: 700; }
+.card-features li::before { content: '✓'; position: absolute; left: 0; color: var(--gtd-navy); font-weight: 700; }
 
 /* ── Buttons ── */
-.ppw-button { display: inline-block !important; padding: 0.875em 2em !important; background: var(--ppw-navy) !important; color: #ffffff !important; font-weight: 600 !important; text-align: center !important; border-radius: 8px !important; border: none !important; cursor: pointer !important; transition: background 0.2s, transform 0.2s; text-decoration: none !important; font-size: 1em !important; }
-.ppw-button:hover { background: var(--ppw-navy-light) !important; color: #ffffff !important; transform: translateY(-2px); text-decoration: none !important; }
-.ppw-button-large { padding: 1.25em 3em !important; font-size: 1.125em !important; }
+.gtd-button { display: inline-block !important; padding: 0.875em 2em !important; background: var(--gtd-navy) !important; color: #ffffff !important; font-weight: 600 !important; text-align: center !important; border-radius: 8px !important; border: none !important; cursor: pointer !important; transition: background 0.2s, transform 0.2s; text-decoration: none !important; font-size: 1em !important; }
+.gtd-button:hover { background: var(--gtd-navy-light) !important; color: #ffffff !important; transform: translateY(-2px); text-decoration: none !important; }
+.gtd-button-large { padding: 1.25em 3em !important; font-size: 1.125em !important; }
 
 /* ── FAQ Accordion ── */
-.ppw-faq-item { margin-bottom: 1em; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-white); }
-.ppw-faq-q { width: 100%; padding: 1.25em 1.5em; background: var(--bg-white); border: none; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1em; font-weight: 600; color: var(--ppw-navy); transition: background-color 0.2s; gap: 1em; }
-.ppw-faq-q:hover, .ppw-faq-q[aria-expanded="true"] { background: var(--bg-light); }
-.ppw-faq-icon { flex-shrink: 0; font-size: 1.4em; font-weight: 300; line-height: 1; transition: transform 0.3s ease; }
-.ppw-faq-q[aria-expanded="true"] .ppw-faq-icon { transform: rotate(45deg); }
-.ppw-faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
-.ppw-faq-a p { padding: 0.25em 1.5em 1.5em; margin: 0; color: var(--text-secondary); line-height: 1.8; }
+.gtd-faq-item { margin-bottom: 1em; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-white); }
+.gtd-faq-q { width: 100%; padding: 1.25em 1.5em; background: var(--bg-white); border: none; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1em; font-weight: 600; color: var(--gtd-navy); transition: background-color 0.2s; gap: 1em; }
+.gtd-faq-q:hover, .gtd-faq-q[aria-expanded="true"] { background: var(--bg-light); }
+.gtd-faq-icon { flex-shrink: 0; font-size: 1.4em; font-weight: 300; line-height: 1; transition: transform 0.3s ease; }
+.gtd-faq-q[aria-expanded="true"] .gtd-faq-icon { transform: rotate(45deg); }
+.gtd-faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.gtd-faq-a p { padding: 0.25em 1.5em 1.5em; margin: 0; color: var(--text-secondary); line-height: 1.8; }
 
 /* ── Internal Links ── */
 .internal-links-section { padding: 4em 0; background: var(--bg-light); }
 .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5em; margin-top: 2em; }
-.link-card { background: white; padding: 1.5em; border-radius: 8px; border-left: 4px solid var(--ppw-navy); transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; display: block; }
+.link-card { background: white; padding: 1.5em; border-radius: 8px; border-left: 4px solid var(--gtd-navy); transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; display: block; }
 .link-card:hover { transform: translateX(4px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-decoration: none; }
-.link-card h3 { color: var(--ppw-navy) !important; margin-bottom: 0.4em; font-size: 0.95em !important; font-weight: 600 !important; }
+.link-card h3 { color: var(--gtd-navy) !important; margin-bottom: 0.4em; font-size: 0.95em !important; font-weight: 600 !important; }
 .link-card p  { color: var(--text-secondary) !important; font-size: 0.875em !important; margin: 0 !important; }
 
 /* ── Related Guides Hub ── */
 .related-guides-section { padding: 4em 0; background: var(--bg-white); border-top: 1px solid var(--border-color); }
 .related-guides-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5em; margin-top: 2em; }
-.related-guide-card { background: var(--bg-light); border-radius: 12px; padding: 1.5em; text-decoration: none; display: block; transition: transform 0.2s, box-shadow 0.2s; border-top: 3px solid var(--ppw-navy); }
+.related-guide-card { background: var(--bg-light); border-radius: 12px; padding: 1.5em; text-decoration: none; display: block; transition: transform 0.2s, box-shadow 0.2s; border-top: 3px solid var(--gtd-navy); }
 .related-guide-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-decoration: none; }
-.related-guide-card h3 { color: var(--ppw-navy) !important; margin-bottom: 0.4em; font-size: 1em !important; }
+.related-guide-card h3 { color: var(--gtd-navy) !important; margin-bottom: 0.4em; font-size: 1em !important; }
 .related-guide-card p  { color: var(--text-secondary) !important; font-size: 0.875em !important; margin: 0 !important; }
 
 /* ── Final CTA ── */
-.final-cta { padding: 5em 0; background: linear-gradient(135deg, var(--ppw-navy-dark) 0%, var(--ppw-navy) 100%); color: white; text-align: center; }
+.final-cta { padding: 5em 0; background: linear-gradient(135deg, var(--gtd-navy-dark) 0%, var(--gtd-navy) 100%); color: white; text-align: center; }
 .final-cta h2, .final-cta p, .cta-box h2, .cta-box p { color: #ffffff !important; }
 .cta-box { max-width: 640px; margin: 0 auto; }
 .cta-box p { font-size: 1.1em; margin-bottom: 2em; }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .ppw-cols-2 { grid-template-columns: 1fr; }
-  .ppw-products-grid { grid-template-columns: 1fr; }
+  .gtd-cols-2 { grid-template-columns: 1fr; }
+  .gtd-products-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
   .container { padding: 0 1.25em; }
   .hero-meta { gap: 1em; }
   .toc nav ul { grid-template-columns: 1fr; }
-  .ppw-takeaways-grid { grid-template-columns: 1fr; }
-  .ppw-benefits-grid { grid-template-columns: 1fr; }
+  .gtd-takeaways-grid { grid-template-columns: 1fr; }
+  .gtd-benefits-grid { grid-template-columns: 1fr; }
   .links-grid { grid-template-columns: 1fr; }
   .related-guides-grid { grid-template-columns: 1fr 1fr; }
 }
@@ -318,8 +318,8 @@ function buildSchema(
   const faqHtml = sectionContent['faq'] || ''
   const faqPairs: Array<{ q: string; a: string }> = []
 
-  // Extract FAQ pairs from the ppw-faq-item blocks
-  const faqRegex = /<button[^>]*class="ppw-faq-q"[^>]*>([\s\S]*?)<\/button>[\s\S]*?<div[^>]*class="ppw-faq-a"[^>]*>([\s\S]*?)<\/div>/gi
+  // Extract FAQ pairs from the gtd-faq-item blocks
+  const faqRegex = /<button[^>]*class="gtd-faq-q"[^>]*>([\s\S]*?)<\/button>[\s\S]*?<div[^>]*class="gtd-faq-a"[^>]*>([\s\S]*?)<\/div>/gi
   let match
   while ((match = faqRegex.exec(faqHtml)) !== null && faqPairs.length < 5) {
     const q = match[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
@@ -328,8 +328,8 @@ function buildSchema(
   }
 
   const products = guide.selected_products || []
-  const pageUrl = `https://peakprimalwellness.com/pages/${guide.slug}`
-  const heroImage = guide.hero_image_cdn_url || guide.hero_image_url || `https://peakprimalwellness.com/pages/${guide.slug}-og.jpg`
+  const pageUrl = `https://greenthumbdepot.com/pages/${guide.slug}`
+  const heroImage = guide.hero_image_cdn_url || guide.hero_image_url || `https://greenthumbdepot.com/pages/${guide.slug}-og.jpg`
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -342,12 +342,12 @@ function buildSchema(
     "author": {
       "@type": "Person",
       "name": "Ryan O'Connor",
-      "sameAs": ["https://www.linkedin.com/in/ryan-oconnor-peakprimalwellness/"]
+      "sameAs": ["https://www.linkedin.com/in/ryan-oconnor-greenthumbdepot/"]
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Peak Primal Wellness",
-      "url": "https://peakprimalwellness.com"
+      "name": "Green Thumb Depot",
+      "url": "https://greenthumbdepot.com"
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
@@ -359,8 +359,8 @@ function buildSchema(
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://peakprimalwellness.com" },
-      { "@type": "ListItem", "position": 2, "name": guide.breadcrumb_l2_name || "Wellness", "item": `https://peakprimalwellness.com/collections/${guide.breadcrumb_l2_slug || ''}` },
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://greenthumbdepot.com" },
+      { "@type": "ListItem", "position": 2, "name": guide.breadcrumb_l2_name || "Wellness", "item": `https://greenthumbdepot.com/collections/${guide.breadcrumb_l2_slug || ''}` },
       { "@type": "ListItem", "position": 3, "name": guide.title, "item": pageUrl }
     ]
   }
@@ -384,7 +384,7 @@ function buildSchema(
           "price": String(p.price),
           "priceCurrency": "USD",
           "availability": "https://schema.org/InStock",
-          "url": `https://peakprimalwellness.com/products/${p.handle}`
+          "url": `https://greenthumbdepot.com/products/${p.handle}`
         }
       }))
     }
@@ -416,11 +416,11 @@ function buildProductCards(products: AssemblerProduct[]): string {
     const isUpgrade = p.selected_role === 'best-upgrade'
     const badgeLabel = isUpgrade ? 'Best Upgrade' : 'Best Value'
     const badgeClass = isUpgrade ? 'badge-upgrade' : 'badge-value'
-    const isFeatured = isUpgrade ? ' ppw-card-featured' : ''
+    const isFeatured = isUpgrade ? ' gtd-card-featured' : ''
     const price = typeof p.price === 'number' ? p.price.toLocaleString('en-US', { minimumFractionDigits: 0 }) : p.price
     const subcatLabel = p.selected_subcategory ? `<div class="spec-item"><span class="spec-label">Category:</span><span class="spec-value">${p.selected_subcategory}</span></div>` : ''
 
-    return `<div class="ppw-card${isFeatured}">
+    return `<div class="gtd-card${isFeatured}">
   <div class="card-badge-container">
     <span class="card-badge ${badgeClass}">${badgeLabel}</span>
   </div>
@@ -437,12 +437,12 @@ function buildProductCards(products: AssemblerProduct[]): string {
       </div>
       ${subcatLabel}
     </div>
-    <a class="ppw-button" href="/products/${p.handle}" style="margin-top:auto;">View Product</a>
+    <a class="gtd-button" href="/products/${p.handle}" style="margin-top:auto;">View Product</a>
   </div>
 </div>`
   }).join('\n')
 
-  return `<div class="ppw-products-grid">
+  return `<div class="gtd-products-grid">
 ${cards}
 </div>`
 }
@@ -466,7 +466,7 @@ function buildInternalLinksGrid(
       // Leave relative paths alone
     } else {
       // Raw slug, append the blog path
-      href = `/blogs/wellness/${href}`;
+      href = `/blogs/guides/${href}`;
     }
 
     const title = l.title || l.anchor || 'Read Guide';
@@ -515,10 +515,10 @@ function buildRelatedGuidesSection(
 const FAQ_JS = `<script>
 (function() {
   function toggleFaq(btn) {
-    if (!btn.classList.contains('ppw-faq-q')) return;
+    if (!btn.classList.contains('gtd-faq-q')) return;
     var isOpen = btn.getAttribute('aria-expanded') === 'true';
     var answer = btn.nextElementSibling;
-    var icon = btn.querySelector('.ppw-faq-icon');
+    var icon = btn.querySelector('.gtd-faq-icon');
     btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
     if (icon) icon.textContent = isOpen ? '+' : '−';
     if (answer) {
@@ -528,7 +528,7 @@ const FAQ_JS = `<script>
 
   function initFaq() {
     // Initialize max-height on all answer elements
-    document.querySelectorAll('.ppw-faq-a').forEach(function(el) {
+    document.querySelectorAll('.gtd-faq-a').forEach(function(el) {
       el.style.maxHeight = '0';
       el.style.overflow = 'hidden';
       el.style.transition = 'max-height 0.35s ease';
@@ -536,7 +536,7 @@ const FAQ_JS = `<script>
 
     // Use event delegation on document to handle dynamic content
     document.addEventListener('click', function(e) {
-      var btn = e.target.closest('.ppw-faq-q');
+      var btn = e.target.closest('.gtd-faq-q');
       if (btn) {
         toggleFaq(btn);
       }
@@ -586,7 +586,7 @@ function buildToc(
 // ─── Main Assembler ───────────────────────────────────────────────────────────
 
 /**
- * Assembles the complete, publish-ready HTML for a PPW Ultimate Guide.
+ * Assembles the complete, publish-ready HTML for a GTD Ultimate Guide.
  *
  * @param guide          - Guide metadata (title, slug, topic fields, etc.)
  * @param sectionContent - Map of section key → generated HTML fragment
@@ -668,7 +668,7 @@ export function assembleCompleteGuideHtml(
       // Strict HTML wrapper for Key Takeaways
       if (key === 'key-takeaways') {
         const liOnly = body.replace(/<\/?ul[^>]*>/gi, '').replace(/<\/?section[^>]*>/gi, '').replace(/<\/?div[^>]*>/gi, '').trim()
-        return `<section id="overview" class="ppw-section ppw-muted" style="background:var(--bg-light);padding:3em 0;">
+        return `<section id="overview" class="gtd-section gtd-muted" style="background:var(--bg-light);padding:3em 0;">
   <div class="container">
     <h2>${label}</h2>
     <ul style="font-size:1.05em;line-height:1.8;padding-left:1.2em;">
@@ -714,7 +714,7 @@ export function assembleCompleteGuideHtml(
   const relatedGuidesHtml = buildRelatedGuidesSection(relatedGuides)
 
   // ── Final assembly ───────────────────────────────────────────────────────────
-  const rawHtml = `${PPW_CSS}
+  const rawHtml = `${GTD_CSS}
 
 ${schemaHtml}
 
@@ -744,7 +744,7 @@ ${schemaHtml}
   <div class="container">
     <div class="bio-content">
       <div class="bio-text">
-        <p><strong>Ryan O'Connor</strong> is a wellness researcher and recovery specialist with 12+ years studying ${topicFull.toLowerCase()} and related modalities. He has evaluated dozens of models and consulted on wellness facility builds across North America. Ryan holds certifications in integrative medicine and publishes evidence-based recovery research for Peak Primal Wellness.</p>
+        <p><strong>Ryan O'Connor</strong> is a wellness researcher and recovery specialist with 12+ years studying ${topicFull.toLowerCase()} and related modalities. He has evaluated dozens of models and consulted on wellness facility builds across North America. Ryan holds certifications in integrative medicine and publishes evidence-based recovery research for Green Thumb Depot.</p>
       </div>
     </div>
   </div>
@@ -765,7 +765,7 @@ ${relatedGuidesHtml}
     <div class="cta-box">
       <h2>Ready to Experience ${topicFull}?</h2>
       <p>Explore our complete selection of ${topicShortPlural.toLowerCase()} and find the right model for your home or facility. Every product is backed by our expert guidance and ships direct.</p>
-      <a class="ppw-button ppw-button-large" href="/collections/${collectionSlug}">Shop ${topicShortPlural}</a>
+      <a class="gtd-button gtd-button-large" href="/collections/${collectionSlug}">Shop ${topicShortPlural}</a>
     </div>
   </div>
 </section>

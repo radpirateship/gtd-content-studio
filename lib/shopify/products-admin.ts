@@ -87,7 +87,7 @@ function toProduct(p: AdminProduct): Product {
           handle: p.handle || "",
           status: p.status || "active",
           inventoryQty: v?.inventory_quantity != null ? String(v.inventory_quantity) : "",
-          url: `https://peakprimalwellness.com/products/${p.handle}`,
+          url: `https://greenthumbdepot.com/products/${p.handle}`,
     };
 }
 
@@ -161,7 +161,7 @@ export async function fetchAdminProducts({
 // with 278+ smart collections the last ~30 (alphabetically late handles like
 // water-ionizers) were silently missing from every sync.
 // ── LIVE COLLECTION HANDLES ─────────────────────────────────────────────────
-// ppw_collections is keyed by its own slug, which is not guaranteed to equal the
+// gtd_collections is keyed by its own slug, which is not guaranteed to equal the
 // Shopify handle — that mismatch is exactly what produced /collections/cold-plunge
 // (singular, 404) against the real /collections/cold-plunges. Any handle offered
 // to the article generator as a link target is checked against this set first.
@@ -245,7 +245,7 @@ function toDetailed(p: AdminProduct & { updated_at?: string }): AdminProductDeta
           compareAtPrice: v?.compare_at_price || null,
           sku: v?.sku || "",
           images,
-          url: `https://peakprimalwellness.com/products/${p.handle}`,
+          url: `https://greenthumbdepot.com/products/${p.handle}`,
           updatedAt: p.updated_at || null,
           inStock: (p.variants || []).some((x) => !x.inventory_management || x.inventory_policy === "continue" || (x.inventory_quantity ?? 0) > 0) || !(p.variants || []).length,
     };

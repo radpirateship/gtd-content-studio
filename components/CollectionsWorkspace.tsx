@@ -107,9 +107,9 @@ export function CollectionsWorkspace() {
                   : 'border-transparent font-normal hover:bg-[var(--surface)]'
               )}
               style={{
-                color: isActive ? 'var(--ppw-accent)' : 'var(--text2)',
-                background: isActive ? 'var(--ppw-accent-light)' : undefined,
-                borderLeftColor: isActive ? 'var(--ppw-accent)' : 'transparent',
+                color: isActive ? 'var(--gtd-accent)' : 'var(--text2)',
+                background: isActive ? 'var(--gtd-accent-light)' : undefined,
+                borderLeftColor: isActive ? 'var(--gtd-accent)' : 'transparent',
               }}
             >
               <span className={cn('w-[18px] text-center flex-shrink-0', isActive ? 'opacity-100' : 'opacity-75')}>

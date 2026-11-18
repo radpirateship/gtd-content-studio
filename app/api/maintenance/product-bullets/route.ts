@@ -375,7 +375,7 @@ async function scanCatalog(sql: SQL, cursor: string | null, startedAt: number, f
 
 // ── Drafting ────────────────────────────────────────────────────────────────
 
-const SYSTEM_PROMPT = `You write product feature bullets for Peak Primal Wellness product cards in blog articles.
+const SYSTEM_PROMPT = `You write product feature bullets for Green Thumb Depot product cards in blog articles.
 
 Return exactly 2 bullets as a JSON array of strings and nothing else. No prose, no markdown fence.
 
@@ -389,7 +389,7 @@ STYLE
 
 HARD RULES
 - Use ONLY facts present in the product data given to you. Never infer, estimate, or round a number that is not stated.
-- Never mention shipping, delivery, white-glove service, assembly, installation, warranty, support, financing, or price. Those are not product features and several are claims Peak Primal Wellness cannot make.
+- Never mention shipping, delivery, white-glove service, assembly, installation, warranty, support, financing, or price. Those are not product features and several are claims Green Thumb Depot cannot make.
 - Never restate the product category as a feature. A card for a sauna does not need a bullet that says "Infrared Sauna".
 - Never use an em dash. Use a comma or a hyphen.
 - If the product data supports fewer than 2 real specs, return only the one you can support, or an empty array. Returning 1 accurate bullet is correct; inventing a second is not. A product with a thin description is flagged for a human rather than padded.`;

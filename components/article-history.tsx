@@ -89,8 +89,8 @@ export function ArticleHistory({ articles, onSelect, onDelete, onStatusChange }:
             onClick={() => setFilterStatus(s)}
             className="rounded-md px-2.5 py-1 text-[12px] font-medium transition-all"
             style={{
-              background: filterStatus === s ? 'var(--ppw-accent-light)' : 'var(--surface)',
-              color: filterStatus === s ? 'var(--ppw-accent)' : 'var(--text3)',
+              background: filterStatus === s ? 'var(--gtd-accent-light)' : 'var(--surface)',
+              color: filterStatus === s ? 'var(--gtd-accent)' : 'var(--text3)',
               fontWeight: filterStatus === s ? 600 : 400,
             }}
           >
@@ -127,7 +127,7 @@ export function ArticleHistory({ articles, onSelect, onDelete, onStatusChange }:
 }
 
 function StatCard({ label, value, color }: { label: string; value: number; color?: 'green' | 'amber' | 'blue' }) {
-  const numColor = color === 'green' ? 'var(--ppw-accent)' : color === 'amber' ? '#d4930a' : color === 'blue' ? '#4a8fe7' : 'var(--text1)'
+  const numColor = color === 'green' ? 'var(--gtd-accent)' : color === 'amber' ? '#d4930a' : color === 'blue' ? '#4a8fe7' : 'var(--text1)'
   return (
     <div
       className="flex-1 rounded-lg border px-4 py-3 text-center"
@@ -157,7 +157,7 @@ function ArticleCard({
     draft: { bg: 'var(--surface2)', color: 'var(--text3)', label: 'Draft' },
     reviewing: { bg: 'rgba(212,147,10,0.1)', color: '#d4930a', label: 'Reviewing' },
     approved: { bg: 'rgba(74,143,231,0.08)', color: '#4a8fe7', label: 'Approved' },
-    published: { bg: 'rgba(26,122,84,0.08)', color: 'var(--ppw-accent)', label: 'Published' },
+    published: { bg: 'rgba(26,122,84,0.08)', color: 'var(--gtd-accent)', label: 'Published' },
     failed: { bg: 'rgba(204,68,68,0.08)', color: '#c44', label: 'Failed' },
   }
   const st = statusStyles[article.status] || statusStyles.draft
@@ -188,7 +188,7 @@ function ArticleCard({
       <div className="flex items-center gap-1.5 flex-wrap">
         <span
           className="rounded px-2 py-0.5 text-[10px] font-semibold"
-          style={{ background: 'rgba(26,122,84,0.06)', color: 'var(--ppw-accent)' }}
+          style={{ background: 'rgba(26,122,84,0.06)', color: 'var(--gtd-accent)' }}
         >
           {categoryLabel}
         </span>
@@ -205,12 +205,12 @@ function ArticleCard({
       {/* Tags row: links + images */}
       <div className="flex items-center gap-1.5 flex-wrap">
         {article.hasInternalLinks && (
-          <span className="flex items-center gap-1 text-[10px] font-semibold" style={{ color: 'var(--ppw-accent)' }}>
+          <span className="flex items-center gap-1 text-[10px] font-semibold" style={{ color: 'var(--gtd-accent)' }}>
             <Link2 className="h-3 w-3" /> {article.linkCount || 0} links
           </span>
         )}
         {article.hasImages && (
-          <span className="flex items-center gap-1 text-[10px] font-semibold" style={{ color: 'var(--ppw-accent)' }}>
+          <span className="flex items-center gap-1 text-[10px] font-semibold" style={{ color: 'var(--gtd-accent)' }}>
             <ImageIcon className="h-3 w-3" /> {article.imageCount || 0} images
           </span>
         )}
@@ -222,7 +222,7 @@ function ArticleCard({
           <button
             onClick={(e) => { e.stopPropagation(); onStatusChange(article.id, 'published') }}
             className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium transition-all hover:opacity-80"
-            style={{ background: 'rgba(26,122,84,0.08)', color: 'var(--ppw-accent)' }}
+            style={{ background: 'rgba(26,122,84,0.08)', color: 'var(--gtd-accent)' }}
             title="Mark as published"
           >
             <CheckCircle2 className="h-3 w-3" /> Publish

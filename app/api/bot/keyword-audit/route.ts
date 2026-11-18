@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
              r.generated_at, r.applied_row_at, r.applied_shopify_at,
              r.research->'live'->>'title' AS live_title, r.research->'live'->>'meta' AS live_meta,
              r.research->'gsc'->>'impressions' AS gsc_impressions, r.research->'gsc'->>'clicks' AS gsc_clicks
-      FROM collection_keyword_research r LEFT JOIN ppw_collections c ON c.slug = r.slug
+      FROM collection_keyword_research r LEFT JOIN gtd_collections c ON c.slug = r.slug
       ORDER BY c.category NULLS LAST, r.slug
     `) as Array<Record<string, any>>;
     const out = rows
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       .map((r) => {
         const rec = r.recommendation || {};
         return {
-          slug: r.slug, url: `https://peakprimalwellness.com/collections/${r.slug}`, category: r.category, product_count: r.product_count,
+          slug: r.slug, url: `https://greenthumbdepot.com/collections/${r.slug}`, category: r.category, product_count: r.product_count,
           live_title: r.live_title, live_meta: r.live_meta, gsc_impressions: Number(r.gsc_impressions || 0), gsc_clicks: Number(r.gsc_clicks || 0),
           primary: rec.primary ?? null, secondaries: rec.secondaries ?? [], title_tag: rec.title_tag ?? null, meta_description: rec.meta_description ?? null,
           h1: rec.h1 ?? null, h2_additions: rec.h2_additions ?? [], head_term_verdict: rec.head_term_verdict ?? null, rationale: rec.rationale ?? null, risks: rec.risks ?? null,

@@ -5,7 +5,7 @@ import { ensureGradeColumns } from "@/lib/ensureGradeColumns";
 
 /**
  * POST /api/workshop/grade
- * Grades one article body against the PPW core-element checklist.
+ * Grades one article body against the GTD core-element checklist.
  * When a slug is provided, the score is synced into the revamp backlog so
  * edits made in the Workshop immediately refresh the backlog row.
  */

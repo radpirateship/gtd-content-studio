@@ -15,7 +15,7 @@ interface GradeRequest {
   seo_description: string
   primary_keyword: string
   keywords: string[]          // full list including primary
-  article_urls?: string[]     // urls of articles in the ppw DB — for link detection
+  article_urls?: string[]     // urls of articles in the gtd DB — for link detection
 }
 
 function stripHtml(html: string) {
@@ -102,12 +102,12 @@ export async function POST(req: NextRequest) {
 
   // ── Internal article links (15 pts) ─────────────────────────────────────
   // Check if any of the site's known article URLs appear in the collection body links
-  const ppwDomain = 'peakprimalwellness.com'
+  const gtdDomain = 'greenthumbdepot.com'
   const allLinks = links.map(l => l.toLowerCase())
 
   // Any internal link to a blog article
   const hasAnyArticleLink = allLinks.some(l =>
-    l.includes(`${ppwDomain}/blogs/`) || l.startsWith('/blogs/')
+    l.includes(`${gtdDomain}/blogs/`) || l.startsWith('/blogs/')
   )
 
   // Hub article = an article from the DB whose URL appears in the body

@@ -49,7 +49,7 @@ const LINK_SVG = '<svg stroke-linejoin="round" stroke-linecap="round" stroke-wid
 // ── Category → Shopify collection slug mapping ──────────────────────────────
 
 const CATEGORY_COLLECTION: Record<string, string> = {
-  // PPW collections. Replaced Aug 2026: this map held 19 Naked Nutrition
+  // GTD collections. Replaced Aug 2026: this map held 19 Naked Nutrition
   // supplement slugs (whey-protein, creatine, bcaa, keto, vegan...), none of
   // which exist on this store, so every lookup missed and product links were
   // tagged with the wrong collection. Mirrors the map in app/api/generate.
@@ -87,11 +87,11 @@ function collectionNameToSlug(name: string): string {
 // ── Badge config for product cards ───────────────────────────────────────────
 // Strategy: extract flavor from product title when available (ideal for showcasing
 // flavor variants of the same product). Fall back to brand-attribute labels.
-// All badges use Peak Primal Wellness black to stay on-brand.
+// All badges use Green Thumb Depot black to stay on-brand.
 
-const PPW_BADGE_COLOR = "#0066cc"
+const GTD_BADGE_COLOR = "#0066cc"
 
-// PPW NOTE (Aug 2026): flavour detection is Naked Nutrition logic. On PPW
+// GTD NOTE (Aug 2026): flavour detection is Naked Nutrition logic. On GTD
 // titles it produces false badges, e.g. a cherry-wood sauna badged "Cherry" or
 // a red light panel badged "Orange". Emptied so extractFlavorBadge always
 // returns null and the honest fallback below is used instead.
@@ -99,7 +99,7 @@ const PPW_BADGE_COLOR = "#0066cc"
 // module already populates (capacity, heat_type, wood_type, emf_level).
 const FLAVOR_KEYWORDS: { pattern: RegExp; label: string }[] = []
 
-// Fallback badge. Must be true of every product PPW sells. The previous list
+// Fallback badge. Must be true of every product GTD sells. The previous list
 // ("Third-Party Tested", "No Additives", "Fan Favorite", "Clean Formula") was
 // supplement copy and made unverifiable claims about equipment.
 const BRAND_FALLBACK_BADGES = ["Authorized Dealer"]
@@ -115,10 +115,10 @@ function extractFlavorBadge(title: string): string | null {
 function assignBadge(products: { title?: string; price?: string }[], index: number): { label: string; color: string } {
   const product = products[index]
   const flavor = product?.title ? extractFlavorBadge(product.title) : null
-  if (flavor) return { label: flavor, color: PPW_BADGE_COLOR }
+  if (flavor) return { label: flavor, color: GTD_BADGE_COLOR }
   // No flavor found — use brand attribute fallbacks cycling by index
   const fallback = BRAND_FALLBACK_BADGES[index % BRAND_FALLBACK_BADGES.length]
-  return { label: fallback, color: PPW_BADGE_COLOR }
+  return { label: fallback, color: GTD_BADGE_COLOR }
 }
 
 // ── Extract short product name for CTA button ────────────────────────────────
@@ -151,7 +151,7 @@ function extractFeatures(product: {
   const titleAndTags = `${product.title || ""} ${product.tags || ""}`.toLowerCase()
   const fullText = `${product.title || ""} ${product.description || ""} ${product.tags || ""}`.toLowerCase()
 
-  // PPW spec patterns. Replaced Aug 2026: these were supplement ingredient
+  // GTD spec patterns. Replaced Aug 2026: these were supplement ingredient
   // matchers (whey, casein, BCAA, creatine, collagen, probiotics) that could
   // never match equipment, plus property matchers (Non-GMO, vegan, keto,
   // grass-fed) that would have been false claims if they ever did.
@@ -224,7 +224,7 @@ function buildProductCard(
   const features = extractFeatures(product)
 
   const imageHtml = product.imageUrl
-    ? `<div class="ppw-product-image-container"><img src="${product.imageUrl}" alt="${product.title}" class="ppw-product-image" loading="lazy" /></div>`
+    ? `<div class="gtd-product-image-container"><img src="${product.imageUrl}" alt="${product.title}" class="gtd-product-image" loading="lazy" /></div>`
     : ""
 
   let priceHtml = ""
@@ -242,15 +242,15 @@ function buildProductCard(
     .map((f, i) => (i === 0 ? `<li>✓ <strong>${f}</strong></li>` : `<li>✓ ${f}</li>`))
     .join("\n")
 
-  return `<div class="ppw-product-card" style="border-color:${badge.color};">
-<span class="ppw-badge" style="background:${badge.color};align-self:flex-start;margin-bottom:1rem;">${badge.label}</span>
+  return `<div class="gtd-product-card" style="border-color:${badge.color};">
+<span class="gtd-badge" style="background:${badge.color};align-self:flex-start;margin-bottom:1rem;">${badge.label}</span>
 ${imageHtml}
 <h3>${product.title}</h3>
 ${priceHtml}
 <ul>
 ${featureBullets}
 </ul>
-<div style="margin-top:auto;"><a class="ppw-cta" href="${productUrl}">View ${shortName}</a></div>
+<div style="margin-top:auto;"><a class="gtd-cta" href="${productUrl}">View ${shortName}</a></div>
 </div>`
 }
 
@@ -259,56 +259,56 @@ ${featureBullets}
 function buildRelatedArticlesHtml(articles: { title: string; url: string; description: string }[]): string {
   if (!articles || articles.length === 0) return ""
   const cards = articles.slice(0, 3).map((a) =>
-    `<article class="ppw-card">
-<h3 class="ppw-card-title"><a href="${a.url}" class="ppw-links">${a.title} ${LINK_SVG}</a></h3>
-<p class="ppw-sm">${a.description}</p>
+    `<article class="gtd-card">
+<h3 class="gtd-card-title"><a href="${a.url}" class="gtd-links">${a.title} ${LINK_SVG}</a></h3>
+<p class="gtd-sm">${a.description}</p>
 </article>`
   ).join("\n")
 
-  return `<section class="ppw-section">
+  return `<section class="gtd-section">
 <h2>Continue Your Wellness Journey</h2>
-<div class="ppw-grid cols-3">
+<div class="gtd-grid cols-3">
 ${cards}
 </div>
 </section>`
 }
 
-// ── HTML Post-Processor: adds ppw-body/ppw-h2/ppw-h3 classes to plain tags ─────
+// ── HTML Post-Processor: adds gtd-body/gtd-h2/gtd-h3 classes to plain tags ─────
 
 function postProcessHtml(html: string): string {
   let result = html
 
-  // Add ppw-h2 class to all <h2> tags that don't already have it
-  result = result.replace(/<h2(?![^>]*class="[^"]*ppw-h2)([^>]*)>/gi, (match, attrs) => {
+  // Add gtd-h2 class to all <h2> tags that don't already have it
+  result = result.replace(/<h2(?![^>]*class="[^"]*gtd-h2)([^>]*)>/gi, (match, attrs) => {
     if (attrs.includes('class="')) {
-      return match.replace(/class="/, 'class="ppw-h2 ')
+      return match.replace(/class="/, 'class="gtd-h2 ')
     }
-    return `<h2 class="ppw-h2"${attrs}>`
+    return `<h2 class="gtd-h2"${attrs}>`
   })
 
-  // Add ppw-h3 class to all <h3> tags that don't already have it
-  result = result.replace(/<h3(?![^>]*class="[^"]*ppw-h3)([^>]*)>/gi, (match, attrs) => {
+  // Add gtd-h3 class to all <h3> tags that don't already have it
+  result = result.replace(/<h3(?![^>]*class="[^"]*gtd-h3)([^>]*)>/gi, (match, attrs) => {
     if (attrs.includes('class="')) {
-      return match.replace(/class="/, 'class="ppw-h3 ')
+      return match.replace(/class="/, 'class="gtd-h3 ')
     }
-    return `<h3 class="ppw-h3"${attrs}>`
+    return `<h3 class="gtd-h3"${attrs}>`
   })
 
-  // Add ppw-body class to all <p> tags that don't already have an ppw- class
+  // Add gtd-body class to all <p> tags that don't already have an gtd- class
   // Skip p tags inside product cards, email gates, meta, etc.
-  result = result.replace(/<p(?![^>]*class="[^"]*ppw-)([^>]*)>/gi, (match, attrs) => {
+  result = result.replace(/<p(?![^>]*class="[^"]*gtd-)([^>]*)>/gi, (match, attrs) => {
     if (attrs.includes('class="')) {
-      return match.replace(/class="/, 'class="ppw-body ')
+      return match.replace(/class="/, 'class="gtd-body ')
     }
-    return `<p class="ppw-body"${attrs}>`
+    return `<p class="gtd-body"${attrs}>`
   })
 
-  // Add ppw-h1 class to <h1> tags that don't already have it
-  result = result.replace(/<h1(?![^>]*class="[^"]*ppw-h1)([^>]*)>/gi, (match, attrs) => {
+  // Add gtd-h1 class to <h1> tags that don't already have it
+  result = result.replace(/<h1(?![^>]*class="[^"]*gtd-h1)([^>]*)>/gi, (match, attrs) => {
     if (attrs.includes('class="')) {
-      return match.replace(/class="/, 'class="ppw-h1 ')
+      return match.replace(/class="/, 'class="gtd-h1 ')
     }
-    return `<h1 class="ppw-h1"${attrs}>`
+    return `<h1 class="gtd-h1"${attrs}>`
   })
 
   return result
@@ -316,10 +316,10 @@ function postProcessHtml(html: string): string {
 
 // ── Static trust badges HTML (same for every article) ───────────────────────
 // Rebuilt Aug 2026. This block previously shipped Naked Nutrition supplement
-// badges on every PPW article: Third Party Tested, No Additives, GMO Free,
+// badges on every GTD article: Third Party Tested, No Additives, GMO Free,
 // Gluten Free, No Artificial Sweeteners, Vegan Options. None of those are true
 // of sauna or rehab equipment, and they were injected unconditionally.
-// Replaced with claims from the approved list in docs / PPW Content Claims
+// Replaced with claims from the approved list in docs / GTD Content Claims
 // Policy. Do not add "free shipping" (conditional on product class) or
 // "white-glove delivery" (not offered). HSA/FSA is real but eligibility varies
 // by product class, so it is deliberately not in this always-on block.
@@ -330,7 +330,7 @@ const TRUST_BADGE_ITEMS: { icon: string; label: string }[] = [
   { icon: "\u2713", label: "Expert US-Based Support" },
 ]
 
-const TRUST_BADGES_HTML = `<section class="ppw-section" style="background:#faf7f1;border-radius:8px;padding:2.5rem 2rem;margin:3rem 0;">
+const TRUST_BADGES_HTML = `<section class="gtd-section" style="background:#faf7f1;border-radius:8px;padding:2.5rem 2rem;margin:3rem 0;">
 <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;align-items:center;">
 ${TRUST_BADGE_ITEMS.map(
   (b) =>
@@ -369,7 +369,7 @@ function buildProductHeroHtml(
       const formatted = numPrice % 1 === 0
         ? numPrice.toLocaleString("en-US")
         : numPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-      priceHtml = `<div class="ppw-product-hero-price">$${formatted}</div>`
+      priceHtml = `<div class="gtd-product-hero-price">$${formatted}</div>`
     }
   }
 
@@ -377,17 +377,17 @@ function buildProductHeroHtml(
     .map((f) => `<li>${f}</li>`)
     .join("\n")
 
-  return `<section class="ppw-product-hero">
-<div class="ppw-product-hero-image">${imageHtml}</div>
-<div class="ppw-product-hero-content">
-<span class="ppw-product-hero-badge">Our Top Pick</span>
+  return `<section class="gtd-product-hero">
+<div class="gtd-product-hero-image">${imageHtml}</div>
+<div class="gtd-product-hero-content">
+<span class="gtd-product-hero-badge">Our Top Pick</span>
 <h3>${product.title}</h3>
-<div class="ppw-product-hero-stars">★★★★★ <span style="color:rgba(255,255,255,0.6);font-size:0.85rem;">4.8/5</span></div>
-<ul class="ppw-product-hero-features">
+<div class="gtd-product-hero-stars">★★★★★ <span style="color:rgba(255,255,255,0.6);font-size:0.85rem;">4.8/5</span></div>
+<ul class="gtd-product-hero-features">
 ${featureBullets}
 </ul>
 ${priceHtml}
-<a class="ppw-cta" href="${productUrl}">Shop ${getShortName(product.title)}</a>
+<a class="gtd-cta" href="${productUrl}">Shop ${getShortName(product.title)}</a>
 </div>
 </section>`
 }
@@ -399,7 +399,7 @@ function buildTestimonialsHtml(categoryLabel: string): string {
   const testimonials = [
     {
       stars: 5,
-      quote: `The quality is unmatched. I've tried dozens of ${categoryLabel.toLowerCase()} products and nothing comes close to Peak Primal Wellness's transparency and purity.`,
+      quote: `The quality is unmatched. I've tried dozens of ${categoryLabel.toLowerCase()} products and nothing comes close to Green Thumb Depot's transparency and purity.`,
       author: "Michael R.",
       verified: true,
     },
@@ -411,22 +411,22 @@ function buildTestimonialsHtml(categoryLabel: string): string {
     },
     {
       stars: 5,
-      quote: "Clean ingredients, fast shipping, and excellent customer service. I recommend Peak Primal Wellness to everyone at my gym.",
+      quote: "Clean ingredients, fast shipping, and excellent customer service. I recommend Green Thumb Depot to everyone at my gym.",
       author: "James T.",
       verified: true,
     },
   ]
 
-  const cards = testimonials.map((t) => `<div class="ppw-testimonial-card">
-<div class="ppw-testimonial-stars">${"★".repeat(t.stars)}${"☆".repeat(5 - t.stars)}</div>
-<p class="ppw-testimonial-quote">"${t.quote}"</p>
-<p class="ppw-testimonial-author">${t.author}</p>
-${t.verified ? `<p class="ppw-testimonial-verified">✓ Verified Buyer</p>` : ""}
+  const cards = testimonials.map((t) => `<div class="gtd-testimonial-card">
+<div class="gtd-testimonial-stars">${"★".repeat(t.stars)}${"☆".repeat(5 - t.stars)}</div>
+<p class="gtd-testimonial-quote">"${t.quote}"</p>
+<p class="gtd-testimonial-author">${t.author}</p>
+${t.verified ? `<p class="gtd-testimonial-verified">✓ Verified Buyer</p>` : ""}
 </div>`).join("\n")
 
-  return `<section class="ppw-testimonials">
+  return `<section class="gtd-testimonials">
 <h2>What Our Customers Say</h2>
-<div class="ppw-testimonials-grid">
+<div class="gtd-testimonials-grid">
 ${cards}
 </div>
 </section>`
@@ -448,7 +448,7 @@ function buildVideoEmbedHtml(videoUrl: string, title: string): string {
     // Try Vimeo
     const vimeoMatch = videoUrl.match(/vimeo\.com\/(\d+)/)
     if (vimeoMatch) {
-      return `<div class="ppw-video-embed">
+      return `<div class="gtd-video-embed">
 <iframe src="https://player.vimeo.com/video/${vimeoMatch[1]}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="${title}"></iframe>
 </div>`
     }
@@ -456,7 +456,7 @@ function buildVideoEmbedHtml(videoUrl: string, title: string): string {
   }
 
   // YouTube embed with VideoObject schema
-  return `<div class="ppw-video-embed">
+  return `<div class="gtd-video-embed">
 <iframe src="https://www.youtube.com/embed/${videoId}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="${title}"></iframe>
 </div>
 <script type="application/ld+json">
@@ -478,11 +478,11 @@ function buildReferencesHtml(citations: { url: string; title?: string; author?: 
     const titleText = c.title || new URL(c.url).hostname.replace("www.", "")
     const authorText = c.author ? `${c.author}. ` : ""
     return `<li style="margin-bottom:0.75rem;font-size:0.95rem;line-height:1.5;color:#646464;">
-<span style="font-weight:700;color:#000000;">[${i + 1}]</span> ${authorText}<a href="${c.url}" class="ppw-links" target="_blank" rel="noopener">${titleText}</a>${c.notes ? ` — <em>${c.notes}</em>` : ""}
+<span style="font-weight:700;color:#000000;">[${i + 1}]</span> ${authorText}<a href="${c.url}" class="gtd-links" target="_blank" rel="noopener">${titleText}</a>${c.notes ? ` — <em>${c.notes}</em>` : ""}
 </li>`
   })
-  return `<section class="ppw-section" style="border-left:4px solid #000000;background:#F5F5F5;padding:2rem;border-radius:0 4px 4px 0;margin:3rem 0;">
-<h2 class="ppw-h2" style="font-size:1.6rem;margin-top:0;">Scientific References</h2>
+  return `<section class="gtd-section" style="border-left:4px solid #000000;background:#F5F5F5;padding:2rem;border-radius:0 4px 4px 0;margin:3rem 0;">
+<h2 class="gtd-h2" style="font-size:1.6rem;margin-top:0;">Scientific References</h2>
 <ol style="padding-left:0;list-style:none;margin:0;">
 ${refs.join("\n")}
 </ol>
@@ -533,7 +533,7 @@ export async function POST(request: NextRequest) {
     const hasProperTitle = titleTag && titleTag !== keyword && /[A-Z]/.test(titleTag) && titleTag.length > 20
     let title = titleTag || keyword
     if (!hasProperTitle) {
-      const titlePrompt = `Write a compelling, SEO-optimized article title for the keyword "${keyword}" in the ${categoryLabel} category for Peak Primal Wellness's blog. The title should be engaging, include the keyword naturally, and be under 70 characters. Return ONLY the title text, no quotes or explanation.`
+      const titlePrompt = `Write a compelling, SEO-optimized article title for the keyword "${keyword}" in the ${categoryLabel} category for Green Thumb Depot's blog. The title should be engaging, include the keyword naturally, and be under 70 characters. Return ONLY the title text, no quotes or explanation.`
       const generatedTitle = stripEmDashes(await callAI(`You write SEO article titles.\n${WRITING_RULES}`, titlePrompt, { maxTokens: 80 }))
       title = generatedTitle.replace(/^["']|["']$/g, "").trim() || titleTag || keyword
     }
@@ -541,7 +541,7 @@ export async function POST(request: NextRequest) {
     // ── Generate subtitle + quick answer in parallel ───────────────────────
 
     const subtitlePrompt = `Write a single compelling subtitle sentence (under 150 chars) for an article titled "${title}" about ${keyword}. Return ONLY the sentence, no quotes.`
-    const quickAnswerPrompt = `You are answering a reader's question for Peak Primal Wellness's blog. The article title is "${title}" about ${keyword} in the ${categoryLabel} category.
+    const quickAnswerPrompt = `You are answering a reader's question for Green Thumb Depot's blog. The article title is "${title}" about ${keyword} in the ${categoryLabel} category.
 
 Write a single, direct 1-2 sentence answer to the implied question. Make the KEY phrase (the actual answer) wrapped in <strong> tags. Keep it under 100 words total. Return ONLY the answer HTML, no explanation.
 
@@ -584,14 +584,14 @@ Example format: "Yes, <strong>an infrared sauna can be used every day</strong> f
     // ── Overview / Hero section ──────────────────────────────────────────────
 
     const heroImageHtml = body.heroImageUrl
-      ? `<img class="ppw-hero-image" src="${body.heroImageUrl}" alt="${title}" />`
-      : `<div class="ppw-hero-placeholder"><!-- HERO_IMAGE: ${keyword} --></div>`
+      ? `<img class="gtd-hero-image" src="${body.heroImageUrl}" alt="${title}" />`
+      : `<div class="gtd-hero-placeholder"><!-- HERO_IMAGE: ${keyword} --></div>`
 
-    const overviewHtml = `<section id="overview" class="ppw-section">
-<div class="ppw-kicker">${categoryLabel}</div>
+    const overviewHtml = `<section id="overview" class="gtd-section">
+<div class="gtd-kicker">${categoryLabel}</div>
 <h1>${title}</h1>
-<p class="ppw-subtitle">${subtitle.trim()}</p>
-<div class="ppw-meta"><span>By Peak Primal Wellness</span><span class="ppw-dot"></span><span>${readTime} min read</span></div>
+<p class="gtd-subtitle">${subtitle.trim()}</p>
+<div class="gtd-meta"><span>By Green Thumb Depot</span><span class="gtd-dot"></span><span>${readTime} min read</span></div>
 ${heroImageHtml}
 </section>`
 
@@ -603,9 +603,9 @@ ${heroImageHtml}
       .replace(/```/g, "")
       .trim()
 
-    const quickAnswerHtml = `<div class="ppw-quick-answer">
-<div class="ppw-quick-answer-header"><span>⚡</span> Quick Answer</div>
-<div class="ppw-quick-answer-text">${cleanedQuickAnswer}</div>
+    const quickAnswerHtml = `<div class="gtd-quick-answer">
+<div class="gtd-quick-answer-header"><span>⚡</span> Quick Answer</div>
+<div class="gtd-quick-answer-text">${cleanedQuickAnswer}</div>
 </div>`
 
     // ── Video embed (if provided) ────────────────────────────────────────────
@@ -627,9 +627,9 @@ ${heroImageHtml}
         const cards = alternateProducts
           .map((p, i) => buildProductCard(p, i + 1, products, category))
           .join("\n")
-        productsGridHtml = `\n<section id="featured-products" class="ppw-section">
-<h2 class="ppw-center">More ${categoryLabel} Options</h2>
-<div class="ppw-grid cols-${Math.min(alternateProducts.length, 3)}">
+        productsGridHtml = `\n<section id="featured-products" class="gtd-section">
+<h2 class="gtd-center">More ${categoryLabel} Options</h2>
+<div class="gtd-grid cols-${Math.min(alternateProducts.length, 3)}">
 ${cards}
 </div>
 </section>`
@@ -686,8 +686,8 @@ ${cards}
         console.warn("[revamp/finalize] could not validate the Shop CTA handle:", e instanceof Error ? e.message : e)
       }
     }
-    const ctaHtml = `\n<section class="ppw-section ppw-center">
-<a href="/collections/${ctaCollectionHandle}" class="ppw-cta">Shop The Collection</a>
+    const ctaHtml = `\n<section class="gtd-section gtd-center">
+<a href="/collections/${ctaCollectionHandle}" class="gtd-cta">Shop The Collection</a>
 </section>`
 
     // ── Related Articles footer ──────────────────────────────────────────────
@@ -719,7 +719,7 @@ ${cards}
       `<a href="#overview">Overview</a>`,
       ...finalNavItems.map((n) => `<a href="#${n.id}">${n.text}</a>`),
     ]
-    const navHtml = `<nav class="ppw-topnav" aria-label="Quick navigation">\n${navLinks.join("\n")}\n</nav>`
+    const navHtml = `<nav class="gtd-topnav" aria-label="Quick navigation">\n${navLinks.join("\n")}\n</nav>`
 
     // ── Scientific References section (from citations) ─────────────────────
 
@@ -732,7 +732,7 @@ ${cards}
     // FINAL ASSEMBLY
     // ══════════════════════════════════════════════════════════════════════════
 
-    // Assemble all sections, then post-process to add ppw- classes
+    // Assemble all sections, then post-process to add gtd- classes
     const assembledHtml = `${buildArticleDocumentHtml(`
 ${navHtml}
 
@@ -749,7 +749,7 @@ ${relatedHtml}
 `)}
 ${faqSchema.length > 0 ? `\n<script type="application/ld+json">\n${faqSchema}\n</script>` : ""}`
 
-    // Post-process: add ppw-body/ppw-h1/ppw-h2/ppw-h3 classes to all plain tags
+    // Post-process: add gtd-body/gtd-h1/gtd-h2/gtd-h3 classes to all plain tags
     const finalHtml = postProcessHtml(assembledHtml).trim()
     const bodyHtml = normalizeArticleBodyHtml(finalHtml)
 
@@ -859,13 +859,13 @@ ${faqSchema.length > 0 ? `\n<script type="application/ld+json">\n${faqSchema}\n<
         handle: p.handle,
         title: p.title,
         description: p.description ?? "",
-        vendor: p.vendor ?? "Peak Primal Wellness",
+        vendor: p.vendor ?? "Green Thumb Depot",
         productType: p.productType ?? "",
         tags: p.tags ? (p.tags as string).split(",").map((t: string) => t.trim()) : [],
         price: p.price,
         compareAtPrice: p.compareAtPrice,
         imageUrl: p.imageUrl,
-        url: p.url ?? `https://www.peakprimalwellness.com/products/${p.handle}`,
+        url: p.url ?? `https://www.greenthumbdepot.com/products/${p.handle}`,
         category,
         isAvailable: true,
       })),
@@ -903,13 +903,13 @@ ${faqSchema.length > 0 ? `\n<script type="application/ld+json">\n${faqSchema}\n<
           handle: p.handle,
           title: p.title,
           description: p.description ?? "",
-          vendor: p.vendor ?? "Peak Primal Wellness",
+          vendor: p.vendor ?? "Green Thumb Depot",
           productType: p.productType ?? "",
           tags: p.tags ? (p.tags as string).split(",").map((t: string) => t.trim()) : [],
           price: p.price,
           compareAtPrice: p.compareAtPrice,
           imageUrl: p.imageUrl,
-          url: p.url ?? `https://www.peakprimalwellness.com/products/${p.handle}`,
+          url: p.url ?? `https://www.greenthumbdepot.com/products/${p.handle}`,
           category,
           isAvailable: true,
         })),
@@ -927,9 +927,9 @@ ${faqSchema.length > 0 ? `\n<script type="application/ld+json">\n${faqSchema}\n<
       },
       testimonials: {
         testimonials: [
-          { id: "t1", stars: 5, quote: `The quality is unmatched. I've tried dozens of ${categoryLabel.toLowerCase()} products and nothing comes close to Peak Primal Wellness's transparency and purity.`, author: "Michael R.", verified: true },
+          { id: "t1", stars: 5, quote: `The quality is unmatched. I've tried dozens of ${categoryLabel.toLowerCase()} products and nothing comes close to Green Thumb Depot's transparency and purity.`, author: "Michael R.", verified: true },
           { id: "t2", stars: 5, quote: "Finally a brand that lists every single ingredient with no proprietary blends. The results speak for themselves.", author: "Sarah K.", verified: true },
-          { id: "t3", stars: 5, quote: "Clean ingredients, fast shipping, and excellent customer service. I recommend Peak Primal Wellness to everyone at my gym.", author: "James T.", verified: true },
+          { id: "t3", stars: 5, quote: "Clean ingredients, fast shipping, and excellent customer service. I recommend Green Thumb Depot to everyone at my gym.", author: "James T.", verified: true },
         ],
       },
     }

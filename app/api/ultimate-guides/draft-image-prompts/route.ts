@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
       `  ${i + 1}. id="${s.id}" — "${s.text}"`
     ).join('\n')
 
-    const systemPrompt = `You are an expert Technical Illustrator and Brand Visualist for Peak Primal Wellness, 
+    const systemPrompt = `You are an expert Technical Illustrator and Brand Visualist for Green Thumb Depot, 
 a premium wellness e-commerce brand selling saunas, cold plunges, steam generators, and float tanks.
 
 Your task: Draft image concepts for an EVERGREEN PRODUCT GUIDE — one hero image plus one technical image per eligible section. (not a news article or blog post).

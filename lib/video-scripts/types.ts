@@ -1,12 +1,12 @@
 // Video Scripts: shared types and config. Client-safe (no server imports),
-// so the UI and the server use the same shapes. Follows "PPW Content Studio:
+// so the UI and the server use the same shapes. Follows "GTD Content Studio:
 // Script Generation Spec (v2)", Oct 9 2026.
 
 export type ScriptType = "PRODUCT_REVIEW" | "HOOK_ANGLE" | "LONG_FORM";
 export type VisualType = "JAMES" | "SUPPLIER" | "PHOTO_CALLOUT" | "AI_CLIP";
 export type BeatKind = "hook" | "name" | "point" | "frame" | "part" | "verdict";
 
-// Pace from James's example videos. Adjust after the first PPW videos.
+// Pace from James's example videos. Adjust after the first GTD videos.
 export const WORDS_PER_SECOND = { min: 3.0, max: 3.5 };
 
 export const SHORT_LENGTH = { min: 20, max: 45, defaultA: 35, defaultB: 38 };
@@ -27,8 +27,8 @@ export const SCRIPT_TYPES: Array<{ id: ScriptType; label: string; description: s
 ];
 
 export const SERIES: Record<ScriptType, string[]> = {
-  PRODUCT_REVIEW: ["Sauna Heater Truths", "PPW Price Check", "PPW Honest Verdict"],
-  HOOK_ANGLE: ["The PPW Ritual", "PPW Setup Check"],
+  PRODUCT_REVIEW: ["Sauna Heater Truths", "GTD Price Check", "GTD Honest Verdict"],
+  HOOK_ANGLE: ["The GTD Ritual", "GTD Setup Check"],
   LONG_FORM: ["Explained", "Things That Decide the Buy"],
 };
 

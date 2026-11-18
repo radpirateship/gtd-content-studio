@@ -42,7 +42,7 @@ export function extractLegacyImages(oldBodyHtml: string, max = 12): CarriedImage
     // window of markup before the tag for the telltale wrappers.
     const start = Math.max(0, (m.index || 0) - 400);
     const before = clean.slice(start, m.index || 0);
-    if (/class="[^"]*(?:product|ppw-card|ppwb-pick)[^"]*"[^>]*>(?:(?!<\/(?:div|section|a)>)[\s\S])*$/i.test(before)) continue;
+    if (/class="[^"]*(?:product|gtd-card|gtdb-pick)[^"]*"[^>]*>(?:(?!<\/(?:div|section|a)>)[\s\S])*$/i.test(before)) continue;
     if (/<a\b[^>]*href="[^"]*\/products\/[^"]*"[^>]*>(?:(?!<\/a>)[\s\S])*$/i.test(before)) continue;
 
     const w = parseInt((tag.match(/\bwidth="?(\d+)/i) || [])[1] || "0", 10);
@@ -62,7 +62,7 @@ export function extractLegacyImages(oldBodyHtml: string, max = 12): CarriedImage
 
 /**
  * Insert carried images into a v2 body: one per content section, after the
- * first closed paragraph that follows each `ppwb-h2` whose id starts with
+ * first closed paragraph that follows each `gtdb-h2` whose id starts with
  * "section" (the assembled blocks, FAQ, picks, glance, shop and author, keep
  * their own ids and are never touched). Images that outnumber sections are
  * dropped rather than stacked; the first sections get served first.
@@ -73,7 +73,7 @@ export function insertImagesIntoV2Body(
 ): { bodyHtml: string; carried: number } {
   if (!images.length) return { bodyHtml, carried: 0 };
 
-  const h2Re = /<h2\b[^>]*class="[^"]*ppwb-h2[^"]*"[^>]*\bid="(section[^"]*)"[^>]*>/gi;
+  const h2Re = /<h2\b[^>]*class="[^"]*gtdb-h2[^"]*"[^>]*\bid="(section[^"]*)"[^>]*>/gi;
   const slots: number[] = [];
   for (const m of bodyHtml.matchAll(h2Re)) {
     const afterH2 = (m.index || 0) + m[0].length;
@@ -88,7 +88,7 @@ export function insertImagesIntoV2Body(
   for (let i = 0; i < slots.length && carried < images.length; i++) {
     const img = images[carried];
     out += bodyHtml.slice(prev, slots[i]);
-    out += `\n<figure class="ppwb-figure"><img src="${img.src}" alt="${img.alt.replace(/"/g, "&quot;")}" loading="lazy" /></figure>`;
+    out += `\n<figure class="gtdb-figure"><img src="${img.src}" alt="${img.alt.replace(/"/g, "&quot;")}" loading="lazy" /></figure>`;
     prev = slots[i];
     carried++;
   }
@@ -100,7 +100,7 @@ export function insertImagesIntoV2Body(
  * Rewrite the header meta line for an updated post: keep the ORIGINAL
  * published date (the URL and its history are the asset) and append a
  * visible "Updated" date. Runs on the assembled v2 document, which carries
- * exactly one "Published ..." span inside `ppwb-meta`. If the pattern is
+ * exactly one "Published ..." span inside `gtdb-meta`. If the pattern is
  * missing (header variant, manual edit) the body is returned unchanged.
  */
 export function applyUpdatedLine(
@@ -113,6 +113,6 @@ export function applyUpdatedLine(
   if (isNaN(orig.getTime())) return bodyHtml;
   return bodyHtml.replace(
     /<span>Published [^<]*<\/span>/,
-    `<span>Published ${fmtDate(orig)}</span>\n<i class="ppwb-meta-dot"></i>\n<span>Updated ${fmtDate(updatedAt)}</span>`
+    `<span>Published ${fmtDate(orig)}</span>\n<i class="gtdb-meta-dot"></i>\n<span>Updated ${fmtDate(updatedAt)}</span>`
   );
 }

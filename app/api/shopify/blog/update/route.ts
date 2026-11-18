@@ -198,7 +198,7 @@ export async function PUT(request: NextRequest) {
         id: updatedArticle.id,
         title: updatedArticle.title,
         handle: updatedArticle.handle,
-        url: `https://peakprimalwellness.com/blogs/wellness/${updatedArticle.handle}`,
+        url: `https://greenthumbdepot.com/blogs/guides/${updatedArticle.handle}`,
         updated_at: updatedArticle.updated_at,
       },
       blogId: targetBlogId,

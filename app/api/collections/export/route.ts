@@ -92,7 +92,7 @@ export async function GET(req: NextRequest) {
     const minVolume = Number(searchParams.get('minVolume') || '') || null
 
     const all = (await sql`
-      SELECT * FROM ppw_collections
+      SELECT * FROM gtd_collections
       ORDER BY search_volume DESC NULLS LAST, category, slug
     `) as Array<Record<string, unknown>>
 
@@ -112,7 +112,7 @@ export async function GET(req: NextRequest) {
     return new NextResponse(toCsv(rows), {
       headers: {
         'Content-Type': 'text/csv; charset=utf-8',
-        'Content-Disposition': `attachment; filename="ppw_collections_${stamp}.csv"`,
+        'Content-Disposition': `attachment; filename="gtd_collections_${stamp}.csv"`,
         'Cache-Control': 'no-store',
       },
     })

@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
 
     const sectionList = sections.map((s, i) => `  ${i + 1}. id="${s.id}" — "${s.text}"`).join('\n');
 
-    const systemPrompt = `You are an expert Technical Illustrator and Brand Visualist for Peak Primal Wellness.
+    const systemPrompt = `You are an expert Technical Illustrator and Brand Visualist for Green Thumb Depot.
 
 Your Task: Create ${totalConcepts} distinct image concepts (1 Hero, ${technicalCount} Technical/Educational) based on the article.
 Each image MUST be assigned to a specific article section by its H2 id.

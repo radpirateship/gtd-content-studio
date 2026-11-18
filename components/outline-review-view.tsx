@@ -228,9 +228,9 @@ export function OutlineReviewView({ outline, articleInput, onApprove, onRegenera
               className="flex items-center gap-2.5 rounded-lg border px-4 py-3.5 mb-3"
               style={{ background: 'var(--bg)', borderColor: 'var(--border)' }}
             >
-              <span className="rounded px-1.5 py-0.5 text-[9px] font-mono font-semibold tracking-wide flex-shrink-0" style={{ background: 'var(--ppw-accent-light)', color: 'var(--ppw-accent)' }}>H1</span>
+              <span className="rounded px-1.5 py-0.5 text-[9px] font-mono font-semibold tracking-wide flex-shrink-0" style={{ background: 'var(--gtd-accent-light)', color: 'var(--gtd-accent)' }}>H1</span>
               <input
-                className="flex-1 bg-transparent text-[14px] font-medium outline-none border-b border-dashed border-transparent focus:border-[var(--ppw-accent)]"
+                className="flex-1 bg-transparent text-[14px] font-medium outline-none border-b border-dashed border-transparent focus:border-[var(--gtd-accent)]"
                 style={{ color: 'var(--text1)' }}
                 value={data.h1}
                 onChange={(e) => updateH1(e.target.value)}
@@ -250,8 +250,8 @@ export function OutlineReviewView({ outline, articleInput, onApprove, onRegenera
                   className="group relative flex items-start gap-2 rounded-lg border px-3.5 py-3 transition-all"
                   style={{
                     background: 'var(--bg)',
-                    borderColor: dragOverIdx === idx ? 'var(--ppw-accent)' : 'var(--border)',
-                    borderLeft: section.type === 'product' ? '3px solid var(--ppw-accent)' : section.type === 'faq' ? '3px solid #b8860b' : undefined,
+                    borderColor: dragOverIdx === idx ? 'var(--gtd-accent)' : 'var(--border)',
+                    borderLeft: section.type === 'product' ? '3px solid var(--gtd-accent)' : section.type === 'faq' ? '3px solid #b8860b' : undefined,
                     opacity: dragIdx === idx ? 0.5 : 1,
                     boxShadow: dragOverIdx === idx ? '0 2px 8px rgba(0,0,0,0.08)' : undefined,
                   }}
@@ -265,9 +265,9 @@ export function OutlineReviewView({ outline, articleInput, onApprove, onRegenera
                   <div className="flex flex-1 flex-col gap-1.5">
                     {/* H2 heading */}
                     <div className="flex items-center gap-2">
-                      <span className="rounded px-1.5 py-0.5 text-[9px] font-mono font-semibold tracking-wide flex-shrink-0" style={{ background: 'var(--ppw-accent-light)', color: 'var(--ppw-accent)' }}>H2</span>
+                      <span className="rounded px-1.5 py-0.5 text-[9px] font-mono font-semibold tracking-wide flex-shrink-0" style={{ background: 'var(--gtd-accent-light)', color: 'var(--gtd-accent)' }}>H2</span>
                       <input
-                        className="flex-1 bg-transparent text-[14px] font-medium outline-none border-b border-dashed border-transparent focus:border-[var(--ppw-accent)]"
+                        className="flex-1 bg-transparent text-[14px] font-medium outline-none border-b border-dashed border-transparent focus:border-[var(--gtd-accent)]"
                         style={{ color: 'var(--text1)' }}
                         value={section.heading}
                         onChange={(e) => updateHeading(section.id, e.target.value)}
@@ -297,7 +297,7 @@ export function OutlineReviewView({ outline, articleInput, onApprove, onRegenera
                           <div key={sub.id} className="flex items-center gap-2 ml-6">
                             <span className="rounded px-1 py-0.5 text-[8px] font-mono font-medium flex-shrink-0" style={{ background: 'var(--surface)', color: 'var(--text3)' }}>H3</span>
                             <input
-                              className="flex-1 bg-transparent text-[13px] outline-none border-b border-dashed border-transparent focus:border-[var(--ppw-accent)]"
+                              className="flex-1 bg-transparent text-[13px] outline-none border-b border-dashed border-transparent focus:border-[var(--gtd-accent)]"
                               style={{ color: 'var(--text2)' }}
                               value={sub.text}
                               onChange={(e) => updateSubheading(section.id, sub.id, e.target.value)}
@@ -318,7 +318,7 @@ export function OutlineReviewView({ outline, articleInput, onApprove, onRegenera
                     <button
                       onClick={() => addSubheading(section.id)}
                       className="self-start ml-6 mt-0.5 text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity"
-                      style={{ color: 'var(--ppw-accent)' }}
+                      style={{ color: 'var(--gtd-accent)' }}
                     >
                       + Add H3
                     </button>
@@ -342,7 +342,7 @@ export function OutlineReviewView({ outline, articleInput, onApprove, onRegenera
                 onClick={addSection}
                 className="rounded-lg border border-dashed py-2.5 text-center text-[12px] font-medium transition-all mt-1"
                 style={{ borderColor: 'var(--border)', color: 'var(--text3)' }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--ppw-accent)'; e.currentTarget.style.color = 'var(--ppw-accent)'; e.currentTarget.style.background = 'var(--ppw-accent-light)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--gtd-accent)'; e.currentTarget.style.color = 'var(--gtd-accent)'; e.currentTarget.style.background = 'var(--gtd-accent-light)' }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text3)'; e.currentTarget.style.background = 'transparent' }}
               >
                 <Plus className="inline-block h-3.5 w-3.5 mr-1 -mt-px" />
@@ -375,7 +375,7 @@ export function OutlineReviewView({ outline, articleInput, onApprove, onRegenera
                 onClick={() => onApprove(data)}
                 disabled={isRegenerating}
                 className="flex items-center gap-1.5 rounded-lg px-5 py-2 text-[13px] font-semibold text-white"
-                style={{ background: 'var(--ppw-accent)', opacity: isRegenerating ? 0.5 : 1 }}
+                style={{ background: 'var(--gtd-accent)', opacity: isRegenerating ? 0.5 : 1 }}
               >
                 <Check className="h-4 w-4" />
                 Approve & Generate Article
@@ -442,8 +442,8 @@ function ModuleChip({ label, enabled }: { label: string; enabled: boolean }) {
     <span
       className={`rounded px-2 py-0.5 text-[10px] font-mono ${!enabled ? 'line-through' : ''}`}
       style={{
-        background: enabled ? 'var(--ppw-accent-light)' : 'var(--surface)',
-        color: enabled ? 'var(--ppw-accent)' : 'var(--text4)',
+        background: enabled ? 'var(--gtd-accent-light)' : 'var(--surface)',
+        color: enabled ? 'var(--gtd-accent)' : 'var(--text4)',
       }}
     >
       {label}

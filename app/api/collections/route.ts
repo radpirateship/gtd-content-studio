@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   const priority = searchParams.get('priority') || ''
   const optimized = searchParams.get('optimized') || ''
 
-  const allRows = await sql`SELECT * FROM ppw_collections ORDER BY category, slug`
+  const allRows = await sql`SELECT * FROM gtd_collections ORDER BY category, slug`
 
   let rows = Array.from(allRows) as any[]
 
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
   if (!slug) return NextResponse.json({ error: 'slug is required' }, { status: 400 })
 
   const [row] = await sql`
-    INSERT INTO ppw_collections
+    INSERT INTO gtd_collections
       (slug, url, category, collection_type, primary_keyword, secondary_keywords,
        title_tag, meta_description, priority, search_volume, kd, tier, notes, shopify_collection_id)
     VALUES

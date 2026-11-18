@@ -65,14 +65,14 @@ function normalise(raw: Record<string, unknown>, input: GenerateInput, src: Gene
   const usedRefs = new Set([...allBeats.flatMap((b) => b.specRefs || []), ...arr(raw.numbersSpoken, (n) => str(n.specRef))]);
   const specs = src.specs.filter((s) => usedRefs.has(s.id));
   const assets = {
-    photos: all.flatMap((p) => p.images.slice(0, 4).map((url, i) => ({ product: p.title, shot: i === 0 ? "hero" : `photo ${i + 1}: ${url}`, source: "PPW page" }))),
+    photos: all.flatMap((p) => p.images.slice(0, 4).map((url, i) => ({ product: p.title, shot: i === 0 ? "hero" : `photo ${i + 1}: ${url}`, source: "GTD page" }))),
     supplierClips: allBeats.filter((b) => b.visualType === "SUPPLIER").map((b) => ({
       product: products[0]?.name || "", shot: b.visualDescription, modelMatched: true, licence: input.assets.licence === "confirmed" ? "confirmed" : "pending",
     })),
     aiClips: beats.filter((b) => b.visualType === "AI_CLIP").map((b) => ({
       sourcePhoto: b.aiClip?.sourcePhoto || all[0]?.images[0] || "", move: b.aiClip?.move || "push_in", durationSec: Math.max(1, b.endSec - b.startSec),
     })),
-    logos: ["PPW", ...[...new Set(all.map((p) => p.vendor).filter(Boolean))]],
+    logos: ["GTD", ...[...new Set(all.map((p) => p.vendor).filter(Boolean))]],
   };
 
   const out: ScriptOutput = {

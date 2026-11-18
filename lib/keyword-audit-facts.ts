@@ -124,7 +124,7 @@ export function findFactIssues(rec: Recommendation, facts: CollectionFacts, stor
       const re = new RegExp(`(^|[^a-z0-9])${b.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?=$|[^a-z0-9])`, "i");
       if (re.test(lower)) issues.push({ kind: "brand", value: brand, field });
     }
-    if (field === "meta_description" && /peak primal/i.test(text)) issues.push({ kind: "store", value: "Peak Primal Wellness", field });
+    if (field === "meta_description" && /peak primal/i.test(text)) issues.push({ kind: "store", value: "Green Thumb Depot", field });
     for (const m of text.match(PRICE_RE) || []) {
       const v = Number(m.replace(/[$,\s]/g, ""));
       const isMin = facts.minPrice != null && Math.abs(v - facts.minPrice) < 1;

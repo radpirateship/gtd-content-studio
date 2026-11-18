@@ -27,9 +27,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "htmlContent is required" }, { status: 400 });
     }
 
-    // v2 articles are styled by the ppw-blog.css theme asset, which defines
-    // .ppwb-a and knows nothing about .ppw-links.
-    const linkClass = /class=["'][^"']*ppwb-/.test(htmlContent) ? "ppwb-a" : "ppw-links";
+    // v2 articles are styled by the gtd-blog.css theme asset, which defines
+    // .gtdb-a and knows nothing about .gtd-links.
+    const linkClass = /class=["'][^"']*gtdb-/.test(htmlContent) ? "gtdb-a" : "gtd-links";
 
     if (!internalLinks || internalLinks.length === 0) {
       return NextResponse.json({ error: "internalLinks array is required" }, { status: 400 });
@@ -54,10 +54,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Extract only the body content sections (between Key Takeaways and FAQ/footer)
-    // We don't want Claude touching the PPW shell, nav, product grid, or footer
-    const bodyStartMarker = '<section class="ppw-section ppw-muted">';
+    // We don't want Claude touching the GTD shell, nav, product grid, or footer
+    const bodyStartMarker = '<section class="gtd-section gtd-muted">';
     const faqMarker = '<section id="faq"';
-    const footerMarker = '<section class="ppw-section ppw-center">';
+    const footerMarker = '<section class="gtd-section gtd-center">';
     const relatedMarker = 'Continue Your Wellness Journey';
 
     const bodyStart = htmlContent.indexOf(bodyStartMarker);
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
     const hasCollections = collectionCandidates.length > 0;
 
     // Call Claude to inject links into existing paragraphs
-    const systemPrompt = `You are an internal linking specialist for Peak Primal Wellness. Your ONLY job is to add internal links to existing HTML content. You must NOT change the content, structure, headings, or meaning of any text.
+    const systemPrompt = `You are an internal linking specialist for Green Thumb Depot. Your ONLY job is to add internal links to existing HTML content. You must NOT change the content, structure, headings, or meaning of any text.
 
 LINK QUOTA — hit both targets exactly:
 ${hasCollections ? `- EXACTLY 2 links from the COLLECTION LIST (same-hub collection pages)` : ''}

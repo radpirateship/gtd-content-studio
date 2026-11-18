@@ -1,6 +1,6 @@
 // Ranks products and collections by net revenue for the Video Scripts module.
 //
-// Sales come from the PPW Dashboard (orders_historical, synced daily from
+// Sales come from the GTD Dashboard (orders_historical, synced daily from
 // Shopify) via its read-only /api/product-sales endpoint. Each sales row is
 // matched to a live catalogue product by Shopify product id when the
 // dashboard has one, otherwise by title. CSV-seeded history stores the line
@@ -12,7 +12,7 @@ import { MASTER_COLLECTIONS } from "@/lib/collections";
 import { ensureVideoTables, setMeta } from "./db";
 import { fetchCatalog, fetchCollectionsForProducts, type CatalogProduct } from "./shopify";
 
-export const DEFAULT_DASHBOARD_URL = "https://ppw-dashboard-one.vercel.app";
+export const DEFAULT_DASHBOARD_URL = "https://gtd-dashboard-one.vercel.app";
 
 export type SalesRow = {
   productTitle: string;

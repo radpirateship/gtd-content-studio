@@ -9,7 +9,7 @@ import { getShopifyAccessToken, SHOPIFY_ADMIN_DOMAIN } from "@/lib/shopifyAuth";
  * (pagination past 50 metafields + the "must contain a pipe" rule that
  * discarded colon-style tags). For every saved draft: re-read the LIVE
  * title/description tags from Shopify; if the draft's seo_title is a
- * fabricated "[X] | Peak Primal Wellness" or the bare collection title while
+ * fabricated "[X] | Green Thumb Depot" or the bare collection title while
  * a real live tag exists, restore the live tag into the draft. Generated
  * meta descriptions are kept (they're intentional); only empty ones are
  * back-filled from live. Safe to run repeatedly.

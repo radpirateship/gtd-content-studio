@@ -89,7 +89,7 @@ export async function draftKeywordContent(opts: {
   const prods = opts.products.slice(0, 12).map((p) => `${p.title}${p.vendor ? ` (${p.vendor})` : ""}`);
   const vendors = Array.from(new Set(opts.products.map((p) => p.vendor).filter(Boolean))) as string[];
 
-  const system = `You are the senior SEO copywriter at Peak Primal Wellness, a premium wellness equipment retailer. You work long-tail keywords into collection page copy so that it reads as if a knowledgeable salesperson wrote it. The keyword must sit in the sentence naturally; if a keyword cannot be used without sounding forced, leave it out and say so.
+  const system = `You are the senior SEO copywriter at Green Thumb Depot, a premium wellness equipment retailer. You work long-tail keywords into collection page copy so that it reads as if a knowledgeable salesperson wrote it. The keyword must sit in the sentence naturally; if a keyword cannot be used without sounding forced, leave it out and say so.
 ${WRITING_RULES}
 HARD RULES:
 - No em dashes, no en dashes. Colons (not dashes) as bullet label separators. "to" for ranges. Never start a sentence with "Discover".

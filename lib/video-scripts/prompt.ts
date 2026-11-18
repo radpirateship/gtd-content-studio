@@ -1,4 +1,4 @@
-// Video script prompts, from "PPW Content Studio: Script Generation Spec (v2)"
+// Video script prompts, from "GTD Content Studio: Script Generation Spec (v2)"
 // (Oct 9 2026, built from James's example videos). Everything that decides
 // how a script sounds lives here; the validator in validate.ts enforces the
 // hard rules after generation.
@@ -10,9 +10,9 @@ import { wordBudget, type GenerateInput, type Spec } from "./types";
 export const PROMPT_VERSION = "spec-v2";
 
 const PRODUCTION_MODEL = `PRODUCTION MODEL (fixed, all types)
-- Brand: Peak Primal Wellness (peakprimalwellness.com) only. Never reference any other company owned by the founders.
-- Presenter: James, a PPW co-founder, talking to camera, chest up. He never demos or handles products, and real units are never filmed.
-- Layout: a number-led on-screen headline in the top third for the whole clip, PPW logo in a fixed corner, the product brand logo, and a lower-third card with the product image and listed price. The number lives in the headline ("3 THINGS...", "X EXPLAINED") whether the spoken hook is a statement or a question.
+- Brand: Green Thumb Depot (greenthumbdepot.com) only. Never reference any other company owned by the founders.
+- Presenter: James, a GTD co-founder, talking to camera, chest up. He never demos or handles products, and real units are never filmed.
+- Layout: a number-led on-screen headline in the top third for the whole clip, GTD logo in a fixed corner, the product brand logo, and a lower-third card with the product image and listed price. The number lives in the headline ("3 THINGS...", "X EXPLAINED") whether the spoken hook is a statement or a question.
 - The ONLY visual types the editor can cut in:
   JAMES: James talking to camera.
   SUPPLIER: manufacturer/supplier video, licensed and model-matched (the exact product, or clearly labelled "series").
@@ -49,12 +49,12 @@ const BANNED = `BANNED (a validator rejects any of these)
 - Tests or results: "we tested", "results", "on camera", measured temperatures or times.
 - Testimonials: customer quotes, reviews, "customers say", AI people.
 - Rank claims ("best-selling", "#1", "most popular") unless the input says the best-seller status is verified.
-- Hype: insane, crazy, game-changer, life-changing, must-have, ultimate, revolutionary, mind-blowing, you won't believe, scam, lies. Never "lies", "scam" or "they don't want you to know" about brands PPW sells.
+- Hype: insane, crazy, game-changer, life-changing, must-have, ultimate, revolutionary, mind-blowing, you won't believe, scam, lies. Never "lies", "scam" or "they don't want you to know" about brands GTD sells.
 - Naming any brand as dishonest.
 - Financing quotes ("$/mo"), "cheap", "deal of the year".`;
 
 const TYPE_A = `TYPE A: PRODUCT REVIEW
-A strict, straightforward review of one PPW product. It answers a buyer's question with listed specs and ends on a blunt verdict.
+A strict, straightforward review of one GTD product. It answers a buyer's question with listed specs and ends on a blunt verdict.
 
 HOOK FORMULAS (first 2 seconds, 12 spoken words or fewer)
 - number_led: "[N] things to check before you buy a [category]." e.g. "Three things to check before you buy a sauna heater."
@@ -74,7 +74,7 @@ BEATS (default 35s; scale proportionally for 20 to 45s; split into more beats to
 Three points by default (2 minimum, 3 maximum). The point count must match the headline number.`;
 
 const TYPE_B = `TYPE B: HOOK & ANGLE
-A broader idea (a ritual, a recovery setup, a collection) with an interesting angle. 1 to 3 real PPW products are the "how". The products support the angle; this is not a product review.
+A broader idea (a ritual, a recovery setup, a collection) with an interesting angle. 1 to 3 real GTD products are the "how". The products support the angle; this is not a product review.
 
 HOOK FORMULAS (12 spoken words or fewer)
 - setup_reality: "What a [ritual/setup] actually takes: [N] things."
@@ -105,14 +105,14 @@ SHAPE
 - Open: James on camera in the first 2 seconds, headline up. No disclaimer card, no silent or black open.
 - 4 to 8 chapters, each 1 to 3 minutes. Each chapter opens with a question, makes ONE point, then cuts to a summary graphic that paraphrases the point (not a caption of the sentence), plus a photo, diagram or supplier cut-in.
 - Honest downside: at least one chapter is "the one to avoid" or "skip this if...", tied to a listed spec. Say the limit plainly.
-- Close: a specific next step, then an end card (12 words or fewer) naming what the viewer sends and what PPW sends back.
+- Close: a specific next step, then an end card (12 words or fewer) naming what the viewer sends and what GTD sends back.
 - shortCut: for each chapter, the first 20 to 45 seconds as a standalone Short (question, one point, graphic, mini next step), with its own word count inside 3.0 to 3.5 words per second.
 - Pace: 3.0 to 3.5 words per second (about 180 to 210 words per minute). Don't pad.
 - One onScreenText per beat, paraphrasing the point ("HEATER PRICE ≠ SWITCH-ON PRICE").`;
 
 export function buildSystemPrompt(type: GenerateInput["type"]): string {
   const typeBlock = type === "PRODUCT_REVIEW" ? TYPE_A : type === "HOOK_ANGLE" ? TYPE_B : TYPE_C;
-  return `You write short-form and long-form video scripts for Peak Primal Wellness, a US retailer of premium wellness equipment.
+  return `You write short-form and long-form video scripts for Green Thumb Depot, a US retailer of premium wellness equipment.
 
 ${PRODUCTION_MODEL}
 
@@ -240,7 +240,7 @@ export function buildUserPrompt(input: GenerateInput, src: GenerationSources): s
   lines.push(specLines(src.specs));
   if (src.articles.length) {
     lines.push("");
-    lines.push("PPW BLOG POSTS (context for angles and buyer questions only; never a source of numbers or claims):");
+    lines.push("GTD BLOG POSTS (context for angles and buyer questions only; never a source of numbers or claims):");
     for (const a of src.articles) lines.push(`--- ${a.title}\n${a.text.slice(0, 3000)}`);
   }
   lines.push("");

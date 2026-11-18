@@ -17,7 +17,7 @@ import { ensureCollectionColumns } from "@/lib/ensureCollectionColumns";
 /**
  * POST /api/collections/generate   Body: { slug }
  *
- * GENERATE mode (docs/PPW_Collection_Generator_Cowork_Instructions.md):
+ * GENERATE mode (docs/GTD_Collection_Generator_Cowork_Instructions.md):
  * full-page rewrite from a fixed skeleton + live Shopify products + Ahrefs
  * research. Primary mode for all collections; Improve is legacy (8+ pages).
  * Saves a DRAFT (never publishes); pre-publish validation runs here AND in
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     if (!collection) return NextResponse.json({ error: `Collection '${slug}' not found on Shopify` }, { status: 404 });
     // limit=250 + any-namespace fallback: app metafields can push the SEO
     // tags past the default 50-per-page, which made generation think there
-    // was no title tag and fabricate "[Keyword] | Peak Primal Wellness".
+    // was no title tag and fabricate "[Keyword] | Green Thumb Depot".
     const mf = await shopifyGet(`collections/${collection.id}/metafields.json?limit=250`, token);
     const metafields: Array<{ namespace: string; key: string; value: string }> = mf?.metafields || [];
     const mfPick = (keys: string[]) => {
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
     const bodyBefore: string = collection.body_html || "";
 
     await ensureCollectionColumns(sql);
-    const kwRow = (await sql`SELECT primary_keyword, secondary_keywords, collection_type, featured_handles, category FROM ppw_collections WHERE slug = ${slug}`) as Array<{ primary_keyword: string | null; secondary_keywords: unknown; collection_type: string | null; featured_handles: string[] | null; category?: string | null }>;
+    const kwRow = (await sql`SELECT primary_keyword, secondary_keywords, collection_type, featured_handles, category FROM gtd_collections WHERE slug = ${slug}`) as Array<{ primary_keyword: string | null; secondary_keywords: unknown; collection_type: string | null; featured_handles: string[] | null; category?: string | null }>;
     const hubCategory: string | null = kwRow[0]?.category ?? null;
     let secondaries: string[] = [];
     try {
@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
     // ── Preserved elements ───────────────────────────────────────────────────
     const preserved = extractPreserved(bodyBefore);
     step("preserved", "Preserved elements extracted", "done",
-      `${preserved.learningLinks.length} learning link(s) on the old page${preserved.quiz ? `, quiz CTA (${preserved.quiz.url})` : ""} — styling via theme asset ppw-collections.css (no embedded stylesheet)`);
+      `${preserved.learningLinks.length} learning link(s) on the old page${preserved.quiz ? `, quiz CTA (${preserved.quiz.url})` : ""} — styling via theme asset gtd-collections.css (no embedded stylesheet)`);
     // NOTE: Learning Center gap is judged AFTER catalog selection below —
     // the old page having 0 links means nothing when the article catalog
     // fills the section. Flagging here produced a false leftover on every run.
@@ -164,8 +164,8 @@ export async function POST(request: NextRequest) {
         if (ov) researchLog.push(`"${pk}": volume ${(ov as any).volume ?? "?"}, KD ${(ov as any).difficulty ?? "?"}, traffic potential ${(ov as any).traffic_potential ?? (ov as any).trafficPotential ?? "?"}`);
         if (serp.length) {
           researchLog.push(`SERP top ${serp.length}: ${serp.slice(0, 3).map((s) => `${s.url.replace(/^https?:\/\/(www\.)?/, "").split("/")[0]} (DR ${s.domainRating ?? "?"})`).join(", ")}`);
-          const ppw = serp.find((s) => s.url.includes("peakprimalwellness"));
-          researchLog.push(ppw ? `PPW currently ranks #${ppw.position}` : "PPW not in top 10");
+          const gtd = serp.find((s) => s.url.includes("greenthumbdepot"));
+          researchLog.push(gtd ? `GTD currently ranks #${gtd.position}` : "GTD not in top 10");
         }
         const termList: any[] = Array.isArray(terms) ? terms : [];
         if (termList.length) {
@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
 
     // persist refined keywords
     try {
-      await sql`UPDATE ppw_collections SET primary_keyword = ${pk}, secondary_keywords = ${secondaries} WHERE slug = ${slug}`;
+      await sql`UPDATE gtd_collections SET primary_keyword = ${pk}, secondary_keywords = ${secondaries} WHERE slug = ${slug}`;
     } catch { /* non-fatal */ }
 
     // ── Learning Center: pick the most RELEVANT articles from the full blog
@@ -285,7 +285,7 @@ export async function POST(request: NextRequest) {
 
     // ── Step 3: generation (one call, all section text) ──────────────────────
     const competitors = BRAND_COLLECTIONS.map((b) => b.name).filter((n) => n !== brandName).slice(0, 20);
-    const system = `You are the senior SEO copywriter at Peak Primal Wellness, a premium wellness equipment retailer. You write complete collection-page content following the PPW ${isBrand ? "Brand" : "Category"} Collection Page Rules exactly.
+    const system = `You are the senior SEO copywriter at Green Thumb Depot, a premium wellness equipment retailer. You write complete collection-page content following the GTD ${isBrand ? "Brand" : "Category"} Collection Page Rules exactly.
 ${WRITING_RULES}
 FORMAT: colons as bullet label separators; "to" for ranges; NO em dashes anywhere except the single H2 separator; never start a sentence with "Discover"; every sentence carries a brand, keyword, feature, or trust signal. Return ONLY valid JSON.
 PRICES: NEVER write a dollar figure, price range, "from $X" or "under $X" anywhere. Prices change and sales come and go; the product grid above this copy shows live prices and has a price filter. Talk about cost qualitatively (entry-level, mid-range, premium, what the extra money buys, per-session electricity in cents at most).
@@ -304,7 +304,7 @@ KEYWORDS: the primary keyword AND every secondary keyword must each appear at le
  "tiers": [3 objects {"tierLabel" like "Tier 1 · Entry","name" a REAL model name,"specs":[4 {"label","value"}],"text" 1 sentence "Best for..."} entry/mid/flagship],
  "fit": {"yes":[4 short "A good fit if you..." completions],"no":[4 honest "Look elsewhere if you..." completions]},
  "certs": {"para":"2-3 sentences on construction/materials from product descriptions","items":[4 {"title" a certification or build fact,"text" 4-8 words}]},
- "story": [2 paragraph strings, 2-3 sentences each, on the brand's history and why PPW carries it — no invented dates or factory visits],
+ "story": [2 paragraph strings, 2-3 sentences each, on the brand's history and why GTD carries it — no invented dates or factory visits],
  "benefits": [4 objects {"emoji","heading" naming an OUTCOME,"text" 2-3 sentences mentioning ${brandName}}],
  "brandDescription": "2-3 sentences on what the brand makes + key differentiator",
  ${ownershipSpec}`;
@@ -368,7 +368,7 @@ Return JSON exactly:
     plan.push(`Generated full ${isBrand ? "brand" : "category"} page from skeleton (${g.faq.length} FAQs)`);
 
     // ── Assemble ─────────────────────────────────────────────────────────────
-    const collectionUrl = `https://peakprimalwellness.com/collections/${slug}`;
+    const collectionUrl = `https://greenthumbdepot.com/collections/${slug}`;
     const buildBody = () => assemblePage({
       isBrand, catLabel, sections: g, featured, allProducts: products, preserved,
       collectionUrl, collectionTitle: collection.title, brandName,
@@ -535,7 +535,7 @@ ${JSON.stringify({ fields })}`;
           plan = ${JSON.stringify({ plan, steps })}, manual_items = ${JSON.stringify(manual)}, score_before = ${scoreBefore}, score_after = ${scoreAfter}, created_at = now()
       `;
       const leftovers = { skipped: steps.filter((st) => st.status === "skipped").map((st) => `${st.label}${st.detail ? ` — ${st.detail}` : ""}`), manual, at: new Date().toISOString() };
-      await sql`UPDATE ppw_collections SET improve_notes = ${JSON.stringify(leftovers)} WHERE slug = ${slug}`;
+      await sql`UPDATE gtd_collections SET improve_notes = ${JSON.stringify(leftovers)} WHERE slug = ${slug}`;
     } catch (dErr) {
       console.error("[collections/generate] draft save failed:", dErr);
     }

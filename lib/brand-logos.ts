@@ -1,6 +1,6 @@
 // ============================================================================
 // lib/brand-logos.ts — brand name -> Shopify CDN logo URL
-// Source: PPW_Brand_Logos.csv (Ryan, July 29 2026). Used by the collection
+// Source: GTD_Brand_Logos.csv (Ryan, July 29 2026). Used by the collection
 // design templates: brand-bar / "brands" section on category pages, and the
 // brand template hero + certs sections. Lookup is case/punctuation-tolerant.
 // ============================================================================

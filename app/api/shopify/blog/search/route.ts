@@ -169,9 +169,9 @@ export async function GET(request: NextRequest) {
         updated_at: a.updated_at,
         has_image: !!a.image?.src,
         has_content_images: /<img/i.test(body),
-        has_internal_links: /href=["'](?:https?:\/\/(?:www\.)?peakprimalwellness\.com)?\/blogs\/wellness\//i.test(body),
-        has_products: /ppw-card|ppw-product/i.test(body),
-        has_faq: /<details|ppw-faq/i.test(body),
+        has_internal_links: /href=["'](?:https?:\/\/(?:www\.)?greenthumbdepot\.com)?\/blogs\/wellness\//i.test(body),
+        has_products: /gtd-card|gtd-product/i.test(body),
+        has_faq: /<details|gtd-faq/i.test(body),
       };
     });
 

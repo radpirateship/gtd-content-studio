@@ -5,7 +5,7 @@
 //   GOOGLE_SERVICE_ACCOUNT_EMAIL + GOOGLE_SERVICE_ACCOUNT_KEY (raw PEM)
 //   GOOGLE_SERVICE_ACCOUNT_KEY = full service-account JSON
 //   GOOGLE_SERVICE_ACCOUNT_JSON = full service-account JSON
-//   GSC_SITE_URL = "sc-domain:peakprimalwellness.com" or a URL prefix
+//   GSC_SITE_URL = "sc-domain:greenthumbdepot.com" or a URL prefix
 import crypto from "crypto";
 
 type ServiceAccount = { client_email: string; private_key: string; token_uri?: string };

@@ -2,7 +2,7 @@
 // Collections ranked worst-first by their audit score (same score as the Revamp
 // tool). Improved collections keep their new score and sink to the back. Run a
 // full audit, resume an interrupted one ("Audit remaining"), or re-audit a
-// single row. Scores persist to ppw_collections so the order survives reloads.
+// single row. Scores persist to gtd_collections so the order survives reloads.
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
@@ -447,7 +447,7 @@ export function CollectionAuditQueue({ onLaunchRevamp }: Props) {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
         <div>
-          <h2 style={{ margin: 0, fontSize: 20, color: 'var(--ppw-accent)' }}>Audit Queue</h2>
+          <h2 style={{ margin: 0, fontSize: 20, color: 'var(--gtd-accent)' }}>Audit Queue</h2>
           <p style={{ margin: '4px 0 0', color: 'var(--text3)', fontSize: 13 }}>
             {collections.length} collections, {auditedCount} audited, {remainingCount} not yet audited, ranked worst-first by score
           </p>
@@ -462,7 +462,7 @@ export function CollectionAuditQueue({ onLaunchRevamp }: Props) {
               disabled={scanning}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 6,
-                border: 'none', background: 'var(--ppw-accent)', color: '#fff', fontSize: 13, fontWeight: 600,
+                border: 'none', background: 'var(--gtd-accent)', color: '#fff', fontSize: 13, fontWeight: 600,
                 cursor: scanning ? 'default' : 'pointer', opacity: scanning ? 0.7 : 1,
               }}
             >
@@ -546,7 +546,7 @@ export function CollectionAuditQueue({ onLaunchRevamp }: Props) {
           </button>
           <button
             onClick={async () => {
-              if (!window.confirm(`Repair SEO titles on all ${draftSlugs.size} saved draft(s)?\n\nRe-reads the LIVE title tag from Shopify for each draft and replaces fabricated "[X] | Peak Primal Wellness" titles with the real tag. Takes ~1s per draft. Safe to rerun.`)) return
+              if (!window.confirm(`Repair SEO titles on all ${draftSlugs.size} saved draft(s)?\n\nRe-reads the LIVE title tag from Shopify for each draft and replaces fabricated "[X] | Green Thumb Depot" titles with the real tag. Takes ~1s per draft. Safe to rerun.`)) return
               try {
                 const res = await fetch('/api/collections/repair-draft-seo', { method: 'POST' })
                 const data = await safeJson(res, 'Repair draft SEO')
@@ -568,7 +568,7 @@ export function CollectionAuditQueue({ onLaunchRevamp }: Props) {
           </button>
           <button
             onClick={async () => {
-              if (!window.confirm('Reset ALL collections to the ORIGINAL keywords from your collection guide (PPW_Complete_Collection_Optimization_6.xlsx)?\n\nThis overwrites primary + secondary keywords on every matching collection, undoing any Ahrefs auto-additions AND any manual edits made since. 198 collections in the guide.')) return
+              if (!window.confirm('Reset ALL collections to the ORIGINAL keywords from your collection guide (GTD_Complete_Collection_Optimization_6.xlsx)?\n\nThis overwrites primary + secondary keywords on every matching collection, undoing any Ahrefs auto-additions AND any manual edits made since. 198 collections in the guide.')) return
               try {
                 const res = await fetch('/api/collections/restore-keywords', { method: 'POST' })
                 const data = await safeJson(res, 'Restore keywords')
@@ -763,7 +763,7 @@ export function CollectionAuditQueue({ onLaunchRevamp }: Props) {
                 </button>
                 <button
                   onClick={() => onLaunchRevamp(c.slug)}
-                  style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'var(--ppw-accent)', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'var(--gtd-accent)', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
                 >
                   <RefreshCw className="h-3 w-3" /> Revamp
                 </button>
@@ -826,11 +826,11 @@ export function CollectionAuditQueue({ onLaunchRevamp }: Props) {
                 </div>
                 <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)' }}>Featured products (optional override) — paste product URLs</label>
                 <textarea value={kwFeatured} onChange={(e) => setKwFeatured(e.target.value)} rows={3}
-                  placeholder={'Paste up to 3 product page URLs, one per line (or comma-separated):\nhttps://peakprimalwellness.com/products/...\nhttps://peakprimalwellness.com/products/...'}
+                  placeholder={'Paste up to 3 product page URLs, one per line (or comma-separated):\nhttps://greenthumbdepot.com/products/...\nhttps://greenthumbdepot.com/products/...'}
                   style={{ width: '100%', margin: '4px 0 4px', padding: '8px 10px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text1)', fontSize: 13, fontFamily: 'inherit', resize: 'vertical' }} />
                 <p style={{ fontSize: 11, color: 'var(--text4)', margin: '0 0 12px' }}>Leave empty for automatic price-tier selection. Pinned products fill the Top Pick cards first; auto-selection fills any remaining of the 3 slots. Saved with the collection, so regenerating keeps them.</p>
                 <button onClick={pullAhrefs} disabled={kwLoading}
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'var(--ppw-accent)', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 14px', fontSize: 13, fontWeight: 600, cursor: 'pointer', marginBottom: 10 }}>
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'var(--gtd-accent)', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 14px', fontSize: 13, fontWeight: 600, cursor: 'pointer', marginBottom: 10 }}>
                   {kwLoading ? <Loader2 size={14} className="animate-spin" /> : <ScanLine size={14} />} {kwLoading ? 'Pulling Ahrefs...' : 'Pull Ahrefs keyword opportunities'}
                 </button>
                 {kwError && <p style={{ fontSize: 12, color: '#c53030', marginBottom: 8 }}>{kwError}</p>}

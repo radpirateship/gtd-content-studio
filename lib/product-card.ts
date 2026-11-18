@@ -9,7 +9,7 @@
 // ReferenceError at runtime instead. The helpers are now defined here so the
 // module is self-contained.
 //
-// CLAIMS POLICY: no bullet may promise white-glove delivery or assembly (PPW
+// CLAIMS POLICY: no bullet may promise white-glove delivery or assembly (GTD
 // does not offer it) or blanket free shipping (conditional on product class,
 // not offered on freight items such as saunas).
 //
@@ -143,7 +143,7 @@ export function extractFeatures(product: {
 
   // Fill only what the product data could not supply. Never "free shipping"
   // (conditional on product class, not offered on freight items such as
-  // saunas) and never a white-glove or assembly promise, neither of which PPW
+  // saunas) and never a white-glove or assembly promise, neither of which GTD
   // offers. A card showing this filler means the Shopify description is thin;
   // /product-bullets surfaces those for a manual spec.
   if (trimmed.length < 2) trimmed.push("Quality Inspected Before Shipping");
@@ -169,7 +169,7 @@ export function buildProductCard(product: {
   const features = extractFeatures(product);
 
   const imageHtml = product.imageUrl
-    ? `<div class="ppw-product-image-container"><img src="${product.imageUrl}" alt="${product.title}" class="ppw-product-image" loading="lazy" /></div>`
+    ? `<div class="gtd-product-image-container"><img src="${product.imageUrl}" alt="${product.title}" class="gtd-product-image" loading="lazy" /></div>`
     : "";
 
   let priceHtml = "";
@@ -189,15 +189,15 @@ export function buildProductCard(product: {
       : `<li>✅ ${f}</li>`
   ).join("\n");
 
-  return `<div class="ppw-product-card" style="border-color:${badge.color};">
-<span class="ppw-badge" style="background:${badge.color};align-self:flex-start;margin-bottom:1rem;">${badge.label}</span>
+  return `<div class="gtd-product-card" style="border-color:${badge.color};">
+<span class="gtd-badge" style="background:${badge.color};align-self:flex-start;margin-bottom:1rem;">${badge.label}</span>
 ${imageHtml}
 <h3>${product.title}</h3>
 ${priceHtml}
 <ul>
 ${featureBullets}
 </ul>
-<div style="margin-top:auto;"><a class="ppw-cta" href="${productUrl}">View ${shortName}</a></div>
+<div style="margin-top:auto;"><a class="gtd-cta" href="${productUrl}">View ${shortName}</a></div>
 </div>`;
 }
 
@@ -217,10 +217,10 @@ export function buildFeaturedProductsSection(
 ): string {
   const displayProducts = products.slice(0, 4);
   const cards = displayProducts.map((p, i) => buildProductCard(p, i, displayProducts)).join("\n");
-  return `<section id="featured-products" class="ppw-section">
-<h2 class="ppw-center">Top ${categoryLabel} Picks</h2>
-<p style="margin-bottom:3rem;color:#666;font-size:1.6rem;" class="ppw-center">Premium quality with pre-delivery inspection and expert support.</p>
-<div class="ppw-grid cols-${Math.min(displayProducts.length, 2)}">
+  return `<section id="featured-products" class="gtd-section">
+<h2 class="gtd-center">Top ${categoryLabel} Picks</h2>
+<p style="margin-bottom:3rem;color:#666;font-size:1.6rem;" class="gtd-center">Premium quality with pre-delivery inspection and expert support.</p>
+<div class="gtd-grid cols-${Math.min(displayProducts.length, 2)}">
 ${cards}
 </div>
 </section>`;

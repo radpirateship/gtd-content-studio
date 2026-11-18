@@ -13,12 +13,12 @@ export const maxDuration = 60;
 /**
  * Hub per handle from the synced collections table. The live Shopify call
  * knows handle and title; the hub (Saunas, Recovery, Fitness, Wellness,
- * Clinical) lives in ppw_collections.category. Empty map on failure.
+ * Clinical) lives in gtd_collections.category. Empty map on failure.
  */
 async function hubByHandle(): Promise<Map<string, string>> {
   try {
     const sql = getSQL();
-    const rows = Array.from(await sql`SELECT slug, category FROM ppw_collections WHERE category IS NOT NULL AND category <> ''`) as { slug: string; category: string }[];
+    const rows = Array.from(await sql`SELECT slug, category FROM gtd_collections WHERE category IS NOT NULL AND category <> ''`) as { slug: string; category: string }[];
     return new Map(rows.flatMap((r) => { const h = asHub(r.category); return h ? [[r.slug.toLowerCase(), h] as [string, string]] : []; }));
   } catch {
     return new Map();

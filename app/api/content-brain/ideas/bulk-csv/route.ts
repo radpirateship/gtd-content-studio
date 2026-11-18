@@ -40,7 +40,7 @@ function slugify(s: string): string {
 
 // collection label/slug/handle -> { collection_slug, hub }
 //
-// Resolved against the SYNCED collections table first (ppw_collections, kept
+// Resolved against the SYNCED collections table first (gtd_collections, kept
 // current from Shopify by /api/collections/sync-shopify), so any live
 // collection is accepted and its hub is the synced category, which includes
 // Clinical. The static MASTER_COLLECTIONS array is the fallback for when the
@@ -52,7 +52,7 @@ async function loadSynced(): Promise<SyncedColl[]> {
   if (syncedCache && Date.now() - syncedCache.at < 5 * 60 * 1000) return syncedCache.rows;
   try {
     const sql = getSQL();
-    const rows = Array.from(await sql`SELECT slug, category, title_tag, primary_keyword FROM ppw_collections WHERE COALESCE(is_hidden, false) = false`) as SyncedColl[];
+    const rows = Array.from(await sql`SELECT slug, category, title_tag, primary_keyword FROM gtd_collections WHERE COALESCE(is_hidden, false) = false`) as SyncedColl[];
     syncedCache = { at: Date.now(), rows };
     return rows;
   } catch {
@@ -188,7 +188,7 @@ export async function POST(req: NextRequest) {
       // Explicit hub in the CSV wins; otherwise the synced category.
       const hubOverride = g("hub");
       if (hubOverride) coll.hub = asHub(hubOverride) || coll.hub;
-      // shopifySlug may be a full path (/blogs/wellness/handle) — keep just the handle.
+      // shopifySlug may be a full path (/blogs/guides/handle) — keep just the handle.
       const rawSlug = g("shopifySlug", "slug");
       const url_slug = rawSlug ? rawSlug.split("/").filter(Boolean).pop() || slugify(title) : slugify(title);
       const wordCount = parseInt(g("wordCount", "word_count"), 10);
@@ -215,7 +215,7 @@ export async function POST(req: NextRequest) {
         ultimate_guide_url: (() => {
           const raw = g("ultimateGuideUrl", "ultimateGuide", "ultimate_guide_url", "ultimateGuideSlug").trim();
           if (!raw) return null;
-          const path = raw.replace(/^https?:\/\/(www\.)?peakprimalwellness\.com/i, "");
+          const path = raw.replace(/^https?:\/\/(www\.)?greenthumbdepot\.com/i, "");
           return path.startsWith("/") ? path : `/pages/${path.replace(/^pages\//, "")}`;
         })(),
         ultimate_guide_title: g("ultimateGuideTitle", "ultimate_guide_title") || null,

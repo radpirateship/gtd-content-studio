@@ -78,7 +78,7 @@ function keywordList(primary: string | null, secondary: unknown): string[] {
 
 type GradeOutcome = { slug: string; score: number | null; found: boolean; status: 'graded' | 'absent' | 'error' }
 
-// Grade one collection and persist to collection_grades + ppw_collections.
+// Grade one collection and persist to collection_grades + gtd_collections.
 async function gradeOne(
   sql: ReturnType<typeof getSQL>,
   token: string,
@@ -96,7 +96,7 @@ async function gradeOne(
       ON CONFLICT (slug) DO UPDATE SET score = NULL, severity = 999, shopify_found = FALSE, top_issues = ${JSON.stringify(['Not found on Shopify'])}, graded_at = now()
     `
     await sql`
-      UPDATE ppw_collections SET score = NULL, audit_fail_count = NULL, audit_warn_count = NULL,
+      UPDATE gtd_collections SET score = NULL, audit_fail_count = NULL, audit_warn_count = NULL,
         audit_top_issues = ${JSON.stringify(['Not found on Shopify'])}, audited_at = now() WHERE slug = ${handle}
     `
     return { slug: handle, score: null, found: false, status: 'absent' }
@@ -122,7 +122,7 @@ async function gradeOne(
     primary_keyword: row.primary_keyword || '',
     keywords,
   })
-  // Structural grade per docs/PPW_Collection_Page_Rules.md — combined 50/50
+  // Structural grade per docs/GTD_Collection_Page_Rules.md — combined 50/50
   // with the keyword rubric so the queue reflects the FULL ruleset.
   const sg = gradeCollection({
     title: col.title || '',
@@ -146,7 +146,7 @@ async function gradeOne(
       shopify_found = TRUE, graded_at = now()
   `
   await sql`
-    UPDATE ppw_collections SET score = ${combined}, audit_fail_count = ${failCount}, audit_warn_count = ${sg.warnCount},
+    UPDATE gtd_collections SET score = ${combined}, audit_fail_count = ${failCount}, audit_warn_count = ${sg.warnCount},
       audit_top_issues = ${JSON.stringify(mergedIssues)}, word_count = ${g.breakdown.technical.wordCount}, audited_at = now() WHERE slug = ${handle}
   `
   return { slug: handle, score: combined, found: true, status: 'graded' }
@@ -172,19 +172,19 @@ export async function POST(req: NextRequest) {
 
   // ── Single-collection re-audit (called after a publish) ───────────────────
   if (slug) {
-    const r = (await sql`SELECT slug, primary_keyword, secondary_keywords, collection_type FROM ppw_collections WHERE slug = ${slug}`) as Array<{ slug: string; primary_keyword: string | null; secondary_keywords: unknown }>
+    const r = (await sql`SELECT slug, primary_keyword, secondary_keywords, collection_type FROM gtd_collections WHERE slug = ${slug}`) as Array<{ slug: string; primary_keyword: string | null; secondary_keywords: unknown }>
     if (!r[0]) return NextResponse.json({ error: `Collection '${slug}' not found in database` }, { status: 404 })
     const outcome = await gradeOne(sql, token, r[0])
     return NextResponse.json({ ok: true, single: true, ...outcome })
   }
 
   // ── Batch ─────────────────────────────────────────────────────────────────
-  const totalRow = await sql`SELECT COUNT(*)::int AS n FROM ppw_collections`
+  const totalRow = await sql`SELECT COUNT(*)::int AS n FROM gtd_collections`
   const total = (totalRow[0] as { n: number }).n
 
   const rows = mode === 'remaining'
-    ? ((await sql`SELECT slug, primary_keyword, secondary_keywords, collection_type FROM ppw_collections WHERE audited_at IS NULL ORDER BY category, slug LIMIT ${limit}`) as Array<{ slug: string; primary_keyword: string | null; secondary_keywords: unknown }>)
-    : ((await sql`SELECT slug, primary_keyword, secondary_keywords, collection_type FROM ppw_collections ORDER BY category, slug LIMIT ${limit} OFFSET ${offset}`) as Array<{ slug: string; primary_keyword: string | null; secondary_keywords: unknown }>)
+    ? ((await sql`SELECT slug, primary_keyword, secondary_keywords, collection_type FROM gtd_collections WHERE audited_at IS NULL ORDER BY category, slug LIMIT ${limit}`) as Array<{ slug: string; primary_keyword: string | null; secondary_keywords: unknown }>)
+    : ((await sql`SELECT slug, primary_keyword, secondary_keywords, collection_type FROM gtd_collections ORDER BY category, slug LIMIT ${limit} OFFSET ${offset}`) as Array<{ slug: string; primary_keyword: string | null; secondary_keywords: unknown }>)
 
   const batch: GradeOutcome[] = []
   let errorCount = 0
@@ -195,7 +195,7 @@ export async function POST(req: NextRequest) {
     await sleep(PACE_MS)
   }
 
-  const remainingRow = await sql`SELECT COUNT(*)::int AS n FROM ppw_collections WHERE audited_at IS NULL`
+  const remainingRow = await sql`SELECT COUNT(*)::int AS n FROM gtd_collections WHERE audited_at IS NULL`
   const remaining = (remainingRow[0] as { n: number }).n
 
   // 'remaining' mode: advance until nothing un-audited is left (errors retried next pass).

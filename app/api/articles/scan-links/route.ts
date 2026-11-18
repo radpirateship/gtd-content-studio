@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
       (l: { title: string; url: string }, i: number) => `C${i + 1}. "${l.title}" → ${l.url}`
     ).join('\n');
 
-    const systemPrompt = `You are a Senior SEO Strategist for Peak Primal Wellness. Identify internal linking opportunities in an article.
+    const systemPrompt = `You are a Senior SEO Strategist for Green Thumb Depot. Identify internal linking opportunities in an article.
 
 THE #1 RULE — ANCHOR TEXT MUST BE COPIED VERBATIM FROM THE ARTICLE:
 Every "anchor_text" you return MUST be a word-for-word phrase that already appears in the ARTICLE TEXT below — same words, same order, same spelling. Before choosing an anchor, find a real 2-5 word phrase in the article text and copy it EXACTLY. NEVER invent a descriptive phrase, NEVER use the target article's title as the anchor, NEVER paraphrase. If you cannot find a natural verbatim phrase in the article for a given target, SKIP that target — do not force it.

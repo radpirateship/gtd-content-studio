@@ -173,7 +173,7 @@ export async function fetchProductDetail(id: string): Promise<ProductDetail | nu
     productType: p.productType || "",
     tags: p.tags || [],
     descriptionHtml: p.descriptionHtml || "",
-    url: `https://peakprimalwellness.com/products/${p.handle}`,
+    url: `https://greenthumbdepot.com/products/${p.handle}`,
     price: p.priceRangeV2?.minVariantPrice?.amount ?? null,
     compareAtPrice: compare && Number(compare) > 0 ? compare : null,
     variants: p.variants?.nodes || [],
@@ -215,7 +215,7 @@ export async function fetchCollectionDetail(handle: string): Promise<CollectionD
     title: c.title,
     descriptionHtml: c.descriptionHtml || "",
     productsCount: c.productsCount?.count ?? 0,
-    url: `https://peakprimalwellness.com/collections/${c.handle}`,
+    url: `https://greenthumbdepot.com/collections/${c.handle}`,
   };
 }
 

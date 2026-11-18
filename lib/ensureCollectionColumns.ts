@@ -1,11 +1,11 @@
 // lib/ensureCollectionColumns.ts
-// Idempotent, self-healing schema guard for ppw_collections. Cheap to call
+// Idempotent, self-healing schema guard for gtd_collections. Cheap to call
 // (ADD COLUMN IF NOT EXISTS is a no-op once columns exist) and guarantees the
 // ultimate-guide + audit-score columns are present, so PATCH saves and the
 // catalog audit can never fail on a missing column.
 //
 // 2026-08-11: added the research + sync columns that previously only existed in
-// PPW_Complete_Collection_Optimization.xlsx, plus the Shopify-synced facts
+// GTD_Complete_Collection_Optimization.xlsx, plus the Shopify-synced facts
 // (tags, product_count, rule_summary, is_published) needed for the collection
 // detail panel and the CSV round-trip.
 import { getSQL } from './db'
@@ -15,7 +15,7 @@ let ensured = false
 export async function ensureCollectionColumns(sql: ReturnType<typeof getSQL>) {
   if (ensured) return // once per warm lambda is enough
   await sql`
-    ALTER TABLE ppw_collections
+    ALTER TABLE gtd_collections
       ADD COLUMN IF NOT EXISTS ultimate_guide_title TEXT,
       ADD COLUMN IF NOT EXISTS ultimate_guide_url   TEXT,
       ADD COLUMN IF NOT EXISTS score                INTEGER,
@@ -43,7 +43,7 @@ export async function ensureCollectionColumns(sql: ReturnType<typeof getSQL>) {
       ADD COLUMN IF NOT EXISTS last_synced_at       TIMESTAMPTZ
   `
   // Filter and sort the queue without a full table scan at 270+ rows.
-  await sql`CREATE INDEX IF NOT EXISTS ppw_collections_category_idx ON ppw_collections (category)`
-  await sql`CREATE INDEX IF NOT EXISTS ppw_collections_volume_idx   ON ppw_collections (search_volume DESC NULLS LAST)`
+  await sql`CREATE INDEX IF NOT EXISTS gtd_collections_category_idx ON gtd_collections (category)`
+  await sql`CREATE INDEX IF NOT EXISTS gtd_collections_volume_idx   ON gtd_collections (search_volume DESC NULLS LAST)`
   ensured = true
 }

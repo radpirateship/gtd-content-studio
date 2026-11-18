@@ -48,8 +48,8 @@ export function SeoAnalysisView({ article }: SeoAnalysisViewProps) {
 
     // Links
     const allLinks = html.match(/<a\s[^>]*href="[^"]*"[^>]*>/gi) || []
-    const internalLinks = allLinks.filter(l => l.includes('peakprimalwellness'))
-    const externalLinks = allLinks.filter(l => !l.includes('peakprimalwellness') && !l.includes('#'))
+    const internalLinks = allLinks.filter(l => l.includes('greenthumbdepot'))
+    const externalLinks = allLinks.filter(l => !l.includes('greenthumbdepot') && !l.includes('#'))
 
     // Images
     const images = html.match(/<img[^>]*>/gi) || []
@@ -176,12 +176,12 @@ export function SeoAnalysisView({ article }: SeoAnalysisViewProps) {
   const categories = ['Title & Meta', 'Content', 'Headings', 'Links & Media', 'Schema']
 
   const StatusIcon = ({ status }: { status: SeoCheck['status'] }) => {
-    if (status === 'pass') return <Check className="h-3.5 w-3.5" style={{ color: 'var(--ppw-accent)' }} />
+    if (status === 'pass') return <Check className="h-3.5 w-3.5" style={{ color: 'var(--gtd-accent)' }} />
     if (status === 'warn') return <AlertTriangle className="h-3.5 w-3.5" style={{ color: '#d69e2e' }} />
     return <X className="h-3.5 w-3.5" style={{ color: '#c53030' }} />
   }
 
-  const scoreColor = analysis.score >= 80 ? 'var(--ppw-accent)' : analysis.score >= 60 ? '#d69e2e' : '#c53030'
+  const scoreColor = analysis.score >= 80 ? 'var(--gtd-accent)' : analysis.score >= 60 ? '#d69e2e' : '#c53030'
 
   return (
     <div className="flex flex-1 flex-col overflow-y-auto">
@@ -190,7 +190,7 @@ export function SeoAnalysisView({ article }: SeoAnalysisViewProps) {
         <div className="flex items-start justify-between mb-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <BarChart3 className="h-4 w-4" style={{ color: 'var(--ppw-accent)' }} />
+              <BarChart3 className="h-4 w-4" style={{ color: 'var(--gtd-accent)' }} />
               <h1 className="font-serif text-[20px] font-semibold tracking-tight" style={{ color: 'var(--text1)' }}>
                 SEO Analysis
               </h1>
@@ -285,14 +285,14 @@ export function SeoAnalysisView({ article }: SeoAnalysisViewProps) {
             </h2>
             <div className="rounded-lg border p-3" style={{ background: 'var(--bg)', borderColor: 'var(--border)' }}>
               <div className="flex items-center gap-2 mb-2">
-                <Heading className="h-3.5 w-3.5" style={{ color: 'var(--ppw-accent)' }} />
+                <Heading className="h-3.5 w-3.5" style={{ color: 'var(--gtd-accent)' }} />
                 <span className="text-[12px] font-medium" style={{ color: 'var(--text1)' }}>H1: {article.title}</span>
               </div>
               {analysis.h2Texts.map((h2, i) => (
                 <div key={i} className="flex items-center gap-2 pl-4 py-0.5">
                   <span className="text-[10px] font-mono" style={{ color: 'var(--text4)' }}>H2</span>
                   <span className="text-[12px]" style={{
-                    color: h2.toLowerCase().includes(article.keyword?.toLowerCase() || '') ? 'var(--ppw-accent)' : 'var(--text2)',
+                    color: h2.toLowerCase().includes(article.keyword?.toLowerCase() || '') ? 'var(--gtd-accent)' : 'var(--text2)',
                   }}>
                     {h2}
                   </span>

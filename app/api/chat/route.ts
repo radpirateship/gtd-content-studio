@@ -32,7 +32,7 @@ const TOOLS = [
   {
     name: "list_collections",
     description:
-      "List PPW collections from the database. Can filter by search term, category, priority, or optimization status. Returns slug, category, primary_keyword, search_volume, title_tag, priority.",
+      "List GTD collections from the database. Can filter by search term, category, priority, or optimization status. Returns slug, category, primary_keyword, search_volume, title_tag, priority.",
     input_schema: {
       type: "object" as const,
       properties: {

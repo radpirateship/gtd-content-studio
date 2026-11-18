@@ -36,7 +36,7 @@ async function compressToDataUri(url: string): Promise<string> {
 // Shorter style suffix to avoid prompt length issues
 // Kept short because the prompt is trimmed to 150 chars before this is appended,
 // but the palette is pinned so images match the blog template. Full spec lives
-// in lib/ppw-image-style.ts.
+// in lib/gtd-image-style.ts.
 const STYLE_SUFFIX =
   "Clean modern editorial style on white or #FAF7F1, navy #09195B dominant, muted gold #C8A96E accent, no dark backgrounds, no neon, no text overlays.";
 
@@ -151,9 +151,9 @@ export async function POST(request: NextRequest) {
 
     // Strip any images inside product card blocks (safety)
     enrichedHTML = enrichedHTML.replace(
-      /(<div[^>]*class="[^"]*ppw-product-card[^"]*"[^>]*>)([\s\S]*?)(<\/div>\s*<\/div>\s*<\/div>)/gi,
+      /(<div[^>]*class="[^"]*gtd-product-card[^"]*"[^>]*>)([\s\S]*?)(<\/div>\s*<\/div>\s*<\/div>)/gi,
       (match: string) =>
-        match.replace(/<figure[^>]*class="ppw-content-image"[^>]*>[\s\S]*?<\/figure>/gi, "")
+        match.replace(/<figure[^>]*class="gtd-content-image"[^>]*>[\s\S]*?<\/figure>/gi, "")
     );
 
     const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -271,9 +271,9 @@ export async function POST(request: NextRequest) {
       if (!cleanUrl) continue;
 
       const altText = (img.altText || img.heading).replace(/"/g, "&quot;");
-      // ppw-content-image is a v1 class defined in no current stylesheet, so on
+      // gtd-content-image is a v1 class defined in no current stylesheet, so on
       // a v2 article the figure rendered unstyled. Match the article's version.
-      const figClass = /class=["'][^"']*ppwb-/.test(enrichedHTML) ? "ppwb-fig" : "ppw-content-image";
+      const figClass = /class=["'][^"']*gtdb-/.test(enrichedHTML) ? "gtdb-fig" : "gtd-content-image";
       const figureTag = `\n<figure class="${figClass}"><img src="${cleanUrl}" alt="${altText}" loading="lazy" /></figure>\n`;
 
       const escapedId = img.sectionId.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -286,10 +286,10 @@ export async function POST(request: NextRequest) {
       if (sectionMatch) {
         const insertPos = sectionMatch.index + sectionMatch[0].length;
         const before = enrichedHTML.slice(Math.max(0, insertPos - 500), insertPos);
-        // ppwb-pick is the v2 product card; without it the guard passes and an
+        // gtdb-pick is the v2 product card; without it the guard passes and an
         // image is inserted into the middle of the picks grid.
-        if (!before.includes("ppw-product-card") && !before.includes("featured-products")
-            && !before.includes("ppwb-pick") && !before.includes("ppwb-picks")) {
+        if (!before.includes("gtd-product-card") && !before.includes("featured-products")
+            && !before.includes("gtdb-pick") && !before.includes("gtdb-picks")) {
           enrichedHTML =
             enrichedHTML.slice(0, insertPos) + figureTag + enrichedHTML.slice(insertPos);
           insertedCount++;

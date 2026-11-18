@@ -21,7 +21,7 @@ const LINK_SVG = '<svg stroke-linejoin="round" stroke-linecap="round" stroke-wid
 // ── Category → Shopify collection slug mapping ──────────────────────────────
 
 const CATEGORY_COLLECTION: Record<string, string> = {
-  // PPW collections. Replaced Aug 2026: this map held 19 Naked Nutrition
+  // GTD collections. Replaced Aug 2026: this map held 19 Naked Nutrition
   // supplement slugs (whey-protein, creatine, bcaa, keto, vegan...), none of
   // which exist on this store, so every lookup missed and product links were
   // tagged with the wrong collection. Mirrors the map in app/api/generate.
@@ -61,9 +61,9 @@ function collectionNameToSlug(name: string): string {
 // flavor variant showcases). Fall back to NN brand attribute labels.
 // All badges use NN black — no price-based color coding.
 
-const PPW_BADGE_COLOR = "#0066cc"
+const GTD_BADGE_COLOR = "#0066cc"
 
-// PPW NOTE (Aug 2026): flavour detection is Naked Nutrition logic. On PPW
+// GTD NOTE (Aug 2026): flavour detection is Naked Nutrition logic. On GTD
 // titles it produces false badges, e.g. a cherry-wood sauna badged "Cherry" or
 // a red light panel badged "Orange". Emptied so extractFlavorBadge always
 // returns null and the honest fallback below is used instead.
@@ -71,7 +71,7 @@ const PPW_BADGE_COLOR = "#0066cc"
 // module already populates (capacity, heat_type, wood_type, emf_level).
 const FLAVOR_KEYWORDS: { pattern: RegExp; label: string }[] = []
 
-// Fallback badge. Must be true of every product PPW sells. The previous list
+// Fallback badge. Must be true of every product GTD sells. The previous list
 // ("Third-Party Tested", "No Additives", "Fan Favorite", "Clean Formula") was
 // supplement copy and made unverifiable claims about equipment.
 const BRAND_FALLBACK_BADGES = ["Authorized Dealer"]
@@ -87,9 +87,9 @@ function extractFlavorBadge(title: string): string | null {
 function assignBadge(products: { title?: string; price?: string }[], index: number): { label: string; color: string } {
   const product = products[index]
   const flavor = product?.title ? extractFlavorBadge(product.title) : null
-  if (flavor) return { label: flavor, color: PPW_BADGE_COLOR }
+  if (flavor) return { label: flavor, color: GTD_BADGE_COLOR }
   const fallback = BRAND_FALLBACK_BADGES[index % BRAND_FALLBACK_BADGES.length]
-  return { label: fallback, color: PPW_BADGE_COLOR }
+  return { label: fallback, color: GTD_BADGE_COLOR }
 }
 
 // ── Extract short product name for CTA button ────────────────────────────────
@@ -122,7 +122,7 @@ function extractFeatures(product: {
   const titleAndTags = `${product.title || ""} ${product.tags || ""}`.toLowerCase()
   const fullText = `${product.title || ""} ${product.description || ""} ${product.tags || ""}`.toLowerCase()
 
-  // PPW spec patterns. Replaced Aug 2026: these were supplement ingredient
+  // GTD spec patterns. Replaced Aug 2026: these were supplement ingredient
   // matchers (whey, casein, BCAA, creatine, collagen, probiotics) that could
   // never match equipment, plus property matchers (Non-GMO, vegan, keto,
   // grass-fed) that would have been false claims if they ever did.
@@ -196,7 +196,7 @@ function buildProductCard(
   const features = extractFeatures(product)
 
   const imageHtml = product.imageUrl
-    ? `<div class="ppw-product-image-container"><img src="${product.imageUrl}" alt="${product.title}" class="ppw-product-image" loading="lazy" /></div>`
+    ? `<div class="gtd-product-image-container"><img src="${product.imageUrl}" alt="${product.title}" class="gtd-product-image" loading="lazy" /></div>`
     : ""
 
   let priceHtml = ""
@@ -214,15 +214,15 @@ function buildProductCard(
     .map((f, i) => (i === 0 ? `<li>✓ <strong>${f}</strong></li>` : `<li>✓ ${f}</li>`))
     .join("\n")
 
-  return `<div class="ppw-product-card" style="border-color:${badge.color};">
-<span class="ppw-badge" style="background:${badge.color};align-self:flex-start;margin-bottom:1rem;">${badge.label}</span>
+  return `<div class="gtd-product-card" style="border-color:${badge.color};">
+<span class="gtd-badge" style="background:${badge.color};align-self:flex-start;margin-bottom:1rem;">${badge.label}</span>
 ${imageHtml}
 <h3>${product.title}</h3>
 ${priceHtml}
 <ul>
 ${featureBullets}
 </ul>
-<div style="margin-top:auto;"><a class="ppw-cta" href="${productUrl}">View ${shortName}</a></div>
+<div style="margin-top:auto;"><a class="gtd-cta" href="${productUrl}">View ${shortName}</a></div>
 </div>`
 }
 
@@ -231,15 +231,15 @@ ${featureBullets}
 function buildRelatedArticlesHtml(articles: { title: string; url: string; description: string }[]): string {
   if (!articles || articles.length === 0) return ""
   const cards = articles.slice(0, 3).map((a) =>
-    `<article class="ppw-card">
-<h3 class="ppw-card-title"><a href="${a.url}" class="ppw-links">${a.title} ${LINK_SVG}</a></h3>
-<p class="ppw-sm">${a.description}</p>
+    `<article class="gtd-card">
+<h3 class="gtd-card-title"><a href="${a.url}" class="gtd-links">${a.title} ${LINK_SVG}</a></h3>
+<p class="gtd-sm">${a.description}</p>
 </article>`
   ).join("\n")
 
-  return `<section class="ppw-section">
+  return `<section class="gtd-section">
 <h2>Continue Your Wellness Journey</h2>
-<div class="ppw-grid cols-3">
+<div class="gtd-grid cols-3">
 ${cards}
 </div>
 </section>`
@@ -344,12 +344,12 @@ export async function POST(request: NextRequest) {
 
     // ── 4. Conversion element instructions ───────────────────────────────────
 
-    const emailCaptureHtml = "" // NN email-gate removed for PPW (no 15%-off model)
+    const emailCaptureHtml = "" // NN email-gate removed for GTD (no 15%-off model)
 
-    const calculatorHtml = "" // NN supplement calculator removed for PPW
+    const calculatorHtml = "" // NN supplement calculator removed for GTD
 
     const comparisonInstruction = includeComparisonTable
-      ? "\n- If appropriate, include a comparison table using PPW grid markup: <div class=\"ppw-grid cols-2\"> or cols-3 with ppw-card items. IMPORTANT: The comparison table must NOT be the last content section — always close every ppw-card and ppw-grid div properly and follow it with at least one more prose section before the article ends."
+      ? "\n- If appropriate, include a comparison table using GTD grid markup: <div class=\"gtd-grid cols-2\"> or cols-3 with gtd-card items. IMPORTANT: The comparison table must NOT be the last content section — always close every gtd-card and gtd-grid div properly and follow it with at least one more prose section before the article ends."
       : ""
 
     const specialContext = specialInstructions
@@ -360,23 +360,23 @@ export async function POST(request: NextRequest) {
     // CALL 1: Generate body content (NO FAQ, NO images, NO product cards)
     // ══════════════════════════════════════════════════════════════════════════
 
-    const systemPrompt = `You are a Senior Content Editor at Peak Primal Wellness, a premium wellness equipment brand (infrared saunas, cold plunges, red light therapy, hyperbaric chambers, and recovery equipment). You are rewriting an existing article, not generating from scratch. Your goal is to preserve the author's best insights and unique perspectives while dramatically improving structure, SEO optimization, and conversion elements.
+    const systemPrompt = `You are a Senior Content Editor at Green Thumb Depot, a premium wellness equipment brand (infrared saunas, cold plunges, red light therapy, hyperbaric chambers, and recovery equipment). You are rewriting an existing article, not generating from scratch. Your goal is to preserve the author's best insights and unique perspectives while dramatically improving structure, SEO optimization, and conversion elements.
 
-OUTPUT FORMAT — You MUST use PPW CSS classes (already defined in the page). Do NOT use inline styles. Do NOT use markdown syntax (**, __, *, _, ##, etc.) — use only HTML tags like <strong>, <em>, <h2>, etc.
+OUTPUT FORMAT — You MUST use GTD CSS classes (already defined in the page). Do NOT use inline styles. Do NOT use markdown syntax (**, __, *, _, ##, etc.) — use only HTML tags like <strong>, <em>, <h2>, etc.
 
 STRUCTURE YOU MUST FOLLOW:
-1. Start directly with body section content (NO <style>, NO <div class="ppw-wrap">, NO <nav>, NO <h1> — those are added by the template)
+1. Start directly with body section content (NO <style>, NO <div class="gtd-wrap">, NO <nav>, NO <h1> — those are added by the template)
 2. First section: A "Key Takeaways" box:
-   <section class="ppw-section ppw-muted">
+   <section class="gtd-section gtd-muted">
    <h2>Key Takeaways</h2>
    <ul><li><strong>Label:</strong> description</li>...</ul>
    </section>
 3. Body sections, each wrapped in:
-   <section id="SLUG" class="ppw-section">
+   <section id="SLUG" class="gtd-section">
    <h2>Section Title</h2>
    ...paragraphs, lists, callout boxes...
    </section>
-4. Use <div class="ppw-callout"> for important callout blocks
+4. Use <div class="gtd-callout"> for important callout blocks
 5. Weave citations into the text as linked references: "...research shows that [citation 1] claims that..."
 6. Do NOT include any image tags or image placeholders. Images are added separately after content generation.
 7. Do NOT include an FAQ section. The FAQ is generated in a separate step.
@@ -422,10 +422,10 @@ Requirements:
 - Weave citations into the text naturally as linked references
 - Do NOT include any image tags or image placeholders
 - Do NOT include an FAQ section (it is generated separately)
-- Key Takeaways section first using ppw-muted class
-- All sections use ppw-section class with kebab-case IDs`
+- Key Takeaways section first using gtd-muted class
+- All sections use gtd-section class with kebab-case IDs`
 
-    console.log("[revamp] Generate: calling AI for PPW body content rewrite...")
+    console.log("[revamp] Generate: calling AI for GTD body content rewrite...")
     // Generous cap so a long article is never truncated (i.e. shortened) during
     // a revamp. We don't shorten existing content, so don't bound output by the
     // target word count.
@@ -480,13 +480,13 @@ Requirements:
 
     if (includeFAQ) {
       console.log("[revamp] Generate: Making dedicated FAQ call...")
-      const faqSystemPrompt = `You are a Senior Content Editor at Peak Primal Wellness. Generate ONLY an FAQ section for an article. Output ONLY the HTML below — no explanation, no markdown, no wrapping tags.
+      const faqSystemPrompt = `You are a Senior Content Editor at Green Thumb Depot. Generate ONLY an FAQ section for an article. Output ONLY the HTML below — no explanation, no markdown, no wrapping tags.
 
 FORMAT (use this EXACT structure):
-<section id="faq" class="ppw-section">
+<section id="faq" class="gtd-section">
 <h2>Frequently Asked Questions</h2>
-<div class="ppw-faq-list">
-<details class="ppw-faq-item"><summary class="ppw-faq-question">Question?</summary><div class="ppw-faq-answer"><p>Answer paragraph.</p></div></details>
+<div class="gtd-faq-list">
+<details class="gtd-faq-item"><summary class="gtd-faq-question">Question?</summary><div class="gtd-faq-answer"><p>Answer paragraph.</p></div></details>
 </div>
 </section>
 
@@ -496,7 +496,7 @@ RULES:
 - Questions should cover different aspects (ingredients, safety, dosage, results, cost, certifications, etc.)
 - Do NOT use markdown syntax — HTML only
 - Do NOT include any content outside the <section> tags
-- Do NOT include comparison tables, product grids, or any ppw-grid / ppw-card markup. This is an FAQ section ONLY.`
+- Do NOT include comparison tables, product grids, or any gtd-grid / gtd-card markup. This is an FAQ section ONLY.`
 
       const faqUserPrompt = `Write an FAQ section for this revamped article:
 
@@ -511,27 +511,27 @@ CATEGORY: ${categoryLabel}`
         .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
         .replace(/__(.+?)__/g, "<em>$1</em>")
         // Strip any comparison table / product grid markup that leaked into FAQ
-        .replace(/<div\s+class="ppw-grid[^"]*">[\s\S]*?<\/div>\s*<\/div>/gi, "")
-        .replace(/<div\s+class="ppw-card[^"]*">[\s\S]*?<\/div>/gi, "")
+        .replace(/<div\s+class="gtd-grid[^"]*">[\s\S]*?<\/div>\s*<\/div>/gi, "")
+        .replace(/<div\s+class="gtd-card[^"]*">[\s\S]*?<\/div>/gi, "")
         .trim()
 
-      if (cleanedFaqContent.includes('id="faq"') && cleanedFaqContent.includes("ppw-faq-item")) {
+      if (cleanedFaqContent.includes('id="faq"') && cleanedFaqContent.includes("gtd-faq-item")) {
         // Sanitize FAQ section
         cleanFaqSection = cleanedFaqContent.replace(
-          /(<div class="ppw-faq-answer">)([\s\S]*?)(<\/div>)/gi,
+          /(<div class="gtd-faq-answer">)([\s\S]*?)(<\/div>)/gi,
           (_match: string, open: string, body: string, close: string) => {
             const cleanBody = body
               .replace(/<\/section>/gi, "")
               .replace(/<\/article>/gi, "")
-              .replace(/<div\s+class="ppw-grid[^"]*">[\s\S]*?<\/div>/gi, "")
-              .replace(/<div\s+class="ppw-card[^"]*">[\s\S]*?<\/div>/gi, "")
+              .replace(/<div\s+class="gtd-grid[^"]*">[\s\S]*?<\/div>/gi, "")
+              .replace(/<div\s+class="gtd-card[^"]*">[\s\S]*?<\/div>/gi, "")
             return open + cleanBody + close
           }
         )
 
         // Parse FAQ items for schema
         const questionMatches = Array.from(cleanFaqSection.matchAll(/<summary[^>]*>(.*?)<\/summary>/gi))
-        const answerMatches = Array.from(cleanFaqSection.matchAll(/<div class="ppw-faq-answer">([\s\S]*?)<\/div>/gi))
+        const answerMatches = Array.from(cleanFaqSection.matchAll(/<div class="gtd-faq-answer">([\s\S]*?)<\/div>/gi))
         questionMatches.forEach((qm, i) => {
           const q = qm[1].replace(/<[^>]+>/g, "").trim()
           const a = answerMatches[i] ? answerMatches[i][1].replace(/<[^>]+>/g, "").trim() : ""
@@ -575,11 +575,11 @@ CATEGORY: ${categoryLabel}`
 
     // ── Overview / Hero section ──────────────────────────────────────────────
 
-    const overviewHtml = `<section id="overview" class="ppw-section">
-<div class="ppw-kicker">${categoryLabel}</div>
+    const overviewHtml = `<section id="overview" class="gtd-section">
+<div class="gtd-kicker">${categoryLabel}</div>
 <h1>${title}</h1>
-<p class="ppw-subtitle">${subtitle.trim()}</p>
-<div class="ppw-meta"><span>By Peak Primal Wellness</span><span class="ppw-dot"></span><span>${readTime} min read</span></div>
+<p class="gtd-subtitle">${subtitle.trim()}</p>
+<div class="gtd-meta"><span>By Green Thumb Depot</span><span class="gtd-dot"></span><span>${readTime} min read</span></div>
 </section>`
 
     // ── Featured Products section (deterministic HTML) ───────────────────────
@@ -591,10 +591,10 @@ CATEGORY: ${categoryLabel}`
       const cards = displayProducts
         .map((p, i) => buildProductCard(p, i, displayProducts, category))
         .join("\n")
-      productsHtml = `\n<section id="featured-products" class="ppw-section">
-<h2 class="ppw-center">Top ${categoryLabel} Picks</h2>
-<p style="margin-bottom:3rem;color:#646464;font-size:1.6rem;" class="ppw-center">Chosen by 1 million+ customers.</p>
-<div class="ppw-grid cols-${gridCols}">
+      productsHtml = `\n<section id="featured-products" class="gtd-section">
+<h2 class="gtd-center">Top ${categoryLabel} Picks</h2>
+<p style="margin-bottom:3rem;color:#646464;font-size:1.6rem;" class="gtd-center">Chosen by 1 million+ customers.</p>
+<div class="gtd-grid cols-${gridCols}">
 ${cards}
 </div>
 </section>`
@@ -660,7 +660,7 @@ ${cards}
       `<a href="#overview">Overview</a>`,
       ...finalNavItems.map((n) => `<a href="#${n.id}">${n.text}</a>`),
     ]
-    const navHtml = `<nav class="ppw-topnav" aria-label="Quick navigation">\n${navLinks.join("\n")}\n</nav>`
+    const navHtml = `<nav class="gtd-topnav" aria-label="Quick navigation">\n${navLinks.join("\n")}\n</nav>`
 
     // ══════════════════════════════════════════════════════════════════════════
     // FINAL ASSEMBLY
@@ -764,13 +764,13 @@ ${faqSchema}`.trim()
         handle: p.handle,
         title: p.title,
         description: p.description ?? "",
-        vendor: p.vendor ?? "Peak Primal Wellness",
+        vendor: p.vendor ?? "Green Thumb Depot",
         productType: p.productType ?? "",
         tags: p.tags ? (p.tags as string).split(",").map((t: string) => t.trim()) : [],
         price: p.price,
         compareAtPrice: p.compareAtPrice,
         imageUrl: p.imageUrl,
-        url: p.url ?? `https://www.peakprimalwellness.com/products/${p.handle}`,
+        url: p.url ?? `https://www.greenthumbdepot.com/products/${p.handle}`,
         category,
         isAvailable: true,
       })),

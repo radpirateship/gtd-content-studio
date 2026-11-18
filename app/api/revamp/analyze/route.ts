@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
         ).join('\n')
       : 'No citations provided.';
 
-    const systemPrompt = `You are a content strategist for Peak Primal Wellness (peakprimalwellness.com), a premium wellness equipment brand (saunas, cold plunges, red light therapy, and recovery equipment). You are analyzing an existing blog article to plan a comprehensive rewrite. Your goal is to identify what's strong, what's missing, and create a restructuring plan that will improve SEO, readability, and conversion.`;
+    const systemPrompt = `You are a content strategist for Green Thumb Depot (greenthumbdepot.com), a premium wellness equipment brand (saunas, cold plunges, red light therapy, and recovery equipment). You are analyzing an existing blog article to plan a comprehensive rewrite. Your goal is to identify what's strong, what's missing, and create a restructuring plan that will improve SEO, readability, and conversion.`;
 
     const userPrompt = `Analyze this existing article for a comprehensive rewrite.
 

@@ -10,7 +10,7 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: '--font-jet
 const newsreader = Newsreader({ subsets: ["latin"], variable: '--font-newsreader' })
 
 export const metadata: Metadata = {
-  title: 'PPW Content Studio | Peak Primal Wellness',
+  title: 'GTD Content Studio | Green Thumb Depot',
   description: 'AI-powered content automation for wellness equipment articles',
   icons: {
     icon: [

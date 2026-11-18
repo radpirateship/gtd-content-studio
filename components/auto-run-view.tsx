@@ -134,7 +134,7 @@ export function AutoRunView({
           tone: 'authoritative', wordCount: 2500,
           products: products.map(p => ({
             title: p.title, description: p.description, price: p.price, imageUrl: p.imageUrl,
-            url: p.handle ? `https://peakprimalwellness.com/products/${p.handle}` : p.url, handle: p.handle,
+            url: p.handle ? `https://greenthumbdepot.com/products/${p.handle}` : p.url, handle: p.handle,
             vendor: p.vendor,
           })),
           relatedArticles,
@@ -147,7 +147,7 @@ export function AutoRunView({
       const textContent = content.replace(/<[^>]*>/g, ' ')
       const wordCount = textContent.split(/\s+/).filter(Boolean).length
       const slug = generateSlug(formData.title)
-      const metaDescription = generatedMeta || `Learn about ${formData.keyword}. Comprehensive guide from Peak Primal Wellness.`.slice(0, 160)
+      const metaDescription = generatedMeta || `Learn about ${formData.keyword}. Comprehensive guide from Green Thumb Depot.`.slice(0, 160)
 
       const newArticle: GeneratedArticle = {
         id: `article-${Date.now()}`,
@@ -157,7 +157,7 @@ export function AutoRunView({
         products: products.map(p => ({
           ...p,
           tags: typeof (p as any).tags === 'string' ? (p as any).tags.split(',').map((t: string) => t.trim()) : (p as any).tags || [],
-          url: p.handle ? `https://peakprimalwellness.com/products/${p.handle}` : '#',
+          url: p.handle ? `https://greenthumbdepot.com/products/${p.handle}` : '#',
           isAvailable: true,
         })),
         faqs: outline?.faq?.map((f: { question: string; briefAnswer: string }) => ({
@@ -247,8 +247,8 @@ export function AutoRunView({
   }, [formData, generateSlug, generateSchemaMarkup, saveArticleToDb, steps])
 
   const StepIcon = ({ status }: { status: StepState['status'] }) => {
-    if (status === 'running') return <Loader2 className="h-4 w-4 animate-spin" style={{ color: 'var(--ppw-accent)' }} />
-    if (status === 'done') return <Check className="h-4 w-4" style={{ color: 'var(--ppw-accent)' }} />
+    if (status === 'running') return <Loader2 className="h-4 w-4 animate-spin" style={{ color: 'var(--gtd-accent)' }} />
+    if (status === 'done') return <Check className="h-4 w-4" style={{ color: 'var(--gtd-accent)' }} />
     if (status === 'error') return <AlertCircle className="h-4 w-4" style={{ color: '#c53030' }} />
     if (status === 'skipped') return <Circle className="h-4 w-4 opacity-30" style={{ color: 'var(--text4)' }} />
     return <Circle className="h-4 w-4" style={{ color: 'var(--text4)' }} />
@@ -262,7 +262,7 @@ export function AutoRunView({
         {/* Header */}
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-1">
-            <Zap className="h-4 w-4" style={{ color: 'var(--ppw-accent)' }} />
+            <Zap className="h-4 w-4" style={{ color: 'var(--gtd-accent)' }} />
             <h1 className="font-serif text-[20px] font-semibold tracking-tight" style={{ color: 'var(--text1)' }}>
               Auto-Run
             </h1>
@@ -336,7 +336,7 @@ export function AutoRunView({
                 disabled={!formData.title || !formData.keyword}
                 onClick={runAll}
                 className="gap-1.5"
-                style={{ background: 'var(--ppw-accent)', color: '#fff' }}
+                style={{ background: 'var(--gtd-accent)', color: '#fff' }}
               >
                 <Zap className="h-3.5 w-3.5" />
                 Start Auto-Run
@@ -364,12 +364,12 @@ export function AutoRunView({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="text-[13px] font-medium" style={{
-                        color: step.status === 'running' ? 'var(--ppw-accent)' : step.status === 'done' ? 'var(--text1)' : 'var(--text3)',
+                        color: step.status === 'running' ? 'var(--gtd-accent)' : step.status === 'done' ? 'var(--text1)' : 'var(--text3)',
                       }}>
                         {step.message}
                       </span>
                       {step.status === 'done' && (
-                        <span className="text-[10px] font-mono rounded px-1.5 py-0.5" style={{ background: 'var(--ppw-accent-light)', color: 'var(--ppw-accent)' }}>
+                        <span className="text-[10px] font-mono rounded px-1.5 py-0.5" style={{ background: 'var(--gtd-accent-light)', color: 'var(--gtd-accent)' }}>
                           Done
                         </span>
                       )}
@@ -398,8 +398,8 @@ export function AutoRunView({
             {currentStep === 'done' && article && (
               <div className="mt-5 pt-4 border-t" style={{ borderColor: 'var(--border)' }}>
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: 'color-mix(in srgb, var(--ppw-accent) 12%, transparent)' }}>
-                    <Check className="h-4 w-4" style={{ color: 'var(--ppw-accent)' }} />
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: 'color-mix(in srgb, var(--gtd-accent) 12%, transparent)' }}>
+                    <Check className="h-4 w-4" style={{ color: 'var(--gtd-accent)' }} />
                   </div>
                   <div>
                     <p className="text-[13px] font-semibold" style={{ color: 'var(--text1)' }}>Auto-Run Complete</p>
@@ -425,7 +425,7 @@ export function AutoRunView({
                     size="sm"
                     onClick={() => onComplete(article)}
                     className="gap-1.5"
-                    style={{ background: 'var(--ppw-accent)', color: '#fff' }}
+                    style={{ background: 'var(--gtd-accent)', color: '#fff' }}
                   >
                     <Eye className="h-3.5 w-3.5" />
                     Review Article
@@ -459,7 +459,7 @@ export function AutoRunView({
                     {[
                       { label: 'Article', value: article.title },
                       { label: 'Status', value: 'Draft -- Incomplete', accent: '#b8860b' },
-                      { label: 'Outline', value: 'Saved', accent: 'var(--ppw-accent)' },
+                      { label: 'Outline', value: 'Saved', accent: 'var(--gtd-accent)' },
                     ].map(row => (
                       <div key={row.label} className="flex items-center justify-between px-3 py-2">
                         <span className="text-[10px] font-mono uppercase tracking-[0.5px]" style={{ color: 'var(--text4)' }}>{row.label}</span>
@@ -494,7 +494,7 @@ export function AutoRunView({
                     size="sm"
                     onClick={() => { setCurrentStep('idle'); setErrorMessage('') }}
                     className="gap-1.5"
-                    style={{ background: 'var(--ppw-accent)', color: '#fff' }}
+                    style={{ background: 'var(--gtd-accent)', color: '#fff' }}
                   >
                     Retry Generation
                   </Button>

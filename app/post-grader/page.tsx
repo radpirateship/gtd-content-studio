@@ -104,7 +104,7 @@ export default function PostGraderPage() {
         String(r.wordCount),
         esc(r.failures.map((f) => CHECK_LABELS[f] || f).join(" | ")),
         esc(Object.entries(r.failureDetails).map(([k, v]) => `${k}: ${v}`).join(" | ")),
-        esc(`https://peakprimalwellness.com/blogs/${r.blogHandle}/${r.handle}`),
+        esc(`https://greenthumbdepot.com/blogs/${r.blogHandle}/${r.handle}`),
       ].join(","));
     }
     const blob = new Blob([lines.join("\n")], { type: "text/csv" });
@@ -122,7 +122,7 @@ export default function PostGraderPage() {
       <div>
         <h1 className="text-2xl font-bold">Post Grader</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Read-only grade of every post against the PPW core-element checklist. Nothing is
+          Read-only grade of every post against the GTD core-element checklist. Nothing is
           rewritten. Use the failure chips to build fix queues; full revamp is only for posts
           that fail on substance.
         </p>
@@ -213,7 +213,7 @@ export default function PostGraderPage() {
                     <td className={`p-2 text-right font-bold ${scoreColor(r.score)}`}>{r.score}</td>
                     <td className="p-2 max-w-sm">
                       <a
-                        href={`https://peakprimalwellness.com/blogs/${r.blogHandle}/${r.handle}`}
+                        href={`https://greenthumbdepot.com/blogs/${r.blogHandle}/${r.handle}`}
                         target="_blank"
                         rel="noreferrer"
                         className="text-blue-600 hover:underline"

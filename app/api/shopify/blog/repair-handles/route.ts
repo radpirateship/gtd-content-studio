@@ -3,7 +3,7 @@
  * POST /api/shopify/blog/repair-handles            — { dryRun?: boolean }  (dryRun defaults to TRUE)
  *
  * Repairs live blog articles whose handle carries a 13-digit millisecond epoch,
- * e.g. /blogs/wellness/home-gym-essentials-...-1787401458275.
+ * e.g. /blogs/guides/home-gym-essentials-...-1787401458275.
  *
  * Those handles are residue from an old /api/articles collision bug that
  * appended Date.now() whenever a new slug PREFIX-matched an existing row. The

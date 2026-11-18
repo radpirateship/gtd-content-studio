@@ -163,7 +163,7 @@ export async function POST(request: NextRequest) {
         } else {
         const sql = getSQL();
         const rows = (await sql`
-          SELECT slug, category, title_tag, primary_keyword FROM ppw_collections
+          SELECT slug, category, title_tag, primary_keyword FROM gtd_collections
           WHERE slug = ${collection}
           LIMIT 1
         `) as { slug: string; category?: string; title_tag?: string; primary_keyword?: string }[];
@@ -252,7 +252,7 @@ export async function POST(request: NextRequest) {
         id: createdArticle.id,
         title: createdArticle.title,
         handle: createdArticle.handle,
-        url: `https://peakprimalwellness.com/blogs/wellness/${createdArticle.handle}`,
+        url: `https://greenthumbdepot.com/blogs/guides/${createdArticle.handle}`,
         published_at: createdArticle.published_at,
         created_at: createdArticle.created_at,
       },

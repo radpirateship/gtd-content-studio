@@ -6,7 +6,7 @@
  *
  * Why: BenchK wall bars carry "home gym" and "fitness" in every title, so
  * keyword scoring put two of them in nearly every home gym article. On a
- * "how to build a home gym" piece PPW wants the higher-end machines on the
+ * "how to build a home gym" piece GTD wants the higher-end machines on the
  * cards. On a Swedish ladder article BenchK is the subject and belongs.
  *
  * Extend in Vercel without a code change:

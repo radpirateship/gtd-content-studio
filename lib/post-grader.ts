@@ -1,13 +1,13 @@
 /**
- * PPW Post Grader — deterministic core-element checks for existing articles.
+ * GTD Post Grader — deterministic core-element checks for existing articles.
  *
  * Grades WITHOUT rewriting: every check is a code inspection of body_html, so
  * ranking articles are never touched. Failures map to targeted fixes (anchor
  * fixer, link injector, FAQ repair) — full rewrite is an escalation for posts
  * that fail on substance, not a default.
  *
- * IMPORTANT: article body_html embeds a <style> block that defines the ppw-*
- * classes (.ppw-faq-question, .ppw-topnav, ...). ALL structural checks must
+ * IMPORTANT: article body_html embeds a <style> block that defines the gtd-*
+ * classes (.gtd-faq-question, .gtd-topnav, ...). ALL structural checks must
  * run on markup with <style>/<script> stripped, or the CSS definitions false-
  * positive as content (v1 flagged 965/980 posts as "FAQ swallowed table").
  * Schema checks are the exception — JSON-LD lives inside <script> tags.
@@ -96,29 +96,29 @@ export function gradePost(html: string): PostGrade {
   // stock but returning (Ryan, July 6). Existing mentions/links stay untouched.
 
   // ── FAQ presence + structural integrity (on clean markup only) ────────────
-  const faqIdx = clean.search(/class="[^"]*ppw-faq|<h2[^>]*>\s*(Frequently Asked Questions|FAQs?)\s*</i);
+  const faqIdx = clean.search(/class="[^"]*gtd-faq|<h2[^>]*>\s*(Frequently Asked Questions|FAQs?)\s*</i);
   const relatedIdx = clean.search(/Continue Your Wellness Journey/i);
   add("faq-present", "FAQ section exists", faqIdx !== -1);
 
   if (faqIdx !== -1) {
     // Two legitimate FAQ formats exist across article generations:
-    //   A) <details> + .ppw-faq-question / .ppw-faq-answer
-    //   B) .ppw-accordion + .ppw-acc-btn / .ppw-acc-panel
-    const qA = (clean.match(/class="[^"]*ppw-faq-question/g) || []).length;
-    const aA = (clean.match(/class="[^"]*ppw-faq-answer/g) || []).length;
-    const qB = (clean.match(/class="[^"]*ppw-acc-btn/g) || []).length;
-    const aB = (clean.match(/class="[^"]*ppw-acc-panel/g) || []).length;
+    //   A) <details> + .gtd-faq-question / .gtd-faq-answer
+    //   B) .gtd-accordion + .gtd-acc-btn / .gtd-acc-panel
+    const qA = (clean.match(/class="[^"]*gtd-faq-question/g) || []).length;
+    const aA = (clean.match(/class="[^"]*gtd-faq-answer/g) || []).length;
+    const qB = (clean.match(/class="[^"]*gtd-acc-btn/g) || []).length;
+    const aB = (clean.match(/class="[^"]*gtd-acc-panel/g) || []).length;
     const detailsCount = (clean.match(/<details\b/g) || []).length;
 
     // FAQ region ends at the last answer of whichever format is present;
     // fallback: the FAQ's own section (up to the next <h2), not a fixed window.
     let regionEnd = -1;
-    const lastAnswerA = clean.lastIndexOf('class="ppw-faq-answer"');
+    const lastAnswerA = clean.lastIndexOf('class="gtd-faq-answer"');
     if (lastAnswerA !== -1) {
       const e = clean.indexOf("</details>", lastAnswerA);
       regionEnd = Math.max(regionEnd, e !== -1 ? e : lastAnswerA);
     }
-    const lastPanelB = clean.lastIndexOf('class="ppw-acc-panel"');
+    const lastPanelB = clean.lastIndexOf('class="gtd-acc-panel"');
     if (lastPanelB !== -1) {
       const e = clean.indexOf("</div>", lastPanelB);
       regionEnd = Math.max(regionEnd, e !== -1 ? e : lastPanelB);
@@ -129,7 +129,7 @@ export function gradePost(html: string): PostGrade {
     }
     const faqRegion = clean.slice(faqIdx, regionEnd);
 
-    const gridInFaq = /class="[^"]*ppw-grid|class="[^"]*ppw-card|<table\b/i.test(faqRegion);
+    const gridInFaq = /class="[^"]*gtd-grid|class="[^"]*gtd-card|<table\b/i.test(faqRegion);
     add(
       "faq-clean",
       "FAQ not swallowing tables/grids",
@@ -174,7 +174,7 @@ export function gradePost(html: string): PostGrade {
 
   // ── Template elements ─────────────────────────────────────────────────────
   add("key-takeaways", "Key Takeaways section", /<h2[^>]*>[^<]*key takeaways/i.test(clean));
-  add("toc-nav", "Table of contents nav", /<nav\b[^>]*ppw-topnav/i.test(clean));
+  add("toc-nav", "Table of contents nav", /<nav\b[^>]*gtd-topnav/i.test(clean));
   add("overview", "Overview hero section", /id="overview"/i.test(clean));
   add(
     "featured-products",
@@ -204,7 +204,7 @@ export function gradePost(html: string): PostGrade {
   };
   const lastCtaIdx = (() => {
     let idx = -1;
-    for (const m of clean.matchAll(/<a\b[^>]*(?:class="[^"]*ppw-cta[^"]*"[^>]*href="[^"]*\/collections\/|href="[^"]*\/collections\/[^"]*"[^>]*class="[^"]*ppw-cta)/gi)) {
+    for (const m of clean.matchAll(/<a\b[^>]*(?:class="[^"]*gtd-cta[^"]*"[^>]*href="[^"]*\/collections\/|href="[^"]*\/collections\/[^"]*"[^>]*class="[^"]*gtd-cta)/gi)) {
       if (m.index !== undefined) idx = m.index;
     }
     return idx;
@@ -231,7 +231,7 @@ export function gradePost(html: string): PostGrade {
   if (countOf(/<h2[^>]*>[^<]*key takeaways[^<]*<\/h2>/gi) > 1) dupes.push("key takeaways");
   if (countOf(/<h2[^>]*>\s*(Frequently Asked Questions|FAQs?)\s*</gi) > 1) dupes.push("FAQ heading");
   if (countOf(/Continue Your Wellness Journey/gi) > 1) dupes.push("related articles");
-  if (countOf(/<nav\b[^>]*ppw-topnav/gi) > 1) dupes.push("TOC nav");
+  if (countOf(/<nav\b[^>]*gtd-topnav/gi) > 1) dupes.push("TOC nav");
   add("no-duplicates", "No duplicated sections", dupes.length === 0, dupes.join(", "));
 
   // ── Single H1 ─────────────────────────────────────────────────────────────
@@ -245,7 +245,7 @@ export function gradePost(html: string): PostGrade {
   add("unique-ids", "No duplicate element IDs", dupIds.length === 0, dupIds.slice(0, 5).join(", "));
 
   // ── TOC links resolve ─────────────────────────────────────────────────────
-  const navMatch = clean.match(/<nav\b[^>]*ppw-topnav[\s\S]*?<\/nav>/i);
+  const navMatch = clean.match(/<nav\b[^>]*gtd-topnav[\s\S]*?<\/nav>/i);
   if (navMatch) {
     const targets = [...navMatch[0].matchAll(/href="#([^"]+)"/g)].map((m) => m[1]);
     const missing = targets.filter((t) => !clean.includes(`id="${t}"`));
@@ -337,29 +337,29 @@ export function gradePostV2(html: string): PostGrade {
   add("ai-tells", "No recognisable AI patterns", tellHits.length === 0, tellHits.join(", "));
 
   // ── v2 markup, no v1 residue ───────────────────────────────────────────────
-  const ppwbCount = (clean.match(/class="[^"]*\bppwb-/g) || []).length;
-  const ppwLegacy = (clean.match(/class="[^"]*\bppw-(?!blog)[a-z]/g) || []).length;
-  add("v2-markup", "ppwb- markup present", ppwbCount >= 5, `${ppwbCount} ppwb- classes`);
-  add("no-v1-residue", "No v1 classes or inline styles", ppwLegacy === 0 && !/<style\b/i.test(body),
-    [ppwLegacy ? `${ppwLegacy} ppw- classes` : "", /<style\b/i.test(body) ? "inline <style>" : ""].filter(Boolean).join(", "));
+  const gtdbCount = (clean.match(/class="[^"]*\bgtdb-/g) || []).length;
+  const gtdLegacy = (clean.match(/class="[^"]*\bgtd-(?!blog)[a-z]/g) || []).length;
+  add("v2-markup", "gtdb- markup present", gtdbCount >= 5, `${gtdbCount} gtdb- classes`);
+  add("no-v1-residue", "No v1 classes or inline styles", gtdLegacy === 0 && !/<style\b/i.test(body),
+    [gtdLegacy ? `${gtdLegacy} gtd- classes` : "", /<style\b/i.test(body) ? "inline <style>" : ""].filter(Boolean).join(", "));
 
   // ── Template blocks ────────────────────────────────────────────────────────
-  add("answer-box", "Answer box present", /class="[^"]*ppwb-answer/.test(clean));
-  add("key-takeaways", "Key takeaways glance", /class="[^"]*ppwb-glance/.test(clean));
-  add("toc-nav", "TOC accordion", /class="[^"]*ppwb-toc/.test(clean));
-  add("faq-present", "FAQ section", /class="[^"]*ppwb-faq/.test(clean));
+  add("answer-box", "Answer box present", /class="[^"]*gtdb-answer/.test(clean));
+  add("key-takeaways", "Key takeaways glance", /class="[^"]*gtdb-glance/.test(clean));
+  add("toc-nav", "TOC accordion", /class="[^"]*gtdb-toc/.test(clean));
+  add("faq-present", "FAQ section", /class="[^"]*gtdb-faq/.test(clean));
   add("faq-schema", "FAQ schema (JSON-LD) present", /FAQPage/i.test(body));
-  add("shop-cta", "Shop CTA block", /class="[^"]*ppwb-shop/.test(clean));
-  add("author-block", "Author block", /class="[^"]*ppwb-author/.test(clean));
-  add("keep-reading", "Keep reading tiles", /class="[^"]*ppwb-related/.test(clean));
+  add("shop-cta", "Shop CTA block", /class="[^"]*gtdb-shop/.test(clean));
+  add("author-block", "Author block", /class="[^"]*gtdb-author/.test(clean));
+  add("keep-reading", "Keep reading tiles", /class="[^"]*gtdb-related/.test(clean));
   add(
     "featured-products",
     "Product pick cards",
-    /class="[^"]*ppwb-pick/.test(clean) || /<a\b[^>]*href="[^"]*\/products\//i.test(clean)
+    /class="[^"]*gtdb-pick/.test(clean) || /<a\b[^>]*href="[^"]*\/products\//i.test(clean)
   );
 
   // ── Collection links: exactly 2 in prose, shop CTA excluded ────────────────
-  const withoutShop = clean.replace(/<section class="ppwb-shop">[\s\S]*?<\/section>/i, "");
+  const withoutShop = clean.replace(/<section class="gtdb-shop">[\s\S]*?<\/section>/i, "");
   const collectionHrefs = new Set<string>();
   for (const m of withoutShop.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
     const href = (m[1].match(/href="([^"]*)"/i) || [])[1] || "";

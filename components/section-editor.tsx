@@ -48,11 +48,11 @@ function parseHtmlSections(html: string): Section[] {
   
   // Define section patterns to identify
   const sectionPatterns = [
-    { regex: /<section[^>]*class="[^"]*ppw-section[^"]*overview[^"]*"[^>]*>[\s\S]*?<\/section>/gi, type: 'overview', label: 'Overview' },
-    { regex: /<div[^>]*class="[^"]*ppw-takeaways[^"]*"[^>]*>[\s\S]*?<\/div>/gi, type: 'takeaways', label: 'Key Takeaways' },
-    { regex: /<section[^>]*class="[^"]*ppw-section[^"]*"[^>]*id="[^"]*"[^>]*>[\s\S]*?<\/section>/gi, type: 'content', label: 'Content Section' },
-    { regex: /<div[^>]*class="[^"]*ppw-faq[^"]*"[^>]*>[\s\S]*?<\/div>(?=\s*<(?:section|div|script|$))/gi, type: 'faq', label: 'FAQ Section' },
-    { regex: /<div[^>]*class="[^"]*ppw-product-grid[^"]*"[^>]*>[\s\S]*?<\/div>(?=\s*<(?:section|div|$))/gi, type: 'products', label: 'Featured Products' },
+    { regex: /<section[^>]*class="[^"]*gtd-section[^"]*overview[^"]*"[^>]*>[\s\S]*?<\/section>/gi, type: 'overview', label: 'Overview' },
+    { regex: /<div[^>]*class="[^"]*gtd-takeaways[^"]*"[^>]*>[\s\S]*?<\/div>/gi, type: 'takeaways', label: 'Key Takeaways' },
+    { regex: /<section[^>]*class="[^"]*gtd-section[^"]*"[^>]*id="[^"]*"[^>]*>[\s\S]*?<\/section>/gi, type: 'content', label: 'Content Section' },
+    { regex: /<div[^>]*class="[^"]*gtd-faq[^"]*"[^>]*>[\s\S]*?<\/div>(?=\s*<(?:section|div|script|$))/gi, type: 'faq', label: 'FAQ Section' },
+    { regex: /<div[^>]*class="[^"]*gtd-product-grid[^"]*"[^>]*>[\s\S]*?<\/div>(?=\s*<(?:section|div|$))/gi, type: 'products', label: 'Featured Products' },
   ]
 
   let sectionIndex = 0

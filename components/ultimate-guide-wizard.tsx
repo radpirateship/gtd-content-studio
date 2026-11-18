@@ -138,7 +138,7 @@ function WizardStepBar({ steps, currentStep, completedSteps, onStepClick }: Wiza
 
 // Collections imported from lib/collections.ts (master list)
 // Fallback only. The dropdown loads the synced collection table at runtime
-// (Ryan's standing rule: ppw_collections or live Shopify, never the static
+// (Ryan's standing rule: gtd_collections or live Shopify, never the static
 // list), alphabetical; this static list serves until that fetch resolves or
 // if it fails.
 const FALLBACK_COLLECTIONS = [...MASTER_COLLECTIONS]
@@ -445,7 +445,7 @@ function ConfigForm({ onSave, initialGuide }: ConfigFormProps) {
               onChange={e => setFormData(prev => ({ ...prev, template_version: Number(e.target.value) }))}
               className="w-full px-3 py-2 border rounded-md"
             >
-              <option value={2}>v2, blog design system (ppw-blog.css, live products, guards)</option>
+              <option value={2}>v2, blog design system (gtd-blog.css, live products, guards)</option>
               <option value={1}>v1, legacy page template</option>
             </select>
           </div>

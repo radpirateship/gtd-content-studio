@@ -122,7 +122,7 @@ export const productStore = new ProductStore();
 
 // ── DB-backed product recommendations for the revamp/generate pipeline ──
 // Queries the `products` table and returns up to `limit` products matched to a
-// collection/category. Mirrors the matching logic used elsewhere in PPW.
+// collection/category. Mirrors the matching logic used elsewhere in GTD.
 import { getSQL } from "@/lib/db";
 
 export interface DBProduct {

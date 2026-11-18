@@ -1,7 +1,7 @@
 // ============================================================================
 // lib/collectionGrade.ts — Collection-page structural grader.
 //
-// Implements docs/PPW_Collection_Page_Rules.md FAITHFULLY (July 2026 rebuild —
+// Implements docs/GTD_Collection_Page_Rules.md FAITHFULLY (July 2026 rebuild —
 // the earlier version was a partial distillation and was never wired into the
 // audit queue). Every check cites the rule it enforces. Pure function, no I/O.
 //
@@ -31,7 +31,7 @@ export interface CollectionGradeInput {
   bodyHtml: string
   productCount?: number | null
   primaryKeyword?: string | null
-  /** Brand collection pages grade against docs/PPW_Brand_Collection_Page_Rules.md */
+  /** Brand collection pages grade against docs/GTD_Brand_Collection_Page_Rules.md */
   isBrand?: boolean
 }
 
@@ -103,7 +103,7 @@ function visibleFaqQuestions(html: string): string[] {
     const firstSpan = m[1].match(/<span[^>]*>([\s\S]*?)<\/span>/i)
     qs.push(toText(firstSpan ? firstSpan[1] : m[1]).replace(/[+−⌄⌄ˇ]\s*$/, '').trim())
   }
-  for (const m of html.matchAll(/<button[^>]*class="[^"]*ppw-acc-btn[^"]*"[^>]*>([\s\S]*?)<\/button>/gi)) qs.push(toText(m[1]).replace(/[+−-]\s*$/, '').trim())
+  for (const m of html.matchAll(/<button[^>]*class="[^"]*gtd-acc-btn[^"]*"[^>]*>([\s\S]*?)<\/button>/gi)) qs.push(toText(m[1]).replace(/[+−-]\s*$/, '').trim())
   return qs.filter(Boolean)
 }
 
@@ -150,7 +150,7 @@ export function gradeCollection(input: CollectionGradeInput): CollectionGradeRes
     if (!seoTitle) { st = 'fail'; notes.push('missing (never let Shopify auto-generate)') }
     else {
       if (tl > 60) { st = tl > 70 ? 'fail' : 'warn'; notes.push(`${tl} chars (hard limit 60)`) }
-      // pipe-brand suffixes ("| Peak Primal Wellness") are explicitly NOT
+      // pipe-brand suffixes ("| Green Thumb Depot") are explicitly NOT
       // wanted (Ryan, Aug 3) — colon-style differentiator titles are the norm
       if (pk && !kwLeads(seoTitle, pk)) { if (st === 'pass') st = 'warn'; notes.push('primary keyword not first') }
     }
@@ -231,8 +231,8 @@ export function gradeCollection(input: CollectionGradeInput): CollectionGradeRes
     `${faqQs.length} visible question(s)`)
 
   if (faqSection) {
-    // v2 design (class="ppw-collection"): FAQ intentionally closes the page
-    const isV2 = /class="ppw-collection"/.test(html)
+    // v2 design (class="gtd-collection"): FAQ intentionally closes the page
+    const isV2 = /class="gtd-collection"/.test(html)
     const featIdx = sections.find((s) => /featured/i.test(s.heading))?.index ?? Infinity
     add('faq_position', 'FAQ position',
       isV2 || faqSection.index < featIdx ? 'pass' : 'warn',
@@ -281,13 +281,13 @@ export function gradeCollection(input: CollectionGradeInput): CollectionGradeRes
     const pageSet = new Set(pageProductUrls.map((u) => u.replace(/^https?:\/\/[^/]+/, '')))
     const mismatched = urls.filter((u) => !pageSet.has(u.replace(/^https?:\/\/[^/]+/, ''))).length
     if (mismatched > 0 && pageProductUrls.length > 0) notes.push(`${mismatched} schema URL(s) not on page`)
-    if (!/^(Featured .+|.+ Products) at Peak Primal Wellness$/i.test(String(itemList.name || ''))) notes.push('name field not "Featured [X] / [Brand] Products at Peak Primal Wellness"')
+    if (!/^(Featured .+|.+ Products) at Green Thumb Depot$/i.test(String(itemList.name || ''))) notes.push('name field not "Featured [X] / [Brand] Products at Green Thumb Depot"')
     add('schema_itemlist', 'ItemList schema (synced, clean)',
       dups.length || mismatched ? 'fail' : notes.length ? 'warn' : 'pass',
       notes.join('; ') || '4 items, synced with page')
   }
 
-  // BreadcrumbList (T5, docs/PPW_Collection_14_Tasks.md): required in the
+  // BreadcrumbList (T5, docs/GTD_Collection_14_Tasks.md): required in the
   // body @graph — Home + collection. Warn-level since some theme setups also
   // emit one at template level.
   {
@@ -299,7 +299,7 @@ export function gradeCollection(input: CollectionGradeInput): CollectionGradeRes
   {
     const featSection = sections.find((s) => /featured|recommend first|models to start/i.test(s.heading))
     const scope = featSection ? featSection.body : html
-    const cards = (scope.match(/class=["'][^"']*ppw-(?:card|product|hv-gold)[^"']*["']/gi) || []).length
+    const cards = (scope.match(/class=["'][^"']*gtd-(?:card|product|hv-gold)[^"']*["']/gi) || []).length
     const ctas = (scope.match(/view (?:product details|model)/gi) || []).length
     const prices = (scope.match(/\$\s?\d[\d,]*/g) || []).length
     const dupLinks = [...scope.matchAll(/href=["']([^"']*\/products\/[^"']+)["']/gi)].filter((m) => DUP_HANDLE.test(m[1])).length
@@ -329,7 +329,7 @@ export function gradeCollection(input: CollectionGradeInput): CollectionGradeRes
       // July 31 rule: compare tables COEXIST with the buying guide on
       // qualifying collections (median-price gate) — a table is no longer a
       // buying-guide violation.
-      const cards = (bg.body.match(/class=["'][^"']*ppw-(?:card|hv-lift)/gi) || []).length
+      const cards = (bg.body.match(/class=["'][^"']*gtd-(?:card|hv-lift)/gi) || []).length
       const notes: string[] = []
       if (cards !== 3 && cards > 0) notes.push(`${cards} cards (want 3)`)
       add('buying_guide', 'Buying guide (3 cards)', notes.length ? 'warn' : 'pass', notes.join('; ') || '3 cards')

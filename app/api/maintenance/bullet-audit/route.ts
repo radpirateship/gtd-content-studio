@@ -14,11 +14,11 @@ import {
 /**
  * POST /api/maintenance/bullet-audit
  *
- * Inventories and repairs the feature bullets inside .ppw-product-card blocks
+ * Inventories and repairs the feature bullets inside .gtd-product-card blocks
  * across every published article.
  *
  * Background: extractFeatures() always forced "White-Glove Delivery Included"
- * into slot 1 and padded thin cards with "Free Shipping Included". PPW offers
+ * into slot 1 and padded thin cards with "Free Shipping Included". GTD offers
  * neither universally (free shipping is conditional on product class and is not
  * offered on freight items such as saunas), so both claims had to be pulled from
  * every live post. See lib/product-bullets.ts.

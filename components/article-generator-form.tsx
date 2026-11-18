@@ -71,7 +71,7 @@ export function parseCSV(text: string): ArticleInput[] {
 function getStickyCategory(): WellnessCategory {
   if (typeof window === 'undefined') return 'saunas'
   try {
-    const saved = localStorage.getItem('ppw-sticky-category')
+    const saved = localStorage.getItem('gtd-sticky-category')
     if (saved) return saved as WellnessCategory
   } catch {}
   return 'saunas'
@@ -80,7 +80,7 @@ function getStickyCategory(): WellnessCategory {
 function getStickyBlogTag(): ShopifyBlogTag {
   if (typeof window === 'undefined') return 'wellness'
   try {
-    const saved = localStorage.getItem('ppw-sticky-blogtag')
+    const saved = localStorage.getItem('gtd-sticky-blogtag')
     if (saved) return saved as ShopifyBlogTag
   } catch {}
   return 'wellness'
@@ -139,8 +139,8 @@ export function ArticleGeneratorForm({ onSubmit, onBulkSubmit, isGenerating, ini
         }
         updated.shopifyBlogTag = categoryToTag[value as string] || 'saunas'
         try {
-          localStorage.setItem('ppw-sticky-category', value as string)
-          localStorage.setItem('ppw-sticky-blogtag', updated.shopifyBlogTag)
+          localStorage.setItem('gtd-sticky-category', value as string)
+          localStorage.setItem('gtd-sticky-blogtag', updated.shopifyBlogTag)
         } catch {}
       }
       return updated
@@ -281,7 +281,7 @@ export function ArticleGeneratorForm({ onSubmit, onBulkSubmit, isGenerating, ini
                 <Label htmlFor="shopifySlug">URL / Slug</Label>
                 <div className="flex items-center gap-0">
                   <span className="inline-flex h-9 shrink-0 items-center rounded-l-md border border-r-0 border-input bg-muted px-2.5 text-xs text-muted-foreground">
-                    /blogs/wellness/
+                    /blogs/guides/
                   </span>
                   <Input
                     id="shopifySlug"

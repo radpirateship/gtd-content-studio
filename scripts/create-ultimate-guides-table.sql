@@ -1,4 +1,4 @@
--- Ultimate Guides table for PPW Content Studio
+-- Ultimate Guides table for GTD Content Studio
 -- Run this in your Neon DB console after deploying
 
 CREATE TABLE IF NOT EXISTS ultimate_guides (
